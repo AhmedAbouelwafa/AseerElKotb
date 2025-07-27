@@ -1,4 +1,5 @@
 # AseerElKotb
+<<<<<<< HEAD
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
@@ -57,3 +58,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+=======
+E-commerce web app inspired by Aseer ElKotb. Built with Angular standalone components, NgRx, clean architecture, and modular structure. Features book listing, search, filters, and cart management.
+>>>>>>> 320aa4196fd3ef6e2cffdb7ce83dd03fb52f65f6
+"# AseerElKotb" 
