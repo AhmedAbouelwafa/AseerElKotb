@@ -1,0 +1,91 @@
+<div class="all-nav" #nav>
+  <div class="navbarSeparator"></div>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+      <!-- ✅ النص الأول: اللوجو + البحث -->
+      <div class="d-flex align-items-center">
+        <!-- اللوجو -->
+        <a class="navbar-brand d-flex align-items-center" routerLink="/">
+          <img src="/icons/logo.svg" alt="Logo" width="40" height="40" class="me-2">
+        </a>
+
+        <!-- شريط البحث -->
+        <div class="ms-lg-3 my-2 my-lg-0">
+          <app-search [placeholderSize]="'0.8rem'"></app-search>
+        </div>
+      </div>
+
+
+      <div class="collapse navbar-collapse d-flex align-items-center"
+           id="navbarContent"
+           [class.show]="!isNavbarCollapsed">
+
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+
+
+          <li class="nav-item books position-relative">
+            <a class="nav-link">الكتب</a>
+            <ul class="dropdown-menu-custom">
+              <li><a routerLink="/books"><i class="fas fa-book-open"></i> كل الكتب</a></li>
+              <li><a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> كتب للقراءة</a></li>
+              <li><a routerLink="/books/purchasable"><i class="fas fa-child"></i> كتب للأطفال</a></li>
+              <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> كتب مسموعة</a></li>
+
+            </ul>
+          </li>
+
+
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/kids">قسم الأطفال</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/accessories">الإكسسوارات ❤️</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/toys">ألعاب 🎮</a>
+          </li>
+        </ul>
+
+        <!-- الأيقونات -->
+        <div class="d-flex align-items-center gap-3">
+
+
+          <button class="btn p-0">
+            <a><img src="/icons/user.png" width="28" alt="User" class="rounded-circle"></a>
+            <ul class="dropdown-menu-custom">
+              <li><a><img src="/icons/user.png" width="28" alt="User" class="rounded-circle"></a><a routerLink="/profile"><i class="fas fa-user"></i> الملف الشخصي</a></li>
+              <li><a routerLink="/notifications"><i class="fas fa-bell"></i> الإشعارات <span class="badge bg-danger">5</span></a></li>
+              <li><a routerLink="/messages"><i class="fas fa-envelope"></i> الرسائل <span class="badge bg-danger">2</span></a></li>
+              <li><a routerLink="/books"><i class="fas fa-book-open"></i> كل الكتب</a></li>
+              <li><a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> كتب للقراءة</a></li>
+              <li><a routerLink="/books/purchasable"><i class="fas fa-child"></i> كتب للأطفال</a></li>
+              <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> كتب مسموعة</a></li>
+              <li><a routerLink="/cart"><i class="fas fa-shopping-cart"></i> السلة <span class="badge bg-success">3</span></a></li>
+              <li><a routerLink="/api-tokens"><i class="fas fa-key"></i> API Tokens</a></li>
+              <li><a routerLink="/logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            </ul>
+          </button>
+
+
+          <button class="btn btn-nav p-0 position-relative">
+            <i class="fa-regular fa-bell fs-5 opacity-50"></i>
+            <span class="badge">1</span>
+          </button>
+          <button class="btn btn-nav p-0 position-relative">
+            <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
+            <span class="badge">1</span>
+          </button>
+          <button class="btn btn-nav p-0 position-relative">
+            <i class="fas fa-truck text-success fs-6 opacity-75"></i>
+            <span class="badge">1</span>
+          </button>
+          <button class="btn p-0">
+            <img src="/icons/egypt.png" width="28" alt="Egypt Flag">
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>

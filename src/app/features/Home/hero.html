@@ -1,0 +1,25 @@
+<div class="heroWrapper position-relative">
+  <img src="/images/hero.png" alt="Hero" class="heroImage position-absolute top-0 start-0 w-100 h-100" />
+
+  <div class="heroContainer container text-center text-white py-5 position-relative">
+    <h1 class="heroText display-4 fw-bold mb-4">عصير الكتب</h1>
+
+    <div class="heroSearch mb-4 d-flex justify-content-center">
+      <app-search [placeholderSize]="'0.6rem'"></app-search>
+    </div>
+
+    <div class="typeOfBooks d-flex flex-wrap justify-content-center gap-3 mb-5">
+      <span class="bookType">كتب ورقيه للشراء</span>
+      <span class="bookType">كتب للقراءه مجانا</span>
+      <span class="bookType">كتب مسموعة</span>
+    </div>
+
+    <div class="categories d-flex flex-wrap justify-content-center gap-3">
+      <app-category></app-category>
+    </div>
+  </div>
+</div>
+
+<div class="books py-5">
+  <app-book-page></app-book-page>
+</div>

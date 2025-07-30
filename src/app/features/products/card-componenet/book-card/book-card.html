@@ -1,0 +1,39 @@
+<div class="card">
+  <!-- صورة الكتاب + الخصم -->
+  <div class="position-relative">
+    <img src="{{book.CoverImageUrl}}" class="card-img-top" alt="Book Cover">
+    <span class="badge bg-danger position-absolute start-50 translate-middle-x" style="bottom: -12px;">
+      خصم {{book.DiscountPercentage}}%
+    </span>
+  </div>
+
+  <!-- تفاصيل الكتاب -->
+  <div class="card-body text-center">
+    <div class="book-rating mb-2">
+      <ng-container *ngFor="let star of stars; let i = index">
+        <i class="fa-star" [ngClass]="{
+          'fas text-warning': i < (book.Rating || 0),
+          'far text-secondary': i >= (book.Rating || 0)
+        }"></i>
+      </ng-container>
+    </div>
+
+    <h5 class="card-title fw-bold">{{book.Title}}</h5>
+    <p class="card-text text-muted">المؤلف: {{book.AutherId}}</p>
+
+    <div class="underBook">
+
+        <span class="told text-danger text-decoration-line-through">
+          ج.م {{book.Price | number}}
+        </span>
+        <span class="tnew text-dark">
+          ج.م {{book.Price - (book.Price * book.DiscountPercentage / 100) | number}}
+        </span>
+
+        <button class="cart-ribbon">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+
+    </div>
+  </div>
+</div>

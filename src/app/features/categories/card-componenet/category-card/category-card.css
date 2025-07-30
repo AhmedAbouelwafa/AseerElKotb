@@ -1,0 +1,22 @@
+a span{
+  cursor: pointer;
+  width:150px;
+  height: 50px;
+  background-color: var(--bg);
+  color: #fac1ca;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+a span:hover{
+  color: #F9607B;
+  background-color: #040307;
+}
+
+a{
+  text-decoration: none;
+}

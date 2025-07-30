@@ -1,0 +1,68 @@
+.heroWrapper {
+  position: relative;
+  padding-top: 150px;
+  width: 100%;
+  background-color: #000;
+  overflow: hidden;
+}
+
+/* الخلفية */
+.heroImage {
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.6);
+}
+
+/* نص العنوان */
+.heroText {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+/* البحث */
+.heroSearch {
+  transform: scale(1.7);
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+/* أنواع الكتب */
+.bookType {
+  cursor: pointer;
+  min-width: 180px;
+  padding: 10px 15px;
+  background-color: #43111D;
+  color: #fac1ca;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.bookType:hover {
+  background-color: #4d1421;
+  color: #F9607B;
+}
+
+/* منطقة الكتب */
+.books {
+  background-color: #f8f9fa;
+}
+
+/* Responsive تحسين */
+@media (max-width: 768px) {
+  .heroSearch {
+    transform: scale(1);
+  }
+
+  .bookType {
+    font-size: 0.9rem;
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookType {
+    font-size: 0.85rem;
+    min-width: 200px;
+  }
+}

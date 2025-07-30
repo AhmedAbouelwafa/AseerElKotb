@@ -1,0 +1,39 @@
+
+.formSeearch input:focus {
+  border-color: #e60000;
+
+  box-shadow: 0 0 0 0.2rem rgba(247, 107, 28, 0.25); /* تأثير جميل حوالين البوكس */
+}
+
+
+.btn-search{
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  padding: 5px;
+  position: relative;
+  left: 5px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-search span{
+  font-size: 21px;
+}
+
+
+
+.search-input::placeholder {
+  font-size: var(--placeholder-size, 1rem);
+}
+
+
+.search-input{
+  width: var(--input-width, 1rem);
+}
+
+

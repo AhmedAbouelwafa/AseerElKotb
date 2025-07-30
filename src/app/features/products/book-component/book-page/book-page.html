@@ -1,0 +1,33 @@
+<div class="latestWithSafqa">
+  <button class="tagBtn">💥 أضيف حديثًا</button>
+  <button class="tagBtn">🔥 صفقة اليوم</button>
+</div>
+
+<div class="catBooks">
+
+  <a routerLink="/trending-today">
+    <h4>
+      الكتب الأكثر مبيعًا اليوم <i class="fa-solid fa-chevron-left"></i>
+    </h4>
+  </a>
+
+  <div class="books">
+    <app-book-card *ngFor="let book of books" [book]="book"></app-book-card>
+  </div>
+
+</div>
+
+
+<div class="catBooks">
+
+  <a routerLink="/trending-today">
+    <h4>
+      الكتب الأكثر مبيعًا اليوم <i class="fa-solid fa-chevron-left"></i>
+    </h4>
+  </a>
+
+  <div class="books">
+    <app-book-card *ngFor="let book of books" [book]="book"></app-book-card>
+  </div>
+
+</div>
