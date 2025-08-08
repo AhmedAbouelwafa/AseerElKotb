@@ -8,7 +8,7 @@ export const routes: Routes = [
     path: '' , component : Hero,
   },
   { path: 'authors/:id', component: AuthorDetails }
-  },
+  ,
   {
     path: 'book-details/:id' , component : BookDetails,
   }
