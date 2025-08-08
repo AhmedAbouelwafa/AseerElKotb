@@ -5,6 +5,10 @@ body {
   font-family: 'Almarai', cursive;
 }
 
+.main-content {
+  padding-top: 70px; /* Adjust this value based on your navbar height */
+}
+
 /* Global scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -35,3 +39,4 @@ body {
   background-color: rgba(230, 0, 0, 0.3);
   color: #333;
 }
+

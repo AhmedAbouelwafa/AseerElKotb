@@ -1,3 +1,5 @@
-<a href="facebook.com"  [routerLink]="'/categories/' + categoryName" [ngStyle]="{ '--bg': bg }">
+<a href="facebook.com"  [routerLink]="'/categories/{{categoryName}}'" [ngStyle]="{ '--bg': bg }">
   <span>{{categoryName}}</span>
 </a>
+
+

@@ -1,44 +1,13 @@
-.latestWithSafqa {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.3rem;
-  margin-top: 3rem;
-  margin-bottom: 8rem;
-  padding-inline: 10px;
-}
-
-.tagBtn {
-  flex: 1;
-  background: linear-gradient(145deg, #f3f3f3, #ffffff);
-  border: none;
-  color: #525252e7;
-  font-size: 1.3rem;
-  font-weight: 600;
-  padding: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-
-  cursor: pointer;
-  text-align: center;
-}
-
-.tagBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(145deg, #fdf7f7ea, #ffffff);
-  color: #111;
-}
 
 
 
 .books {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* أكبر شوية */
-  gap: 24px;
-
-  background-color: #f8f9fa;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* أصغر وأكتر كروت في الصف */
+  gap: 16px;
+  justify-content: center; /* يخليهم في النص لو في مساحة فاضية */
 }
+
 app-book-card {
   display: block;
   background-color: white;
@@ -52,7 +21,6 @@ app-book-card {
 
 .catBooks{
   padding: 15px;
-
 }
 
 .catBooks h4{

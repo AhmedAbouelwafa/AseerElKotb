@@ -1,0 +1,367 @@
+<div class="book-details-container">
+
+  <div class="navigation">
+    <a class="nav-btn" routerLink="{{book?.id}}">🡺</a>
+    <a class="nav-btn" routerLink="{{book?.id}}">🡸</a>
+  </div>
+
+
+  <div class="book">
+    <div class="book-info">
+
+      <!-- القسم اليمين -->
+      <div class="right-section">
+
+        <img [src]="getCoverImageUrl()" alt="" />
+
+        <div class="button-container">
+          <button class="btn btn-buy">
+            <span class="text">شراء نسخة ورقية</span>
+            <span class="icon">🛒</span>
+          </button>
+
+          <button class="btn btn-alert">
+            <span class="text">أبلغني عند توفره للقراءة</span>
+            <span class="icon">📖</span>
+          </button>
+
+          <button class="btn btn-review">
+            <span class="text">أضف مراجعتك</span>
+            <span class="icon">⭐</span>
+          </button>
+        </div>
+
+
+        <div class="book-price">
+          <div class="before">
+            <span>قبل : </span> <span class="old-price">{{ book?.price }} ج.م</span>
+          </div>
+
+          <div class="after">
+            <span>بعد : </span> <span class="new-price"> {{newPrice}} ج.م</span>
+          </div>
+
+          <div class="discount">
+            <span>هتوفر : {{discount | number:'1.1-1' }} ج.م</span>
+            <span class="badge">خصم {{book?.discountPercentage }}%</span>
+          </div>
+        </div>
+
+
+
+        <div class="notification-card">
+          <div class="notification-item">
+            <span class="iconWithText">
+              <i class="fas fa-shuttle-van truck-icon"></i>
+
+
+              <span> شحن مجانى </span>
+            </span>
+            <span class="highlight small-italic">بحد ادنى 600,00 ج.م</span>
+          </div>
+
+          <div class="notification-item">
+            <span class="iconWithText">
+              <i class="fas fa-shield-heart shield-icon"></i>
+              <span> تسوق آمن </span>
+            </span>
+            <span class="highlight small-italic">بياناتك محمية دائمًا</span>
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+      <!-- القسم النص -->
+      <div class="middle-section">
+
+        <div class="book-title">
+          <h3>{{book?.title}}</h3>
+        </div>
+
+
+
+      <div class="book-rating">
+
+       <span class="stars">
+          @for (star of stars; track star) {
+            <i class="fa-star" [ngClass]="{
+              'fas text-warning': star < (book?.rating || 0),
+              'far text-secondary': star >= (book?.rating || 0)
+            }"></i>
+          }
+        </span>
+
+
+        <button class="heart-icon" (click)="toggleHeart()">
+          <i [ngClass]="{ 'fas': isLiked, 'far': !isLiked }" class="fa-heart heart-icon"></i>
+        </button>
+
+      </div>
+
+
+
+        <div class="recommendAndFollowButtons">
+          <button class="custom-btn">
+            <span class="btn-text">متابعة (2)</span>
+            <span class="icon-box"><i class="fa-solid fa-circle-plus"></i></span>
+          </button>
+
+          <button class="custom-btn">
+            <span class="btn-text">ترشيح (2)</span>
+            <span class="icon-box"><i class="fa-solid fa-book-open"></i></span>
+          </button>
+        </div>
+
+
+        <div class="book-snip " *ngIf="book?.description">
+          <h3 class="section-title">نبذة عن الكتاب</h3>
+          <p class="book-description">
+            {{ book?.description }}
+          </p>
+        </div>
+
+
+        <div class="author-snip">
+          <h3 class="section-title">نبذة عن الكاتب</h3>
+
+          <div class="author-description">
+
+            <div class="imageWithName">
+              <img [src]="getCoverImageUrl()" alt="" class="author-image">
+              <h5 class="author-name">{{book?.title}}</h5>
+            </div>
+            <p class="whoIsAuthor">{{book?.description}}</p>
+
+            <div class="anotherBooksForAuthor">
+              <h3 class="section-title">اعمال اخرى للكاتب</h3>
+
+              <div class="AuthorBooks">
+
+                <!-- looooooppppp -->
+
+                @for (book of booksByAuthor; track book) {
+                  <div class="bookaya">
+                    <i class="fa fa-book-open"></i>
+                    <a routerLink="/book-details/{{book.id}}" class="booksauthor">{{book.title}}</a>
+                  </div>
+                }
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- القسم الشمال -->
+      <div class="left-section">
+        <div class="mb-4">
+
+          <div class="book-container">
+            <table class="book-table">
+              <tbody>
+                <tr><th>المؤلفون</th><td>{{book?.authorName}}</td></tr>
+
+                <!-- ناقصنى الخانه دى -->
+                <tr><th>المترجم</th><td>فاطمة أحمد</td></tr>
+
+                <tr><th>الصفحات</th><td>{{book?.pageCount}}</td></tr>
+                <tr><th>سنة النشر</th><td>{{book?.publishedDate}}</td></tr>
+                <tr><th>الصيغة</th><td>{{book?.format}}</td></tr>
+
+
+                <tr><th>نوع الغلاف</th><td>{{book?.format}}</td></tr>
+
+
+                <tr><th>دار النشر</th><td>{{book?.publisherId}}</td></tr>
+                <tr><th>الأقسام</th><td>{{book?.categoryIds}}</td></tr>
+
+
+                <tr><th>ISBN</th><td>{{book?.isbn}}</td></tr>
+                <tr><th>مرات القراءة</th><td>{{book?.stockQuantity}}</td></tr>
+                <tr><th>رابط مختصر</th><td><a routerLink="/book-details/{{book?.id}}" class="text-decoration-none">{{book?.title}} <i class="fa-solid fa-link"></i></a></td></tr>
+                <tr>
+                  <th>مشاركة</th>
+                  <td>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        </div>
+
+
+
+        <!--  الأقسام -->
+        <div class="shadow-sm maincat">
+          <div class="p-0 cat">
+            <h5 class="mb-3 text-muted text-center">الأقسام</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item category-item">
+                روايات <span class="badge bg-light text-danger">12,983</span>
+              </li>
+              <li class="list-group-item category-item">
+                كتب متنوعة <span class="badge bg-light text-danger">10,071</span>
+              </li>
+              <li class="list-group-item category-item">
+                English Books <span class="badge bg-light text-danger">6,956</span>
+              </li>
+              <li class="list-group-item category-item">
+                قسم الأطفال <span class="badge bg-light text-danger">6,558</span>
+              </li>
+              <li class="list-group-item category-item">
+                مترجمات <span class="badge bg-light text-danger">4,462</span>
+              </li>
+              <li class="list-group-item category-item">
+                Children books <span class="badge bg-light text-danger">3,332</span>
+              </li>
+              <li class="list-group-item category-item">
+                Novels <span class="badge bg-light text-danger">3,288</span>
+              </li>
+              <li class="list-group-item category-item">
+                كتب ذاتية وعلم نفس <span class="badge bg-light text-danger">2,678</span>
+              </li>
+              <li class="list-group-item category-item">
+                تاريخ <span class="badge bg-light text-danger">2,545</span>
+              </li>
+            </ul>
+
+              <button class="btn btn-danger btn-sm">المزيد من الأقسام</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <div class="allbooks py-5">
+    <app-book-page [title]="'كتب مشابهه'"></app-book-page>
+  </div>
+
+
+  <div class="reviewsAndComments py-5 px-3">
+
+    <div class="allrev">
+      <h3 class="mb-4">تقييمات ومراجعات ({{book?.title}})</h3>
+      <button class="custom-btn brev">
+        <span class="btn-text">اقتباسات من {{book?.title}}</span>
+        <span class="icon-box"><i class="fas fa-star-half-alt"></i></span>
+      </button>
+
+      <button class="custom-btn brev">
+        <span class="btn-text"> مراجعات من {{book?.title}}</span>
+        <span class="icon-box"><i class="fas fa-comment-alt"></i></span>
+      </button>
+    </div>
+
+
+    <!-- tab-navigation.component.html -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button
+          [class.active]="activeTab === 'reviews'"
+          (click)="selectTab('reviews')">
+          <span> <i class="fa-solid fa-book-bookmark	 text-primary"></i> مراجعات</span>
+          <span>5</span>
+          </button>
+
+        <button
+          [class.active]="activeTab === 'quotes'"
+          (click)="selectTab('quotes')">
+          <span> <i class="fas fa-quote-right text-success"></i> اقتباسات</span>
+          <span>5</span>
+          </button>
+
+        <button
+          [class.active]="activeTab === 'readers'"
+          (click)="selectTab('readers')">
+          <span> <i class="fas fa-user-tie 	text-secondary	 "></i> القرّاء </span>
+          <span>5</span>
+          </button>
+      </div>
+
+
+      <div class="tab-content">
+        <div *ngIf="activeTab === 'reviews'">
+
+          <div class="reviews-container">
+
+
+            <div class="review-box">
+
+              <h2>مراجعات العملاء</h2>
+              <div class="overall-rating">
+                <span class="stars">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <i class="fa fa-star" [class.inactive]="star >= averageRating"></i>
+                  }
+                </span>
+                <span>{{ averageRating }}/5 من {{ totalReviews }} مراجعات</span>
+              </div>
+
+              <div class="rating-bars">
+                @for (level of [5,4,3,2,1]; track level) {
+                  <div>
+                    <span class="star">  {{ level }}</span>
+                    <i class="fas fa-star text-warning"></i>
+                    <div class="bar">
+                      <div class="fill" [style.width.%]="getRatingPercentage(level)"></div>
+                    </div>
+                    <span>% {{ getRatingPercentage(level) }}</span>
+                  </div>
+                }
+              </div>
+
+              <div class="submit-review">
+                <h3>قيّم الكتاب</h3>
+                <p>شاركنا رأيك وتقييمك للكتاب.</p>
+                <button (click)="addReview()" class="classbtn">أضف مراجعتك</button>
+              </div>
+            </div>
+
+
+            <div class="alert">
+              ⚠ لا توجد مراجعات بعد. كن صاحب أول مراجعة واكتب مراجعتك الآن.
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+
+        <div *ngIf="activeTab === 'quotes'" class="quotes-container">
+          <button class="classbtn">أضف اقتباس</button>
+          <div class="alert"> ⚠ لا توجد اقتباسات بعد. كن صاحب أول اقتباس واكتب اقتباسك الآن</div>
+        </div>
+
+        <div *ngIf="activeTab === 'readers'" class="pt-2 d-flex justify-content-center align-items-center">
+          <div class="alert">
+            ⚠ لا توجد قراء بعد
+          </div>
+          </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+
