@@ -1,38 +1,43 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../core/configs/environment.config';
 import { Ibook } from '../book-model/Ibook';
-import { Books } from '../Seed-books/SeedProducts';
-import { bookType } from '../book-model/booktType';
+
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  private _books : Ibook[];
+  private _apiBaseUrl = environment.apiBaseUrl;
 
-  constructor() {
-    this._books = Books;
+  constructor(private http: HttpClient) {}
+
+  getBooks(): Observable<Ibook[]> {
+    return this.http.get<any[]>(this._apiBaseUrl + '/books/GetAll' ).pipe(
+      map((response: any) => response.data)
+    );
   }
 
-  getBooks() : Ibook[] {
-    return this._books;
+  getBookById(id: number): Observable<Ibook> {
+    return this.http.get<Ibook>(`${this._apiBaseUrl}/books/${id}`).pipe(
+      map((response: any) => response.data)
+    );
   }
 
-  getBookById(id : number) : Ibook | null {
-    return this._books.find(book => book.Id === id) || null;
+  getBooksByCategoryId(categoryId: number): Observable<Ibook[]> {
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByCategory/${categoryId}`);
   }
 
-  getBooksByCategoryId(categoryId : number) : Ibook[] {
-    return this._books.filter(book => book.CategoryId === categoryId);
+  getBooksByAuthorId(authorId: number): Observable<Ibook[]> {
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByAuthor/${authorId}`);
   }
 
-  getBooksByAutherId(autherId : number) : Ibook[] {
-    return this._books.filter(book => book.AutherId === autherId);
+  getBooksByPublisherId(publisherId: number): Observable<Ibook[]> {
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByPublisher/${publisherId}`);
   }
 
-  getBooksByPublisherId(publisherId : number) : Ibook[] {
-    return this._books.filter(book => book.PublisherId === publisherId);
-  }
-
-  getBooksByBookType(bookType : string) : Ibook[] {
-    return this._books.filter(book => book.bookType.toString() === bookType);
+  getBooksByBookType(bookType: string): Observable<Ibook[]> {
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByType/${bookType}`);
   }
 }
+

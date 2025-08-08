@@ -1,0 +1,722 @@
+.book-details-container {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 1px;
+
+}
+
+.navigation {
+  position: fixed;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 90;
+}
+
+.nav-btn {
+  background-color: #e7e7e7;
+  color: #626c7e;
+  border: none;
+  width: 55px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.nav-btn:hover {
+  background-color: #d3d3d3;
+  text-decoration: none;
+}
+
+
+
+
+
+
+.book {
+  width: 100%;
+  height: max-content;
+  margin-top: 100px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 20px rgba(29, 8, 8, 0.1);
+}
+
+.book-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* يمين */
+.right-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 15%; /* ممكن تزود أو تقلل حسب التصميم */
+}
+
+.right-section img{
+  width: calc(100%);
+  height: 270px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+/* وسط */
+.middle-section {
+  flex: 1;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* شمال */
+.left-section {
+  width: 25%;
+  padding: 20px;
+}
+
+/* زراير */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  direction: rtl;
+  margin-top: 20px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  direction: rtl;
+}
+
+.btn .icon {
+  font-size: 20px;
+}
+
+.btn-buy {
+  background-color: #00c3aa;
+}
+.btn-buy:hover {
+  background-color: #00b09b;
+}
+
+.btn-alert {
+  background-color: #f16e6e;
+}
+.btn-alert:hover {
+  background-color: #e05d5d;
+}
+
+.btn-review {
+  background-color: #757d8a;
+}
+.btn-review:hover {
+  background-color: #5f6773;
+}
+
+
+
+/* كارد الإشعارات */
+.notification-card {
+  background: #FEFCE8;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* العناصر */
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.notification-item:last-child {
+  margin-bottom: 0;
+}
+
+/* الأيقونات */
+.truck-icon {
+  color: #dc3545; /* أحمر */
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 18px;
+}
+
+.shield-icon {
+  color: #28a745; /* أخضر */
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 18px;
+}
+
+/* النص المميز */
+.highlight {
+  color: #888;
+  font-weight: bold;
+  position: relative;
+  right: 35px;
+}
+
+/* تصغير الخط وتغيير شكله */
+.small-italic {
+  font-size: 12px;
+  font-style: italic;
+}
+
+
+
+
+.book-price {
+  border-radius: 10px;
+  padding: 30px 0;
+  width: fit-content;
+  direction: rtl;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #4e4e4e;
+}
+
+.book-price .before .old-price {
+  color: #F1495B;
+  text-decoration: line-through;
+  font-weight: bold;
+}
+
+.book-price .new-price {
+  color: #00c3aa;
+  font-weight: bold;
+}
+
+.book-price .save-amount {
+  color: #e53935;
+  font-weight: bold;
+}
+
+
+
+
+.before,
+.after,
+.discount{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.discount span{
+  font-weight: bold;
+  color: #455871;
+}
+
+
+.discount .badge{
+  background-color: #52c45c;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+
+.book-rating{
+  display: flex;
+  align-items: center;
+}
+
+
+.book-rating .stars{
+  display: inline-flex;
+  gap: 2px;
+}
+
+
+.book-title h3{
+  font-weight: 600;
+}
+
+
+.book-rating i {
+  font-size: 10px;
+}
+
+.heart-icon {
+  color: #F1495B;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.heart-icon:hover {
+  transform: scale(1.1);
+}
+
+.book-rating .heart-icon {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+.book-rating .heart-icon i {
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.heart-icon i {
+  color: #F1495B;
+}
+
+.heart-icon i.fas {
+  color: #F1495B;
+}
+
+
+.recommendAndFollowButtons{
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+
+.custom-btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 0;
+  background-color: #d0dceb; /* الخلفية الفاتحة */
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 32px;
+}
+
+.icon-box {
+  background-color: #8ca3c6; /* اللون الغامق للأيقونة */
+  color: white;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  font-size: 14px;
+  height: 100%;
+}
+
+.btn-text {
+  padding: 0 10px;
+  font-size: 14px;
+  color: #1f2e4d;
+}
+
+
+
+.book-snip {
+  border-radius: 8px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  position: relative;
+  margin-bottom: 12px;
+  color: #1f2e4d;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  width: 125px;
+  height: 4px;
+  background-color: #F4777C;
+  border-radius: 2px;
+}
+
+.book-description {
+  font-size: 15px;
+  color: #444;
+  text-align: justify;
+}
+
+
+.author-description{
+  background-color:#F8FAFC;
+  width: 100%;
+  height: max-content;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+
+.imageWithName{
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+
+}
+
+.author-image{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+
+}
+
+.author-name{
+  font-weight: bold;
+  position: relative;
+  bottom: -5px;
+}
+
+
+.whoIsAuthor{
+padding: 10px;
+}
+
+.AuthorBooks{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+}
+
+.bookaya{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+
+.book-container {
+  max-width: 300px;
+  background: #fff;
+  padding: 10px;
+}
+
+.book-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.book-table th,
+.book-table td {
+  border: none;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #000;
+  text-align: right;
+}
+
+.book-table th {
+  width: 40%;
+  font-weight: bold;
+  color: #555;
+  padding-right: 10px;
+}
+
+.book-table td {
+  width: 60%;
+  color: #000;
+}
+
+.book-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.book-table tr:last-child {
+  border-bottom: none;
+}
+
+.social-icon {
+  margin-left: 8px;
+  color: #007bff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+
+
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.category-item {
+  color: #dc3545;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+}
+
+.category-item:hover {
+  background-color: #fff5f5;
+  transform: translateX(-3px);
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 5px 8px;
+}
+
+
+.maincat{
+  padding-block: 10px;
+}
+
+.cat{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.list-group{
+  margin-bottom: 20px;
+  padding: 0;
+
+}
+
+
+
+
+
+
+
+
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 1rem;
+  justify-content: space-around;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  color: #666;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.tabs button.active {
+  color: #e74c3c;
+  border-bottom: 2px solid #e74c3c;
+}
+
+
+.allrev{
+  display: flex;
+  justify-content: space-between;
+}
+
+.brev{
+  background-color: #3d4b61;
+  justify-content: space-around;
+}
+
+.brev .btn-text{
+  color: white;
+  font-size: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ****************************************** */
+
+
+.reviews-container {
+
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+
+}
+
+.review-box{
+  width: 35%;
+  padding: 20px;
+}
+
+.alert {
+  background-color: #fffbe6;
+  color: #a67c00;
+  padding: 10px;
+  border: 1px solid #f1c40f;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.review-box h2 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.overall-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.stars i {
+  color: #f1c40f;
+}
+
+.stars .inactive {
+  color: #ddd;
+}
+
+.rating-bars div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.bar {
+  flex: 1;
+  background: #eee;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar .fill {
+  height: 100%;
+  background: #f1c40f;
+}
+
+.star {
+  width: 30px;
+  text-align: center;
+}
+
+.submit-review {
+  margin-top: 20px;
+}
+
+.submit-review h3{
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.classbtn {
+  background: white;
+  border: 1px solid #888;
+  color: black;
+  padding: 7px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+
+.alert{
+  width: 60%;
+  height: fit-content;
+  margin-top: 35px;
+}
+
+
+
+.quotes-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.quotes-container button{
+  width: fit-content;
+  padding-inline: 150px;
+}
+
+
+.tab-content{
+  height: max-content;
+}
+
+
+.booksauthor{
+  color: #000;
+  font-weight: 600;
+  font-size: 16px;
+}
+.booksauthor:hover{
+  text-decoration: none;
+
+}

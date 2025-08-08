@@ -153,7 +153,6 @@
   }
 }
 
-/* للشاشات الصغيرة - التحكم في العرض */
 @media (max-width: 991.98px) {
   .navbar-toggler {
     display: block;
@@ -187,7 +186,6 @@
   }
 }
 
-/* Media Queries لتحسين التجاوب */
 @media (max-width: 991.98px) {
   .navbar-nav {
     text-align: center;

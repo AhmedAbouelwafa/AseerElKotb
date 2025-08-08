@@ -1,24 +1,25 @@
-import { bookType } from "./booktType";
-
+import { bookLang } from "./bookLang";
 export interface Ibook{
-  Id : number,
-  Title : string,
-  Description : string,
-  ISBN : string,
-  Price : number,
-  DiscountPercentage : number,
-  CoverImageUrl : string,
-  PageCount : number,
-  PublishDate : string,
-  Language : string,
-  Format : string,
-  StockQuantity : number,
-  IsActive : boolean,
-  ViewCount : number,
-  SalesCount : number,
-  AutherId : number,
-  PublisherId : number,
-  CategoryId : number
-  bookType : bookType,
-  Rating? : number
+  id : number,
+  title : string,
+  description : string,
+  isbn : string,
+  price : number,
+  discountPercentage : number,
+  publishedDate : Date,
+  pageCount : number,
+  language : bookLang,
+  coverImageUrl : string,
+  format : string,
+  stockQuantity : number,
+  authorId : number,
+  authorName : string,
+  publisherId : number,
+  publisherName : string,
+  categoryIds : number[],
+  categoryNames : string[],
+  isActive : boolean,
+  rating : number,
+
+
 }

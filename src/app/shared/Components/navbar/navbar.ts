@@ -1,9 +1,10 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Search } from "../search/search";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Search],
+  imports: [Search , RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
@@ -32,28 +33,5 @@ export class Navbar {
     this.isNavbarCollapsed = true;
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event): void {
-    const target = event.target as HTMLElement;
-    const navbar = this.nav.nativeElement;
-
-    if (!this.isNavbarCollapsed && !navbar.contains(target)) {
-      this.isNavbarCollapsed = true;
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscapeKey(): void {
-    if (!this.isNavbarCollapsed) {
-      this.isNavbarCollapsed = true;
-    }
-  }
-
-  @HostListener('window:resize')
-  onResize(): void {
-    if (window.innerWidth >= 992) {
-      this.isNavbarCollapsed = true;
-    }
-  }
 
 }

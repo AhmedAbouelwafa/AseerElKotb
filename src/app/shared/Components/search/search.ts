@@ -10,4 +10,5 @@ import { CommonModule } from '@angular/common';
 export class Search {
   @Input() placeholderSize: string = '0.8rem';
   @Input() inputWidth: string = '400px';
+  @Input() title : string = '';
 }
