@@ -6,7 +6,7 @@ import { BookPage } from "../products/book-component/book-page/book-page";
 
 @Component({
   selector: 'app-hero',
-  imports: [Search, Category, CategoryCard, BookPage],
+  imports: [Search, Category, BookPage],
   templateUrl: './hero.html',
   styleUrl: './hero.css'
 })

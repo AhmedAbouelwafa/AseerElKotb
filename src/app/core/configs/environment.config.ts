@@ -1,3 +1,3 @@
-export const environment = {
-  textColor: '#333'
+export const environmentConfig = {
+  textColor: '#333',
 };
