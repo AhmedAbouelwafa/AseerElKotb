@@ -1,5 +1,9 @@
+:host {
+  display: block;
+  background-color: #F8FAFC;
+}
 .author-page {
-  margin-top: 180px !important;
+  padding-top: 180px ;
   max-width: 78%;
   margin: 0 auto;
   direction: rtl;
