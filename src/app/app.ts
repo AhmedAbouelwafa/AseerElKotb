@@ -7,7 +7,7 @@ import { BookDetails } from "./features/products/book-details/book-details";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, Navbar, BookCard, BookDetails],
+  imports: [RouterOutlet, Footer, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

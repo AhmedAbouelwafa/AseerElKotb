@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IAuthor } from '../../../models/iauthor';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthorApiService } from '../../../../core/services/Author/author-api-service';
+import { IAuthor } from '../Author-Model/iauthor';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AuthorApiService } from '../../../core/services/Author/author-api-service';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.development';
 import { Location } from '@angular/common';
 import { Subject, takeUntil, finalize } from 'rxjs';
-import { BookCard } from '../../../../features/products/card-componenet/book-card/book-card';
-
 @Component({
   selector: 'app-author-details',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './author-details.html',
   styleUrl: './author-details.css'
 })
@@ -22,7 +20,18 @@ export class AuthorDetails implements OnInit, OnDestroy {
   loading = true;
   error: string | null = null;
   isFollowing = false;
+  avatarUrl = 'https://cdn.aseeralkotb.com/images/default-avatar.jpg';
   
+  quote = {
+    id: 19736,
+    text: 'ما دمنا نعاني بكل الأحوال، فلنجعل لمعاناتنا معنى',
+    author: 'Mai Mostafa',
+    date: '2025-08-08',
+    upvotes: 1,
+    downvotes: 0,
+    shareUrl: 'https://www.aseeralkotb.com/ar/books/%D8%B4%D9%8A%D9%81%D8%B1%D8%A9-%D8%A8%D9%84%D8%A7%D9%84/quotes/19736'
+  };
+
   private destroy$ = new Subject<void>();
 
   // Static data for reviews (when API data is not available)
@@ -183,7 +192,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
           this.author = author;
           // Set page title
           if (typeof document !== 'undefined') {
-            document.title = `${author.name} - تفاصيل الكاتب`;
+            document.title = `${author.name} - عصير الكتب`;
           }
         },
         error: (error) => {

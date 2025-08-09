@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAuthor } from '../../../shared/models/iauthor';
+import { IAuthor } from '../../../features/Authors/Author-Model/iauthor';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 
