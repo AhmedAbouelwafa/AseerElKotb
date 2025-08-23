@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../core/configs/environment.config';
 import { Ibook } from '../book-model/Ibook';
@@ -9,6 +9,7 @@ import { Ibook } from '../book-model/Ibook';
 })
 export class BookService {
   private _apiBaseUrl = environment.apiBaseUrl;
+  private baseUrl = `https://localhost:7207/api`;//recheck
 
   constructor(private http: HttpClient) {}
 
@@ -38,6 +39,17 @@ export class BookService {
 
   getBooksByBookType(bookType: string): Observable<Ibook[]> {
     return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByType/${bookType}`);
+  }
+  // Method to fetch books with pagination
+  getPaginatedBooksBelongCategory(pageNumber: number , pageSize: number, categoryName: string ): Observable<any> {
+    let params = new HttpParams()
+      .set('PageNumber', pageNumber.toString())
+      .set('PageSize', pageSize.toString())
+      .set('SearchTerm', categoryName);
+    
+
+    return this.http.get(`${this.baseUrl}/Books/Filter`, { params });
+    
   }
 }
 

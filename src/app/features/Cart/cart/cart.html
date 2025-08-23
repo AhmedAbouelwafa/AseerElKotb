@@ -1,0 +1,102 @@
+<div id="cartPage">
+    <div id="NavCrumb">
+        <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+    </div>
+
+    
+       @if (cartData.items.length === 0) {
+            <div class="empty-cart">
+                <h2>سلة المشتريات فارغة</h2>
+                <p>يمكنك التسوق الان</p>
+            </div>
+        }  
+        @else{
+
+        <div id="bigContainer">
+            <h2 id="main-title">سلة المشتريات</h2>
+
+            <div id="cart">
+                <div id="cartItems">
+                    <div id="topDiv">
+                        <h4> المنتجات  ({{ (cartData.totalItemsCount) }})</h4> 
+                        <button id="clearCartBtn" (click)="clearCart()"> حذف كل المنتجات من السلة</button>
+                    </div>
+
+                    @for(item of items;track item.bookId) {
+                        <div class="itemContainer">
+                            <div class="BookInfo">
+                                <!-- <img id="BookCover" src="https://ts1.mm.bing.net/th?id=OIP.P0mVSE32mlt5qmdXGfFRQQAAAA&pid=15.1" alt="BookImage">change this -->
+                                <img id="BookCover" [src]="item.coverImageUrl" alt="BookImage">
+                                <span class="Book"> كتاب</span>
+                                <span class="BookTitle">{{item.bookTitle}}</span><!-- change this -->
+                            </div>
+
+                            <div class="PriceAndQuantity">
+
+                                <div class="priceDetails">
+                                    <span class="PriceBeforeDiscount">{{item.totalPrice | currency:'EGP' }}</span>
+                                    <span class="PriceAfterDiscount">{{item.totalDiscountedPrice | currency:'EGP' }}</span>
+                                    <span class="DiscountPercentage">
+                                        <span class="DiscountText">بعد خصم</span>
+                                        <span class="DiscountValue">{{item.discountPercentage}}%</span>
+                                    </span>
+                                </div>
+
+                                <div class="Quantity">
+                                    <span class="QuantityText"> الكمية :</span>
+                                    <input class="QuantityInput" type="number" #quantityInput  [value]="item.quantity" min="1"><!-- change this value -->
+                                    <button class="UpdateBtn" (click)="updateItemQuantity(item.bookId, quantityInput)">
+                                        تحديث
+                                    </button>
+                                    <button class="DeleteBtn"  (click)="deleteItem(item.bookId)">حذف</button>
+
+                                </div>
+
+                            </div>
+                     </div>
+                    }
+
+                </div>
+
+                <div id="leftSide">
+                    <div id="priceSummary">
+                        <div class="price" id="BeforeDiscount">
+                            <span class="priceTitle">المجموع قبل الخصم</span>
+                            <span class="priceValue">{{cartData.sumTotalPrice | currency:'EGP' }}</span><!-- change this -->
+                        </div>
+
+                        <div class="price">
+                            <span class="priceTitle">المجموع بعد الخصم</span>
+                            <span class="priceValue">{{cartData.sumDiscountedPrice| currency:'EGP' }}</span><!-- change this -->
+                        </div>
+
+                    </div>
+
+                    <div id="CustomerService">
+                        <p>إذا واجهتك أي مشكلة يمكنك التواصل مع :</p>
+                        <a id="CustomerServiceLink" routerLink="#" routerLinkActive="active">
+                            <i id="icon" class="fa-solid fa-circle-user"></i>
+                            <span>خدمة العملاء</span>
+                        </a>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+            <div id="NextStep">
+                <p id="lastPara">
+                    <i class="fa-solid fa-arrow-down"></i>
+                    الخطوة القادمة عنوان الشحن وطريقة الدفع
+                </p>
+                <button id="checkoutBtn">إتمام عملية الشراء</button>
+            </div>
+
+    }
+    
+</div>
+
+
+

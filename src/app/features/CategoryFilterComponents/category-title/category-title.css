@@ -1,0 +1,22 @@
+header{
+    display: flex;
+    flex-direction: column;
+    justify-content:end;
+    align-items: center;
+    gap: 15px;
+    height: 37vh;
+    padding-bottom:2.5%;
+    margin-inline:5px;
+}
+
+h2{
+    color: #637586;;
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+p{
+    color: #637586;
+    font-size: 16px;
+    text-align: center;
+}
