@@ -1,0 +1,43 @@
+<div id="mainContainer">
+    <div id="NavCrumb">
+        <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+    </div>
+
+    <div id="bigContainer">
+        @for(author of authors; track author) {
+        <div id="AuthorContainer" >
+            <div id="Authors" >
+               <div id="data">
+                    <img id="authorImage" [src]="author.imageUrl"  />
+                    <h6>{{author.name}}</h6>
+                    <p class="Bio">{{author.bio}}</p>
+               </div>
+
+                <div class="book-rating ">
+                    @for (star of stars; track star) {
+                        <i class="fa-star" [ngClass]="{
+                            'fas text-warning': star < (author.rating || 0),
+                            'far text-secondary': star >= (author.rating || 0)
+                            }">
+                        </i>
+                    }
+
+                </div>
+            </div>
+
+                <div id="info">
+                    <div class="info"> {{author.booksCount}} الكتب </div>
+                    <div class="info"> {{author.qoutationsCount}} اقتباسات </div>
+                    <div id="lastDiv" class="info"> {{author.followersCount}} المتابعين </div>
+                </div>
+        </div>
+    }
+
+    </div>
+
+    
+    <div id="Pagination">
+        <app-pagination ></app-pagination><!-- fix this -->
+    </div >
+
+</div>

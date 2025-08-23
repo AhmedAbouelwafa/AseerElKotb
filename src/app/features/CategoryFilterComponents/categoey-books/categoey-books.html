@@ -1,0 +1,10 @@
+<div class="books">
+
+    @for (Book of Books ; track Book.Id){
+    <app-book-card  [book]="Book"></app-book-card>
+    }
+</div>
+
+<div class="books-pagination">
+  <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="GetNewPage($event)"></app-pagination>
+</div>

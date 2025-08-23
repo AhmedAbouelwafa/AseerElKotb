@@ -1,0 +1,46 @@
+
+#mainContainer {
+  margin: 0 auto;    
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+app-category-title {
+    padding-inline: 10rem;  
+}
+
+#crumb{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+
+/* Body section (filters + books) */
+#body {
+  display: flex;
+  gap: 20px; 
+  flex-wrap: wrap; 
+}
+
+/* Filters section (left sidebar) */
+#filteration {
+ 
+}
+
+#books {
+  flex: 1;  /* Takes remaining space */
+  min-width: 300px;  /* Minimum width before wrapping */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #body {
+    flex-direction: column;  
+  }
+
+  #filteration {
+    flex: 1;  
+    margin-bottom: 20px;
+  }
+}
