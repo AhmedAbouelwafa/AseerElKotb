@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartItemResponse, ShowCartResponse } from '../CartInterfaces/cart-interfaces';
-import { CartServices } from './CartServices/cart-services';
+import { CartServices } from '../CartServices/cart-services';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
