@@ -10,6 +10,10 @@ export const routes: Routes = [
   {
     path: '' , component : Hero,
   },
+  {
+    path: 'book-details/:id' , component : BookDetails,
+  },
+  
   { path: 'authors/:id', component: AuthorDetails }
   ,
   {
@@ -26,6 +30,6 @@ export const routes: Routes = [
   ,
   {
     path: 'Cart' , component : Cart,
-  }
+  },
 
 ];

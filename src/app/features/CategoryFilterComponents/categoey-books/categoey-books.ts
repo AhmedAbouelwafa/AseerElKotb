@@ -22,31 +22,34 @@ export class CategoeyBooks implements OnInit {
   constructor(private bookService: BookService) {
     console.log(this.Books)///test
     console.log(this.categoryName)///test
-  
+
   }
   ngOnInit(): void {
     this.getBooksByCategory();
-    
+
   }
   getBooksByCategory() {
-    this.bookService.getPaginatedBooksBelongCategory(this.currentPage, this.pageSize, this.categoryName).subscribe({
-      next: (response) => {
-        this.Books = response.data;
-        this.totalPages = response.totalPages;
-      },
-      error: (error) => {
-        console.error('Error fetching books:', error);
-      }
-    });
+
+    // this.bookService.getPaginatedBooksBelongCategory(this.currentPage, this.pageSize, this.categoryName).subscribe({
+    //   next: (response) => {
+    //     this.Books = response.data;
+    //     this.totalPages = response.totalPages;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching books:', error);
+    //   }
+    // });
+
   }
+
 
   GetNewPage(page: number): void {
     this.currentPage = page;
     this.getBooksByCategory();
-    
+
   }
 
-  
+
 
   }
 
