@@ -3,6 +3,9 @@ import { Hero } from './features/Home/hero';
 import { AuthorDetails } from './features/Authors/author-details/author-details';
 
 import { BookDetails } from './features/products/book-details/book-details';
+import { MainFilterContainer } from './features/CategoryFilterComponents/main-filter-container/main-filter-container';
+import { AllAuthors } from './features/Authors/allAuthors/all-authors/all-authors';
+import { Cart } from './features/Cart/cart/cart';
 import { ConfirmEmail } from './features/pages/ConfirmEmailPages/confirm-email/confirm-email';
 import { ConfirmEmailSuccess } from './features/pages/ConfirmEmailPages/confirm-email-success/confirm-email-success';
 import { ConfirmEmailFailed } from './features/pages/ConfirmEmailPages/confirm-email-failed/confirm-email-failed';
@@ -13,6 +16,10 @@ export const routes: Routes = [
   {
     path: '' , component : Hero,
   },
+  {
+    path: 'book-details/:id' , component : BookDetails,
+  },
+  
   { path: 'authors/:id', component: AuthorDetails }
   ,
   {
@@ -36,4 +43,17 @@ export const routes: Routes = [
   {
     path: 'reset-password-failed', component: ResetPasswordFailed
   }
+  ,
+  {
+    path: 'MainFilterContainer' , component : MainFilterContainer,
+  }
+  ,
+  {
+    path: 'allAuthors' , component : AllAuthors,
+  }
+  ,
+  {
+    path: 'Cart' , component : Cart,
+  },
+
 ];

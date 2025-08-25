@@ -8,7 +8,9 @@ export interface Ibook{
   discountPercentage : number,
   publishedDate : Date,
   pageCount : number,
+
   language : bookLang,
+  
   coverImageUrl : string,
   format : string,
   stockQuantity : number,

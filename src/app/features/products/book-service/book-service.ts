@@ -39,5 +39,7 @@ export class BookService {
   getBooksByBookType(bookType: string): Observable<Ibook[]> {
     return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByType/${bookType}`);
   }
+  
+
 }
 

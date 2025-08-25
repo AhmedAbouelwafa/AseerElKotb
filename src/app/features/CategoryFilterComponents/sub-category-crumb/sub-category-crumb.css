@@ -1,0 +1,54 @@
+#arrow {
+  display: inline-flex;
+  padding:8px 10px;    /* px-2 py-1 */
+  margin-bottom: 0.5rem;      /* mb-2 */
+  font-size: 0.875rem;        /* text-sm */
+  color: white;               /* text-white */
+  background-color: #2dd4bf;  /* bg-teal-400 */
+  border-radius: 0.25rem;     /* rounded */
+  transition: background-color 300ms ease-in-out; /* transition-colors duration-300 ease-in-out */
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#arrow:hover {
+  background-color: #0d9488;  /* hover:bg-teal-600 */
+}
+a{
+    color: #666666;
+    padding: 10px;
+    padding-inline: 11px;
+    text-decoration: none;
+}
+#subCategories{
+    margin-top: -15px;
+    padding: 11px;
+    padding-bottom: 0;
+    margin-inline: -10px;
+}
+
+.subCategory {
+  display: inline-flex;
+  padding-block:3px;
+  margin-bottom: 0.1rem;      
+  margin-right: 0.5rem;        
+  font-size: 0.87rem;        
+  font-weight: 500;           
+  color: white;              
+  background-color: #fc657c;  
+  border-radius: 0.3rem;      
+  transition: background-color 200ms ease-in-out; /* transition-colors duration-200 */
+  text-decoration: none;     
+}
+
+.subCategory:hover {
+  background-color: #e11d48; 
+  color: white;
+   /* hover:bg-rose-600 */
+}
+
+.subCategory:focus {
+  outline: none;              /* focus:outline-none */
+  box-shadow: 0 0 0 2px #fda4af; /* focus:ring-2 focus:ring-rose-300 */
+}

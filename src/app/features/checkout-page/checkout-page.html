@@ -1,0 +1,181 @@
+<div class="checkout-container" dir="rtl">
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1 class="page-title">إتمام الطلب</h1>
+
+    <div class="checkout-form">
+      <!-- Personal Info Section -->
+      <div class="form-section">
+        <h2 class="section-title">عنوان الشحن</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>الاسم الأول</label>
+            <input type="text" [(ngModel)]="checkoutData.firstName" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>الاسم الأخير</label>
+            <input type="text" [(ngModel)]="checkoutData.lastName" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>العنوان</label>
+          <input type="text" [(ngModel)]="checkoutData.address" class="form-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>المحافظة</label>
+            <select [(ngModel)]="checkoutData.governorate" class="form-select">
+              <option value="">مصر</option>
+              <option value="cairo">القاهرة</option>
+              <option value="alex">الإسكندرية</option>
+              <option value="giza">الجيزة</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>اختر المحافظة</label>
+            <select [(ngModel)]="checkoutData.city" class="form-select">
+              <option value="">اختر المحافظة</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>المدينة</label>
+          <input type="text" [(ngModel)]="checkoutData.cityName" class="form-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>رقم المحالي</label>
+            <input type="tel" [(ngModel)]="checkoutData.localPhone" class="form-input" placeholder="00000000">
+          </div>
+          <div class="form-group">
+            <label>رقم محلك آخر</label>
+            <input type="tel" [(ngModel)]="checkoutData.altPhone" class="form-input" placeholder="00000000">
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Edit Section -->
+      <div class="form-section order-edit-section">
+        <h2 class="section-title order-edit-title">تعديل طلبك</h2>
+
+        <div class="order-items-detailed">
+          <div class="order-item-detailed">
+            <span class="item-title">المجموع قبل الخصم</span>
+            <span class="item-price">٢٩٠٠ ج.م</span>
+          </div>
+          <div class="order-item-detailed">
+            <span class="item-title">المجموع بعد الخصم</span>
+            <span class="item-price">٢٣٢٠ ج.م</span>
+          </div>
+          <div class="order-item-detailed shipping-item">
+            <span class="item-title">الشحن (٤٠٠ درهم)</span>
+            <span class="item-price free-shipping">أكمل عنوانك</span>
+          </div>
+          <div class="order-item-detailed total-item">
+            <span class="item-title">الإجمالي</span>
+            <span class="item-price total-price">٢٣٢٠ ج.م</span>
+          </div>
+        </div>
+
+        <div class="contact-section">
+          <p class="contact-text">
+            إذا واجهتك أي مشكلة يمكنك التواصل مع:
+          </p>
+          <div class="contact-info">
+            <span class="whatsapp-contact">📱 خدمة العملاء</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="order-summary">
+        <h3>تعديل طلبك</h3>
+
+        <div class="order-items">
+          <div class="order-item">
+            <span class="item-title">المجموع قبل الخصم</span>
+            <span class="item-price">٢٩٠٠ ج.م</span>
+          </div>
+          <div class="order-item">
+            <span class="item-title">المجموع بعد الخصم</span>
+            <span class="item-price">٢٣٢٠ ج.م</span>
+          </div>
+          <div class="order-item shipping">
+            <span class="item-title">الشحن (٤٠٠ درهم)</span>
+            <span class="item-price free">مجانًا مجانًا</span>
+          </div>
+          <div class="order-item total">
+            <span class="item-title">الإجمالي</span>
+            <span class="item-price">٢٣٢٠ ج.م</span>
+          </div>
+        </div>
+
+        <div class="promo-section">
+          <p class="promo-text">
+            إذا واجهتك أي مشكلة يمكنك التواصل مع خدمة العملاء
+            <span class="whatsapp-link">📱</span>
+          </p>
+        </div>
+
+        <div class="terms-section">
+          <p class="terms-text">
+            ⚠️ تأكد الطلب مقلاة!
+            يمكنك هذا الخيار في تأكيد الطلب. يرجى الشحن دون إجراء تأكيد الطلب من طرفك يخضع
+          </p>
+        </div>
+
+        <div class="contact-info">
+          <p>يمكن ضمان الخدمة العادية 24/7 لا يمكن توصيل الطلبات خلال الفترة ما بين 8 ليلاً إلى 9 صباحًا أيام العمل</p>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <button class="submit-btn" (click)="submitOrder()">
+          تأكيد الطلب
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Method Section (Outside main form) -->
+    <div class="payment-section">
+      <div class="form-section">
+        <h2 class="section-title">وسيلة الدفع</h2>
+
+        <div class="payment-options">
+          <div class="payment-option" [class.selected]="selectedPayment === 'card'">
+            <input type="radio"
+                   id="card"
+                   name="payment"
+                   value="card"
+                   [(ngModel)]="selectedPayment">
+            <label for="card">
+              <span class="payment-icon">💳</span>
+              الدفع عبر الإنترنت
+            </label>
+          </div>
+
+          <div class="payment-option" [class.selected]="selectedPayment === 'cash'">
+            <input type="radio"
+                   id="cash"
+                   name="payment"
+                   value="cash"
+                   [(ngModel)]="selectedPayment">
+            <label for="cash">
+              <span class="payment-icon">💵</span>
+              فودافون كاش
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,36 @@
+ <nav class="flex ">
+            <ol class="w-full bg-white rounded-md shadow px-6 flex space-x-3 ">
+
+                    <li>
+                        <a routerLink="#"  routerLinkActive="active"> <i class="fa-solid fa-house" id="homeIcon"></i></a>                       
+                    </li>
+
+                @for(crumb of Navcrumbs ;track crumb ){
+
+                    <li>
+                        <div class="d-flex align-items: center">
+
+                            <div class="arrow-container">
+            
+                                    <svg 
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        class="arrow-icon" 
+                                        viewBox="-23 0 23 44" 
+                                        preserveAspectRatio="none" 
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M -1 0 l -22 22 l 22 22 h 1 l -22 -22 l 22 -22 H -1 z"></path>
+
+                                    </svg>
+                                </div>
+                                <a [routerLink]="crumb.path"  routerLinkActive="active" class="font-size: 0.875rem; rtl:mr-4 ltr:ml-4 text-sm font-medium text-blueGray-500 hover:text-blueGray-700" aria-current="page" itemprop="item">
+                                    <span itemprop="name">{{crumb.name}}</span>
+                                </a>
+
+                        </div>
+                    </li>
+
+                }
+            </ol>
+            
+        </nav>
