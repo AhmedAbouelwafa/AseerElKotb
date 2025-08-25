@@ -5,18 +5,19 @@ import { Ibook } from "../../book-model/Ibook";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-page',
-  imports: [BookCard, CommonModule, FormsModule],
+  imports: [BookCard, CommonModule, FormsModule , TranslateModule],
   templateUrl: './book-page.html',
   styleUrl: './book-page.css'
 })
 export class BookPage {
   books: Ibook[] = [];
-  @Input() title: string = "الكتب الأكثر مبيعًا اليوم";
+  @Input() title: string = "";
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService , private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.bookService.getBooks().subscribe({

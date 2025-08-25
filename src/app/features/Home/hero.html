@@ -2,16 +2,16 @@
   <img src="/images/hero.png" alt="Hero" class="heroImage position-absolute top-0 start-0 w-100 h-100" />
 
   <div class="heroContainer container text-center text-white py-5 position-relative">
-    <h1 class="heroText display-4 fw-bold mb-4">عصير الكتب</h1>
+    <h1 class="heroText display-4 fw-bold mb-4">{{'hero.title' | translate}}</h1>
 
     <div class="heroSearch mb-4 d-flex justify-content-center">
       <app-search [placeholderSize]="'0.6rem'"></app-search>
     </div>
 
     <div class="typeOfBooks d-flex flex-wrap justify-content-center gap-3 mb-5">
-      <span class="bookType">كتب ورقيه للشراء</span>
-      <span class="bookType">كتب للقراءه مجانا</span>
-      <span class="bookType">كتب مسموعة</span>
+      <span class="bookType">{{'hero.bookTypes.paperBooks' | translate}}</span>
+      <span class="bookType">{{'hero.bookTypes.freeBooks' | translate}}</span>
+      <span class="bookType">{{'hero.bookTypes.audioBooks' | translate}}</span>
     </div>
 
     <div class="categories d-flex flex-wrap justify-content-center gap-3">
@@ -20,15 +20,11 @@
   </div>
 </div>
 
-
 <div class="latestWithSafqa">
-  <button class="tagBtn">💥 أضيف حديثًا</button>
-  <button class="tagBtn">🔥 صفقة اليوم</button>
+  <button class="tagBtn">{{'hero.tags.newlyAdded' | translate}}</button>
+  <button class="tagBtn">{{'hero.tags.todayDeal' | translate}}</button>
 </div>
-
 
 <div class="books pb-5">
-  <app-book-page></app-book-page>
+  <app-book-page title="{{'hero.bestSellers' | translate}}"></app-book-page>
 </div>
-
-

@@ -7,10 +7,11 @@ import { BookPage } from "../book-component/book-page/book-page";
 import { environment } from '../../../core/configs/environment.config';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ReviewsAndComments } from "../../../shared/Components/reviews-and-comments/reviews-and-comments";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments],
+  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
@@ -29,7 +30,7 @@ export class BookDetails implements OnInit {
   averageRating = 0;
   isLiked = false;
 
-  constructor(private api: BookService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private api: BookService, private route: ActivatedRoute, private router: Router , private translate: TranslateService) {}
 
   ngOnInit(): void {
     window.scrollTo({ top: 0 }); // نضمن إن الصفحة تبدأ من فوق

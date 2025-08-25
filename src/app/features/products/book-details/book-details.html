@@ -1,134 +1,110 @@
 <div class="book-details-container">
-
   <div class="navigation">
     <a class="nav-btn" routerLink="{{book?.id}}">🡺</a>
     <a class="nav-btn" routerLink="{{book?.id}}">🡸</a>
   </div>
 
-
   <div class="book">
     <div class="book-info">
-
       <!-- القسم اليمين -->
       <div class="right-section">
-
         <img [src]="getCoverImageUrl()" alt="" />
 
         <div class="button-container">
           <button class="btn btn-buy">
-            <span class="text">شراء نسخة ورقية</span>
+            <span class="text">{{'bookDetails.buyPaperCopy' | translate}}</span>
             <span class="icon">🛒</span>
           </button>
 
           <button class="btn btn-alert">
-            <span class="text">أبلغني عند توفره للقراءة</span>
+            <span class="text">{{'bookDetails.notifyWhenAvailable' | translate}}</span>
             <span class="icon">📖</span>
           </button>
 
           <button class="btn btn-review">
-            <span class="text">أضف مراجعتك</span>
+            <span class="text">{{'bookDetails.addReview' | translate}}</span>
             <span class="icon">⭐</span>
           </button>
         </div>
 
-
         <div class="book-price">
           <div class="before">
-            <span>قبل : </span> <span class="old-price">{{ book?.price }} ج.م</span>
+            <span>{{'bookDetails.before' | translate}} </span>
+            <span class="old-price">{{ book?.price }} ج.م</span>
           </div>
 
           <div class="after">
-            <span>بعد : </span> <span class="new-price"> {{newPrice}} ج.م</span>
+            <span>{{'bookDetails.after' | translate}} </span>
+            <span class="new-price"> {{newPrice}} ج.م</span>
           </div>
 
           <div class="discount">
-            <span>هتوفر : {{discount | number:'1.1-1' }} ج.م</span>
-            <span class="badge">خصم {{book?.discountPercentage }}%</span>
+            <span>{{'bookDetails.youWillSave' | translate}} {{discount | number:'1.1-1' }} ج.م</span>
+            <span class="badge">{{'bookDetails.discount' | translate}} {{book?.discountPercentage }}%</span>
           </div>
         </div>
-
-
 
         <div class="notification-card">
           <div class="notification-item">
             <span class="iconWithText">
               <i class="fas fa-shuttle-van truck-icon"></i>
-
-
-              <span> شحن مجانى </span>
+              <span> {{'bookDetails.freeShipping' | translate}} </span>
             </span>
-            <span class="highlight small-italic">بحد ادنى 600,00 ج.م</span>
+            <span class="highlight small-italic">{{'bookDetails.minimumOrder' | translate}}</span>
           </div>
 
           <div class="notification-item">
             <span class="iconWithText">
               <i class="fas fa-shield-heart shield-icon"></i>
-              <span> تسوق آمن </span>
+              <span> {{'bookDetails.secureShopping' | translate}} </span>
             </span>
-            <span class="highlight small-italic">بياناتك محمية دائمًا</span>
+            <span class="highlight small-italic">{{'bookDetails.dataProtected' | translate}}</span>
           </div>
         </div>
-
-
-
       </div>
-
 
       <!-- القسم النص -->
       <div class="middle-section">
-
         <div class="book-title">
           <h3>{{book?.title}}</h3>
         </div>
 
+        <div class="book-rating">
+          <span class="stars">
+            @for (star of stars; track star) {
+              <i class="fa-star" [ngClass]="{
+                'fas text-warning': star < (book?.rating || 0),
+                'far text-secondary': star >= (book?.rating || 0)
+              }"></i>
+            }
+          </span>
 
-
-      <div class="book-rating">
-
-       <span class="stars">
-          @for (star of stars; track star) {
-            <i class="fa-star" [ngClass]="{
-              'fas text-warning': star < (book?.rating || 0),
-              'far text-secondary': star >= (book?.rating || 0)
-            }"></i>
-          }
-        </span>
-
-
-        <button class="heart-icon" (click)="toggleHeart()">
-          <i [ngClass]="{ 'fas': isLiked, 'far': !isLiked }" class="fa-heart heart-icon"></i>
-        </button>
-
-      </div>
-
-
+          <button class="heart-icon" (click)="toggleHeart()">
+            <i [ngClass]="{ 'fas': isLiked, 'far': !isLiked }" class="fa-heart heart-icon"></i>
+          </button>
+        </div>
 
         <div class="recommendAndFollowButtons">
           <button class="custom-btn">
-            <span class="btn-text">متابعة (2)</span>
+            <span class="btn-text">{{'bookDetails.follow' | translate}} (2)</span>
             <span class="icon-box"><i class="fa-solid fa-circle-plus"></i></span>
           </button>
 
           <button class="custom-btn">
-            <span class="btn-text">ترشيح (2)</span>
+            <span class="btn-text">{{'bookDetails.recommend' | translate}} (2)</span>
             <span class="icon-box"><i class="fa-solid fa-book-open"></i></span>
           </button>
         </div>
 
-
-        <div class="book-snip " *ngIf="book?.description">
-          <h3 class="section-title">نبذة عن الكتاب</h3>
-          <p class="book-description">
-            {{ book?.description }}
-          </p>
+        <div class="book-snip" *ngIf="book?.description">
+          <h3 class="section-title">{{'bookDetails.aboutBook' | translate}}</h3>
+          <p class="book-description">{{ book?.description }}</p>
         </div>
 
-
         <div class="author-snip">
-          <h3 class="section-title">نبذة عن الكاتب</h3>
+          <h3 class="section-title">{{'bookDetails.aboutAuthor' | translate}}</h3>
 
           <div class="author-description">
-
             <div class="imageWithName">
               <img [src]="getCoverImageUrl()" alt="" class="author-image">
               <h5 class="author-name">{{book?.title}}</h5>
@@ -136,59 +112,40 @@
             <p class="whoIsAuthor">{{book?.description}}</p>
 
             <div class="anotherBooksForAuthor">
-              <h3 class="section-title">اعمال اخرى للكاتب</h3>
+              <h3 class="section-title">{{'bookDetails.otherWorks' | translate}}</h3>
 
               <div class="AuthorBooks">
-
-                <!-- looooooppppp -->
-
                 @for (book of booksByAuthor; track book) {
                   <div class="bookaya">
                     <i class="fa fa-book-open"></i>
                     <a routerLink="/book-details/{{book.id}}" class="booksauthor">{{book.title}}</a>
                   </div>
                 }
-
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       <!-- القسم الشمال -->
       <div class="left-section">
         <div class="mb-4">
-
           <div class="book-container">
             <table class="book-table">
               <tbody>
-                <tr><th>المؤلفون</th><td>{{book?.authorName}}</td></tr>
-
-                <!-- ناقصنى الخانه دى -->
-                <tr><th>المترجم</th><td>فاطمة أحمد</td></tr>
-
-                <tr><th>الصفحات</th><td>{{book?.pageCount}}</td></tr>
-                <tr><th>سنة النشر</th><td>{{book?.publishedDate}}</td></tr>
-                <tr><th>الصيغة</th><td>{{book?.format}}</td></tr>
-
-
-                <tr><th>نوع الغلاف</th><td>{{book?.format}}</td></tr>
-
-
-                <tr><th>دار النشر</th><td>{{book?.publisherId}}</td></tr>
-                <tr><th>الأقسام</th><td>{{book?.categoryIds}}</td></tr>
-
-
+                <tr><th>{{'bookDetails.authors' | translate}}</th><td>{{book?.authorName}}</td></tr>
+                <tr><th>{{'bookDetails.translator' | translate}}</th><td>فاطمة أحمد</td></tr>
+                <tr><th>{{'bookDetails.pages' | translate}}</th><td>{{book?.pageCount}}</td></tr>
+                <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate}}</td></tr>
+                <tr><th>{{'bookDetails.format' | translate}}</th><td>{{book?.format}}</td></tr>
+                <tr><th>{{'bookDetails.coverType' | translate}}</th><td>{{book?.format}}</td></tr>
+                <tr><th>{{'bookDetails.publisher' | translate}}</th><td>{{book?.publisherId}}</td></tr>
+                <tr><th>{{'bookDetails.categories' | translate}}</th><td>{{book?.categoryIds}}</td></tr>
                 <tr><th>ISBN</th><td>{{book?.isbn}}</td></tr>
-                <tr><th>مرات القراءة</th><td>{{book?.stockQuantity}}</td></tr>
-                <tr><th>رابط مختصر</th><td><a routerLink="/book-details/{{book?.id}}" class="text-decoration-none">{{book?.title}} <i class="fa-solid fa-link"></i></a></td></tr>
+                <tr><th>{{'bookDetails.readCount' | translate}}</th><td>{{book?.stockQuantity}}</td></tr>
+                <tr><th>{{'bookDetails.shortLink' | translate}}</th><td><a routerLink="/book-details/{{book?.id}}" class="text-decoration-none">{{book?.title}} <i class="fa-solid fa-link"></i></a></td></tr>
                 <tr>
-                  <th>مشاركة</th>
+                  <th>{{'bookDetails.share' | translate}}</th>
                   <td>
                     <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
@@ -199,62 +156,52 @@
               </tbody>
             </table>
           </div>
-
-
         </div>
 
-
-
-        <!--  الأقسام -->
+        <!-- الأقسام -->
         <div class="shadow-sm maincat">
           <div class="p-0 cat">
-            <h5 class="mb-3 text-muted text-center">الأقسام</h5>
+            <h5 class="mb-3 text-muted text-center">{{'bookDetails.categories' | translate}}</h5>
             <ul class="list-group list-group-flush">
               <li class="list-group-item category-item">
-                روايات <span class="badge bg-light text-danger">12,983</span>
+                {{'categoriesList.novels' | translate}} <span class="badge bg-light text-danger">12,983</span>
               </li>
               <li class="list-group-item category-item">
-                كتب متنوعة <span class="badge bg-light text-danger">10,071</span>
+                {{'categoriesList.diverseBooks' | translate}} <span class="badge bg-light text-danger">10,071</span>
               </li>
               <li class="list-group-item category-item">
-                English Books <span class="badge bg-light text-danger">6,956</span>
+                {{'categoriesList.englishBooks' | translate}} <span class="badge bg-light text-danger">6,956</span>
               </li>
               <li class="list-group-item category-item">
-                قسم الأطفال <span class="badge bg-light text-danger">6,558</span>
+                {{'categoriesList.childrenSection' | translate}} <span class="badge bg-light text-danger">6,558</span>
               </li>
               <li class="list-group-item category-item">
-                مترجمات <span class="badge bg-light text-danger">4,462</span>
+                {{'categoriesList.translations' | translate}} <span class="badge bg-light text-danger">4,462</span>
               </li>
               <li class="list-group-item category-item">
-                Children books <span class="badge bg-light text-danger">3,332</span>
+                {{'categoriesList.childrenBooks' | translate}} <span class="badge bg-light text-danger">3,332</span>
               </li>
               <li class="list-group-item category-item">
-                Novels <span class="badge bg-light text-danger">3,288</span>
+                {{'categoriesList.novelsEn' | translate}} <span class="badge bg-light text-danger">3,288</span>
               </li>
               <li class="list-group-item category-item">
-                كتب ذاتية وعلم نفس <span class="badge bg-light text-danger">2,678</span>
+                {{'categoriesList.selfPsychology' | translate}} <span class="badge bg-light text-danger">2,678</span>
               </li>
               <li class="list-group-item category-item">
-                تاريخ <span class="badge bg-light text-danger">2,545</span>
+                {{'categoriesList.history' | translate}} <span class="badge bg-light text-danger">2,545</span>
               </li>
             </ul>
 
-              <button class="btn btn-danger btn-sm">المزيد من الأقسام</button>
+            <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories' | translate}}</button>
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 
-
   <div class="allbooks py-5">
-    <app-book-page [title]="'كتب مشابهه'"></app-book-page>
+    <app-book-page [title]="'bookDetails.similarBooks' | translate"></app-book-page>
   </div>
-
 
   <app-reviews-and-comments [book]="book"></app-reviews-and-comments>
 </div>
-
-

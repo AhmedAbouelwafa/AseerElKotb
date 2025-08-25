@@ -1,17 +1,32 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, OnInit } from '@angular/core';
 import { Search } from "../search/search";
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { LangService } from '../../../core/services/LanguageService/lang-service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Search , RouterModule],
+  imports: [Search, CommonModule, RouterLink],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrl: './navbar.css',
+  standalone: true
 })
-export class Navbar {
+export class Navbar implements OnInit {
+  currentLang: string = localStorage.getItem('lang') || 'ar';
+  isRTL: boolean = this.currentLang === 'ar';
+  showDropdown = false;
+
+  constructor(private langService: LangService) {}
+
+  ngOnInit() {
+    this.langService.dir$.subscribe(dir => {
+      this.isRTL = dir === 'rtl';
+      this.currentLang = localStorage.getItem('lang') || 'ar';
+    });
+  }
+
   @ViewChild('nav') nav!: ElementRef;
   isNavbarCollapsed = true;
-
 
   @HostListener('window:scroll',)
   onScroll() {
@@ -31,6 +46,18 @@ export class Navbar {
 
   closeNavbar(): void {
     this.isNavbarCollapsed = true;
+  }
+
+
+
+  toggleMenu() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+
+  changeLang(lang: string) {
+    this.langService.setLang(lang);
+    this.showDropdown = false;
   }
 
 

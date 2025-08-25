@@ -5,9 +5,10 @@ import { Modal } from "../modal/modal component/modal";
 import { UserReply } from "../user-reply/user-reply";
 import { ModalService } from '../modal/modal service/modal-service';
 import { Observable } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-reviews-and-comments',
-  imports: [CommonModule, Modal, UserReply],
+  imports: [CommonModule, Modal, UserReply , TranslateModule],
   templateUrl: './reviews-and-comments.html',
   styleUrl: './reviews-and-comments.css'
 })
@@ -34,7 +35,7 @@ export class ReviewsAndComments implements  OnChanges , OnInit {
   /**
    *
    */
-  constructor(private api: ModalService) {
+  constructor(private api: ModalService , private translate: TranslateService) {
 
 
   }

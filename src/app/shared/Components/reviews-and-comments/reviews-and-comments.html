@@ -1,67 +1,61 @@
 <div class="reviewsAndComments py-5 px-3">
 
   <div class="allrev">
-    <h3 class="mb-4">تقييمات ومراجعات ({{book?.title}})</h3>
+    <h3 class="mb-4">{{ 'reviewWithComments.reviewsAndComments' | translate}} ({{book?.title}})</h3>
     <button class="custom-btn brev">
-      <span class="btn-text">اقتباسات من {{book?.title}}</span>
+      <span class="btn-text">{{ 'reviewWithComments.quotesFrom' | translate}} {{book?.title}}</span>
       <span class="icon-box"><i class="fas fa-star-half-alt"></i></span>
     </button>
 
     <button class="custom-btn brev">
-      <span class="btn-text"> مراجعات من {{book?.title}}</span>
+      <span class="btn-text">{{ 'reviewWithComments.reviewsFrom' | translate}} {{book?.title}}</span>
       <span class="icon-box"><i class="fas fa-comment-alt"></i></span>
     </button>
   </div>
 
-
-  <!-- tab-navigation.component.html -->
   <div class="tabs-container">
     <div class="tabs">
       <button
         [class.active]="activeTab === 'reviews'"
         (click)="selectTab('reviews')">
-        <span> <i class="fa-solid fa-book-bookmark	 text-primary"></i> مراجعات</span>
+        <span> <i class="fa-solid fa-book-bookmark text-primary"></i> {{ 'reviewWithComments.reviews' | translate}}</span>
         <span>5</span>
-        </button>
+      </button>
 
       <button
         [class.active]="activeTab === 'quotes'"
         (click)="selectTab('quotes')">
-        <span> <i class="fas fa-quote-right text-success"></i> اقتباسات</span>
+        <span> <i class="fas fa-quote-right text-success"></i> {{ 'reviewWithComments.quotes' | translate}}</span>
         <span>5</span>
-        </button>
+      </button>
 
       <button
         [class.active]="activeTab === 'readers'"
         (click)="selectTab('readers')">
-        <span> <i class="fas fa-user-tie 	text-secondary	 "></i> القرّاء </span>
+        <span> <i class="fas fa-user-tie text-secondary"></i> {{ 'reviewWithComments.readers' | translate}} </span>
         <span>5</span>
-        </button>
+      </button>
     </div>
-
 
     <div class="tab-content">
       <div *ngIf="activeTab === 'reviews'">
-
         <div class="reviews-container">
 
-
           <div class="review-box">
-
-            <h2>مراجعات العملاء</h2>
+            <h2>{{ 'reviewWithComments.customerReviews' | translate}}</h2>
             <div class="overall-rating">
               <span class="stars">
                 @for (star of [1,2,3,4,5]; track star) {
                   <i class="fa fa-star" [class.inactive]="star >= averageRating"></i>
                 }
               </span>
-              <span>{{ averageRating }}/5 من {{ totalReviews }} مراجعات</span>
+              <span>{{ averageRating }}/5 {{ 'reviewWithComments.stars' | translate}} من {{ totalReviews }} {{ 'reviewWithComments.reviews' | translate}}</span>
             </div>
 
             <div class="rating-bars">
               @for (level of [5,4,3,2,1]; track level) {
                 <div>
-                  <span class="star">  {{ level }}</span>
+                  <span class="star">{{ level }}</span>
                   <i class="fas fa-star text-warning"></i>
                   <div class="bar">
                     <div class="fill" [style.width.%]="getRatingPercentage(level)"></div>
@@ -72,46 +66,37 @@
             </div>
 
             <div class="submit-review">
-              <h3>قيّم الكتاب</h3>
-              <p>شاركنا رأيك وتقييمك للكتاب.</p>
-              <app-modal title="مراجعة"></app-modal>
+              <h3>{{ 'reviewWithComments.submitReview' | translate}}</h3>
+              <p>{{ 'reviewWithComments.shareYourOpinion' | translate}}</p>
+              <app-modal title="{{ 'reviewWithComments.review' | translate}}"></app-modal>
             </div>
           </div>
 
-
           <div class="alert">
-            ⚠ لا توجد مراجعات بعد. كن صاحب أول مراجعة واكتب مراجعتك الآن.
+            {{ 'reviewWithComments.noReviews' | translate}}
           </div>
 
         </div>
-
-
-
-
       </div>
 
       <div *ngIf="activeTab === 'quotes'" class="quotes-container">
-        <!-- <button class="classbtn" (click)="addQuote()" #addQuoteBtn>أضف اقتباس</button> -->
         @if(book && book.id){
-          <app-modal title="اقتباس" #addQuoteBtn [bookId]="book.id" (quoteAdded)="onQuoteAdded($event)"></app-modal>
+          <app-modal title="{{ 'reviewWithComments.quote' | translate}}" #addQuoteBtn [bookId]="book.id" (quoteAdded)="onQuoteAdded($event)"></app-modal>
           @for (quote of quotes; track quote.id) {
             <app-user-reply [quote]="quote.comment" (delete)="deleteQuote(quote.id)"></app-user-reply>
           }
         }
         @else {
-          <div class="alert"> ⚠ لا توجد اقتباسات بعد. كن صاحب أول اقتباس واكتب اقتباسك الآن</div>
+          <div class="alert">{{ 'reviewWithComments.noQuotes' | translate}}</div>
         }
-
       </div>
 
       <div *ngIf="activeTab === 'readers'" class="pt-2 d-flex justify-content-center align-items-center">
         <div class="alert">
-          ⚠ لا توجد قراء بعد
+          {{ 'reviewWithComments.noReaders' | translate}}
         </div>
-
-        </div>
+      </div>
     </div>
   </div>
-
 
 </div>
