@@ -149,6 +149,40 @@
     "review": "مراجعة",
     "quote": "اقتباس",
     "bookTitle": "عنوان الكتاب"
+  },
+
+
+  "navbar": {
+    "logo": "اللوجو",
+    "searchPlaceholder": "بحث...",
+    "menu": {
+      "books": "الكتب",
+      "allBooks": "كل الكتب",
+      "readableBooks": "كتب للقراءة",
+      "purchasableBooks": "كتب للأطفال",
+      "audioBooks": "كتب مسموعة",
+      "kidsSection": "قسم الأطفال",
+      "accessories": "الإكسسوارات ❤️",
+      "toys": "ألعاب 🎮"
+    },
+    "userMenu": {
+      "profile": "الملف الشخصي",
+      "notifications": "الإشعارات",
+      "messages": "الرسائل",
+      "cart": "السلة",
+      "apiTokens": "API Tokens",
+      "logout": "تسجيل الخروج"
+    },
+    "icons": {
+      "notifications": "إشعارات",
+      "cart": "سلة التسوق",
+      "delivery": "التوصيل"
+    },
+    "languageSwitcher": {
+      "arabic": "العربية",
+      "english": "English"
+    }
   }
+
 
 }

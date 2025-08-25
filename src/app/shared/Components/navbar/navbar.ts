@@ -3,10 +3,12 @@ import { Search } from "../search/search";
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LangService } from '../../../core/services/LanguageService/lang-service';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Search, CommonModule, RouterLink],
+  imports: [Search, CommonModule, RouterLink , TranslateModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
   standalone: true
@@ -16,7 +18,7 @@ export class Navbar implements OnInit {
   isRTL: boolean = this.currentLang === 'ar';
   showDropdown = false;
 
-  constructor(private langService: LangService) {}
+  constructor(private langService: LangService , private translate: TranslateService) {}
 
   ngOnInit() {
     this.langService.dir$.subscribe(dir => {

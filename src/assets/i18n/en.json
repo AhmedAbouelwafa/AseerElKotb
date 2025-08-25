@@ -150,5 +150,39 @@
     "review": "Review",
     "quote": "Quote",
     "bookTitle": "Book Title"
+  },
+
+
+"navbar": {
+    "logo": "Logo",
+    "searchPlaceholder": "Search...",
+    "menu": {
+      "books": "Books",
+      "allBooks": "All Books",
+      "readableBooks": "Readable Books",
+      "purchasableBooks": "Books for Kids",
+      "audioBooks": "Audio Books",
+      "kidsSection": "Kids Section",
+      "accessories": "Accessories ❤️",
+      "toys": "Toys 🎮"
+    },
+    "userMenu": {
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "messages": "Messages",
+      "cart": "Cart",
+      "apiTokens": "API Tokens",
+      "logout": "Logout"
+    },
+    "icons": {
+      "notifications": "Notifications",
+      "cart": "Shopping Cart",
+      "delivery": "Delivery"
+    },
+    "languageSwitcher": {
+      "arabic": "Arabic",
+      "english": "English"
+    }
   }
+
 }
