@@ -45,7 +45,7 @@ export const routes: Routes = [
   }
   ,
   {
-    path: 'MainFilterContainer' , component : MainFilterContainer,
+    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
   }
   ,
   {

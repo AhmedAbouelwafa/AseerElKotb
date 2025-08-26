@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './category-title.css'
 })
 export class CategoryTitle {
-  @Input() categoryName: string = 'تربية الأطفال والناشئين';
-  @Input() categoryDescription: string = 'وصف الفئة هنا';
+  @Input() categoryName: string = '  ';
+  @Input() categoryDescription: string = ' ';
 
 }

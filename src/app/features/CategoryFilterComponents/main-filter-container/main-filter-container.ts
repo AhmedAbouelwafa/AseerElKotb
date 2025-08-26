@@ -19,29 +19,34 @@ export class MainFilterContainer implements OnInit {
 
   }
 
-  categoryName:string='تربية الأطفال والناشئين';
-  categoryDescription:string='وصف الفئة هنا';
-  CategoryId: number = 5;
+  //  breadcrumbs: NavcrumbItem[] = [
+  //   { name: 'الأقسام', path: '/' },
+  //   { name: 'تربية الأطفال والناشئين', path: '/' },
+  // ];
+  categoryName:string='';
+  categoryDescription:string='';
+  CategoryId:number=1;
+  Category:any;
   breadcrumbs: NavcrumbItem[] = [
     { name: 'الأقسام', path: '/' },
-    { name: 'تربية الأطفال والناشئين', path: '/' },
+    { name: '  ', path: '/' },
   ];
 
    ngOnInit(): void {
     const categoryId = this.router.snapshot.paramMap.get('Id');
       
       if (categoryId) {
-        const idNumber = +categoryId; 
-        this.CategoryId = idNumber;
-        console.log('Category ID:', this.CategoryId);
-        this.categoryService.getCategoryById(idNumber).subscribe({
+        this.categoryService.getCategoryById(+categoryId).subscribe({
             next: (category) => {
               if (category) {
-                this.categoryName = category.Name;
-                this.categoryDescription = category.Description;
+                this.Category=category.data;
+                this.categoryName = this.Category.name; 
+                this.categoryDescription = this.Category.description;
+                this.CategoryId=this.Category.id
+
                 this.breadcrumbs = [
-                  { name: 'الأقسام', path: '/' },
-                  { name: this.categoryName, path: `/category/${categoryId}` }
+                  { name: 'الأقسام', path: '/' }, //need link
+                  { name:this.Category.name, path: `/category/${categoryId}` }//need update link
                 ];
                 
               } else {
