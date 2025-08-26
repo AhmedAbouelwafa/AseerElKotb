@@ -25,3 +25,25 @@ export interface Ibook{
 
 
 }
+
+
+export interface FilterBooksRequest {
+  CategoryIds: number[];
+  PageNumber: number;
+  PageSize: number;
+  SearchTerm?: string;
+  Language?: number|null;
+  PublisherIds?: number[];
+  SortBy?: number;
+}
+
+export interface BookFilterResponse {
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  message: string | null;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  data: any[];
+}

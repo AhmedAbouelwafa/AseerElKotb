@@ -24,8 +24,8 @@ export class CategoryServices {
   }
 
   // Get single category by ID
-  getCategoryById(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getCategoryById(Id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${Id}`);
   }
   // Get all SubCategories with out pagination
   getAllSubCategories(

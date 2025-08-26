@@ -28,9 +28,15 @@ app-category-title {
  
 }
 
+app-categoey-books{
+  display: flex;
+  flex-direction: row;
+  justify-content:start;
+}
 #books {
-  flex: 1;  /* Takes remaining space */
-  min-width: 300px;  /* Minimum width before wrapping */
+  /* flex: 1;  Takes remaining space */
+   /* min-width: 300px; Minimum width before wrapping */
+
 }
 
 /* Responsive adjustments */
