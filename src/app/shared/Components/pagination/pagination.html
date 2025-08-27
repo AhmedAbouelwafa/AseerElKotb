@@ -1,27 +1,38 @@
- <!-- <div class="paginationContaner" > 
-    <button 
-      class="paginationButton"
-      (click)="goToPage(currentPage - 1)"
-      [disabled]="currentPage === 1"
-    >   
-      Previous
-    </button>
-    
-    @for (page of GetPagesNumbers();track page) {
-      <button  id="pagesNumber"
+<div class="paginationContainer">
+  <!-- Previous button -->
+  <button 
+    class="paginationButton" 
+    (click)="GoToPage(CurrentPage - 1)"
+    [disabled]="CurrentPage === 1">
+    &laquo; Prev
+  </button>
+
+  <!-- Page numbers -->
+  <div id="pagesNumber">
+    @for (page of getVisiblePages(); track page) {
+      <button 
         class="paginationButton"
-        [class.active]="page === currentPage"
-        (click)="goToPage(page)"
-       >
+        [class.active]="page === CurrentPage"
+        (click)="GoToPage(page)">
         {{ page }}
       </button>
     }
     
-    <button 
-      class="paginationButton"
-       (click)="goToPage(currentPage + 1)"
-      [disabled]="currentPage === TotalPages"
-    >
-      Next
-    </button>
-</div> -->
+    @if (TotalPages > 7 && CurrentPage < TotalPages - 3) {
+      <span class="paginationEllipsis">...</span>
+      <button 
+        class="paginationButton"
+        (click)="GoToPage(TotalPages)">
+        {{ TotalPages }}
+      </button>
+    }
+  </div>
+
+  <!-- Next button -->
+  <button 
+    class="paginationButton" 
+    (click)="GoToPage(CurrentPage + 1)"
+    [disabled]="CurrentPage === TotalPages">
+    Next &raquo;
+  </button>
+</div>

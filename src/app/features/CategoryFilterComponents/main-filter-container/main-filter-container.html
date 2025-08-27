@@ -14,11 +14,15 @@
     <div id="body">
 
         <div id="filteration" >
-           <app-filtering></app-filtering>
+            <div id="filteration">
+                    <app-filtering (filterChanged)="onFilterChanged($event)"></app-filtering>
+
+            </div>
         </div>
 
         <div id="books">
-            <app-categoey-books [CategoryId]="CategoryId"></app-categoey-books>
+            <!-- <app-categoey-books class="books" [CategoryId]="CategoryId"[filterParams]="currentFilterParams"></app-categoey-books> -->
+             <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
         </div>
 
     </div> 

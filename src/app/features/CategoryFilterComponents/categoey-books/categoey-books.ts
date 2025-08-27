@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BookService } from '../../products/book-service/book-service';
 import { Pagination } from '../../../shared/Components/pagination/pagination';
 import { BookCard } from '../../products/card-componenet/book-card/book-card';
@@ -7,51 +7,51 @@ import { FilterBooksRequest } from '../../products/book-model/Ibook';
 
 @Component({
   selector: 'app-categoey-books',
-  imports: [BookCard,Pagination,CommonModule],
+  imports: [BookCard, Pagination, CommonModule],
   templateUrl: './categoey-books.html',
   styleUrl: './categoey-books.css'
 })
-export class CategoeyBooks implements OnInit,OnChanges  {
-
+export class CategoeyBooks implements OnChanges {
   Books: any[] = [];
   currentPage = 1;
-  pageSize = 10;////may change later
+  pageSize = 2;///may be change
   totalPages = 1;
   totalCount = 0;
 
   @Input() CategoryId: number = 1;
+  @Input() filterParams?: FilterBooksRequest;
 
-  constructor(private bookService: BookService) {
+  constructor(private bookService: BookService) {}
 
-  }
   ngOnChanges(changes: SimpleChanges): void {
-     if (changes['CategoryId'] && !changes['CategoryId'].firstChange) {
-      this.currentPage = 1; 
+    // If either CategoryId or filterParams change, reload books
+    if (changes['CategoryId'] || changes['filterParams']) {
+      this.currentPage = 1;
       this.getBooksByCategoryId();
     }
   }
+
   ngOnInit(): void {
     this.getBooksByCategoryId();
   }
 
-   getBooksByCategoryId(): void {
-      const filterRequest: FilterBooksRequest = {
+  getBooksByCategoryId(): void {
+    const filterRequest: FilterBooksRequest = {
       CategoryIds: [this.CategoryId],
       PageNumber: this.currentPage,
       PageSize: this.pageSize,
-      SearchTerm: '',
-      Language: null,
-      PublisherIds: [],
-      SortBy: 0
+      SearchTerm: this.filterParams?.SearchTerm || '',
+      Language: this.filterParams?.Language !== undefined ? this.filterParams.Language : null,
+      PublisherIds: this.filterParams?.PublisherIds || [],
+      SortBy: this.filterParams?.SortBy !== undefined ? this.filterParams.SortBy : 0
     };
 
     this.bookService.filterBooks(filterRequest).subscribe({
       next: (response) => {
         if (response.succeeded) {
-          this.Books = response.data ;
+          this.Books = response.data;
           this.totalCount = response.totalCount;
           this.totalPages = response.totalPages;
-          console.log('Books loaded:', this.Books);
         } else {
           console.error('API returned error:', response.message);
           this.Books = [];
@@ -64,15 +64,8 @@ export class CategoeyBooks implements OnInit,OnChanges  {
     });
   }
 
-
   GetNewPage(page: number): void {
     this.currentPage = page;
     this.getBooksByCategoryId();
-
   }
-
-
-
-  }
-
-
+}
