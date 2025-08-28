@@ -28,7 +28,7 @@ export class MainFilterContainer implements OnInit, OnDestroy {
   Category: any;
   currentFilterParams?: FilterBooksRequest;
   breadcrumbs: NavcrumbItem[] = [
-    { name: 'الأقسام', path: '/' },
+    { name: 'الأقسام', path: '/AllCategories' },
     { name: '  ', path: '/' },
   ];
 
@@ -60,7 +60,7 @@ export class MainFilterContainer implements OnInit, OnDestroy {
           this.CategoryId = this.Category.id;
 
           this.breadcrumbs = [
-            { name: 'الأقسام', path: '/' },
+            { name: 'الأقسام', path: '/AllCategories' },
             { name: this.Category.name, path: `/MainFilterContainer/${categoryId}` }
           ];
         } else {

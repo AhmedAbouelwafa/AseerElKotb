@@ -5,6 +5,7 @@ import { CartItemResponse, ShowCartResponse } from '../CartInterfaces/cart-inter
 import { CartServices } from '../CartServices/cart-services';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../core/configs/environment.config';
 
 @Component({
   selector: 'app-cart',
@@ -17,12 +18,30 @@ export class Cart implements OnInit {
     { name: 'سلة التسوق', path: '/' },
   ];
 
-     userId: number = 5;// This would typically come from an auth service
-  // cartData: ShowCartResponse | null = null;
-  cartData: ShowCartResponse={} as ShowCartResponse;
+  userId: number = 1;// This would typically come from an auth service
+
+  cartData: ShowCartResponse = {
+  id: 0,
+  userId: 0,
+  items: [],
+  totalItemsCount: 0,
+  sumTotalPrice: 0,
+  sumDiscountedPrice: 0
+};
+
   items:CartItemResponse[]=[];
   loading = false;
   quantityInput?:string;
+
+
+  private baseUrl = 'https://localhost:7207'////////chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange
+  
+     getCoverImageUrl(item:CartItemResponse): string {
+      if (item.coverImageUrl.startsWith('/uploads')) {
+            return this.baseUrl + item.coverImageUrl;
+          }
+        return item.coverImageUrl;
+    }
 
   constructor(private cartService: CartServices) {}
 

@@ -1,7 +1,6 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { Publisher } from '../../Publisher/Publisher Interfaces/publisher-interfaces';
@@ -9,7 +8,7 @@ import { PublisherServices } from '../../Publisher/PublisherServices/publisher-s
 
 @Component({
   selector: 'app-filtering',
-  imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './filtering.html',
   styleUrl: './filtering.css'
 })

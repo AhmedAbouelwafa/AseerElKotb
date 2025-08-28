@@ -43,5 +43,12 @@ export class CategoryServices {
 
     return this.http.get( `${this.baseUrl}/GetSubCategories`,{ params });
   }
+
+   getAllParentCategoriesWithSubCounts(): Observable<any> {
+    let params = new HttpParams()
+      .set('PageNumber', '1')
+      .set('PageSize', '100'); 
+    return this.http.get(`${this.baseUrl}/GetAll`, { params });
+  }
   
 }

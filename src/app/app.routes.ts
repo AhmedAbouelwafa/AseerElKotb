@@ -12,6 +12,7 @@ import { ConfirmEmailFailed } from './features/pages/ConfirmEmailPages/confirm-e
 import { ResetPassword } from './features/pages/ResetPasswordPages/reset-password/reset-password';
 import { ResetPasswordSuccess } from './features/pages/ResetPasswordPages/reset-password-success/reset-password-success';
 import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-password-failed/reset-password-failed';
+import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 export const routes: Routes = [
   {
     path: '' , component : Hero,
@@ -54,6 +55,9 @@ export const routes: Routes = [
   ,
   {
     path: 'Cart' , component : Cart,
+  },
+  {
+    path: 'AllCategories' , component : AllCategories,
   },
 
 ];

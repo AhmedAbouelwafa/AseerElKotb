@@ -3,7 +3,7 @@
   <button 
     class="paginationButton" 
     (click)="GoToPage(CurrentPage - 1)"
-    [disabled]="CurrentPage === 1">
+    [disabled]="TotalPages<1||CurrentPage === 1">
     &laquo; Prev
   </button>
 
@@ -32,7 +32,7 @@
   <button 
     class="paginationButton" 
     (click)="GoToPage(CurrentPage + 1)"
-    [disabled]="CurrentPage === TotalPages">
+    [disabled]="TotalPages<1||CurrentPage === TotalPages">
     Next &raquo;
   </button>
 </div>
