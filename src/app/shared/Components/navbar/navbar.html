@@ -37,14 +37,22 @@
 
 
 
-          <li class="nav-item">
+          <li class="nav-item ">
+
             <a class="nav-link" routerLink="/kids">قسم الأطفال</a>
+
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/accessories">الإكسسوارات ❤️</a>
+
+          <li class="nav-item" *ngIf="!isAuthenticated()">
+
+            <a class="nav-link" routerLink="/login">دخول</a>
+
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/toys">ألعاب 🎮</a>
+
+           <li class="nav-item " *ngIf="!isAuthenticated()">
+
+            <a class="nav-link" routerLink="/register">تسجيل</a>
+
           </li>
         </ul>
 
@@ -64,7 +72,7 @@
               <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> كتب مسموعة</a></li>
               <li><a routerLink="/cart"><i class="fas fa-shopping-cart"></i> السلة <span class="badge bg-success">3</span></a></li>
               <li><a routerLink="/api-tokens"><i class="fas fa-key"></i> API Tokens</a></li>
-              <li><a routerLink="/logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+              <li><a (click)="logout()" style="cursor: pointer;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
             </ul>
           </button>
 
