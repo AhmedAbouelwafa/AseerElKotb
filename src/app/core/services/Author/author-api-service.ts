@@ -12,7 +12,7 @@ export class AuthorApiService {
   constructor(private http: HttpClient) {}
 
     getAuthorById(id: number): Observable<IAuthor> {
-    return this.http.get<{ data: IAuthor }>(`${this.baseUrl}/Authors/GetById/${id}`)
+    return this.http.get<{ data: IAuthor }>(`${this.baseUrl}/Authors?id=${id}`)
       .pipe(map(response => response.data));
   }
 

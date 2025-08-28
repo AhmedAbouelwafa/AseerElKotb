@@ -1,5 +1,5 @@
 export const environment = {
   textColor: '#333',
-  apiBaseUrl: 'https://localhost:7207/api'
+  apiBaseUrl: 'http://localhost:5234/api'
 };
 
