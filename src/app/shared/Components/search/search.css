@@ -1,8 +1,13 @@
-
 .formSeearch input:focus {
-  border-color: #e60000;
+  border-color:
+#e60000;
 
   box-shadow: 0 0 0 0.2rem rgba(247, 107, 28, 0.25); /* تأثير جميل حوالين البوكس */
+
+}
+
+.formSeearch{
+  position: relative;
 }
 
 
@@ -25,15 +30,62 @@
   font-size: 21px;
 }
 
-
-
 .search-input::placeholder {
   font-size: var(--placeholder-size, 1rem);
 }
-
 
 .search-input{
   width: var(--input-width, 1rem);
 }
 
 
+
+.dropsaerch {
+  width: calc(100% - 55px);
+  max-height: 300px;   /* أو أي قيمة مناسبة */
+  background-color: #fff;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+
+.dropsaerch .imageWithText{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-right: 10px;
+  text-align: center;
+
+  margin: 7px;
+}
+
+.dropsaerch .imageWithText img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.dropsaerch .imageWithText p {
+  margin: 0;
+}
+
+.fsw{
+  display: flex;
+  flex-direction: column;
+
+}
+.bookName{
+  color: black;
+}
+
+
+.searchLink{
+  text-decoration: none;
+
+}
+.searchLink:hover{
+  background-color: rgb(238, 238, 238);
+  color: white;
+}

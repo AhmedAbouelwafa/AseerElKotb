@@ -1,17 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
+import id from '@angular/common/locales/id';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryServices {
   private baseUrl = 'https://localhost:7207/api/Categories';
-  
+
   constructor(private http: HttpClient) {}
 
   // Get paginated categories
-  getPaginatedCategories(pageNumber: number = 1, pageSize: number = 10, searchTerm: string = ''): Observable<any> {
+  getPaginatedCategories(pageNumber: number = 1, pageSize: number = 20, searchTerm: string = ''): Observable<any> {
     let params = new HttpParams()
       .set('PageNumber', pageNumber.toString())
       .set('PageSize', pageSize.toString());
@@ -20,13 +21,18 @@ export class CategoryServices {
       params = params.set('Search', searchTerm);
     }
 
-    return this.http.get(`${this.baseUrl}/GetAll`, { params });
+    return this.http.get(`${this.baseUrl}/GetAll`, { params } ,).pipe(
+      map((response: any) => response.data)
+    );
   }
 
   // Get single category by ID
+  // https://localhost:7207/api/Categories/GetById/2
   getCategoryById(Id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${Id}`);
+    return this.http.get(`${this.baseUrl}/GetById/${Id}`);
   }
+
+
   // Get all SubCategories with out pagination
   getAllSubCategories(
     parentCategoryId:Number,
@@ -43,5 +49,5 @@ export class CategoryServices {
 
     return this.http.get( `${this.baseUrl}/GetSubCategories`,{ params });
   }
-  
+
 }

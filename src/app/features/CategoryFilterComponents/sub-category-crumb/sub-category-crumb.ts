@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Icategory } from '../../categories/category-model/Icategory';
-import { CategoryServices } from '../../categories/category-services';
+import { CategoryServices } from '../../categories/category-service/category-services';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-sub-category-crumb',
@@ -11,10 +12,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SubCategoryCrumb implements OnInit,OnChanges {
 
-  subCategories:any ;
-  @Input()parentCategoryId:Number=1;
+   subCategories:any ;
+   @Input()parentCategoryId:Number=1;
    isLoading: boolean = true;
-  
+
   constructor(private categoryServices:CategoryServices) {
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -32,6 +33,7 @@ export class SubCategoryCrumb implements OnInit,OnChanges {
       next: (response) => {
         this.subCategories = response.data;
         this.isLoading = false; // Set loading to false after data is loaded
+
       },
       error: (error) => {
         console.error('Error fetching subcategories:', error);
@@ -39,9 +41,9 @@ export class SubCategoryCrumb implements OnInit,OnChanges {
       }
     });
   }
- 
+
   GetSubCategories(): Icategory[] {
     return this.subCategories;
   }
-    
+
 }

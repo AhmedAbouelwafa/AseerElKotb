@@ -19,14 +19,14 @@ export class BookService {
   }
 
   getBookById(id: number): Observable<Ibook> {
-    return this.http.get<Ibook>(`${this._apiBaseUrl}/books/${id}`).pipe(
+    return this.http.get<Ibook>(`${this._apiBaseUrl}/books/GetById/${id}`).pipe(
       map((response: any) => response.data)
     );
   }
 
-  getBooksByCategoryId(categoryId: number): Observable<Ibook[]> {
-    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByCategory/${categoryId}`);
-  }
+  // getBooksByCategoryId(categoryId: number): Observable<Ibook[]> {
+  //   return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByCategory/${categoryId}`);
+  // }
 
   getBooksByAuthorId(authorId: number): Observable<Ibook[]> {
     return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByAuthor/${authorId}`);
@@ -39,6 +39,7 @@ export class BookService {
   getBooksByBookType(bookType: string): Observable<Ibook[]> {
     return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByType/${bookType}`);
   }
+
 
 //filter Books in many way
 
@@ -74,6 +75,7 @@ filterBooks(request: FilterBooksRequest): Observable<any> {
 
   return this.http.get(`${this._apiBaseUrl}/Books/Filter`, { params });
 }
+
 
 }
 

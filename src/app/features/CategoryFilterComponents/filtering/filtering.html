@@ -6,7 +6,7 @@
 
         <div id="language">
             <div id="languageHeader" class="header" (click)="toggleSection('language')">
-                <h3>لغة الكاتب</h3>
+                <h3>{{'Author.language' | translate}}</h3>
                 <!-- <i class="fa-solid fa-angle-down"></i> -->
                  <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.language"></i>
             </div>
@@ -14,7 +14,7 @@
             <div id="languageOption" *ngIf="sectionVisibility.language">
                 @for (lang of languages ; track lang) {
                     <div class="option">
-                        <input type="radio" name="language" id="language" value=""> 
+                        <input type="radio" name="language" id="language" value="">
                         <label>{{lang}}</label>
                     </div>
                 }
@@ -39,7 +39,7 @@
             </div>
 
         </div>
-        
+
         <div id="bublisher">
             <div id="bublisherHeader" class="header" (click)="toggleSection('publisher')">
                 <h3>دور النشر </h3>
@@ -48,8 +48,8 @@
             </div>
 
             <div class="searchContainer" *ngIf="sectionVisibility.publisher">
-                <input 
-                type="text" 
+                <input
+                type="text"
                 placeholder="ابحث عن دور النشر"
                 class="search-input"
                 />
@@ -58,14 +58,14 @@
             <div id="bublisherOptions" *ngIf="sectionVisibility.publisher">
                 @for (publisher of publishers ; track publisher) {
                     <div class="option">
-                        <input type="checkbox" name="" id="" value=""> 
+                        <input type="checkbox" name="" id="" value="">
                         <label>{{publisher}}</label>
                     </div>
                 }
             </div>
 
-        <a routerLink="#"  routerLinkActive="active">عرض المزيد</a> 
+        <a routerLink="#"  routerLinkActive="active">عرض المزيد</a>
 
     </div>
-    
+
 </div>

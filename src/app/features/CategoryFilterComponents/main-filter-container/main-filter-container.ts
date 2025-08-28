@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CategoryServices } from '../../categories/category-services';
+import { CategoryServices } from '../../categories/category-service/category-services';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { CategoryTitle } from '../category-title/category-title';
 import { SubCategoryCrumb } from '../sub-category-crumb/sub-category-crumb';
@@ -14,7 +14,7 @@ import { CategoeyBooks } from '../categoey-books/categoey-books';
   styleUrl: './main-filter-container.css'
 })
 export class MainFilterContainer implements OnInit {
-   
+
   constructor(private router:ActivatedRoute,private categoryService:CategoryServices){
 
   }
@@ -33,14 +33,19 @@ export class MainFilterContainer implements OnInit {
   ];
 
    ngOnInit(): void {
+    window.scrollTo({ top: 0 }); // نضمن إن الصفحة تبدأ من فوق
+
     const categoryId = this.router.snapshot.paramMap.get('Id');
-      
+
       if (categoryId) {
-        this.categoryService.getCategoryById(+categoryId).subscribe({
+        const idNumber = +categoryId;
+        this.CategoryId = idNumber;
+        console.log('Category ID:', this.CategoryId);
+        this.categoryService.getCategoryById(idNumber).subscribe({
             next: (category) => {
               if (category) {
                 this.Category=category.data;
-                this.categoryName = this.Category.name; 
+                this.categoryName = this.Category.name;
                 this.categoryDescription = this.Category.description;
                 this.CategoryId=this.Category.id
 
@@ -48,7 +53,7 @@ export class MainFilterContainer implements OnInit {
                   { name: 'الأقسام', path: '/' }, //need link
                   { name:this.Category.name, path: `/category/${categoryId}` }//need update link
                 ];
-                
+
               } else {
                 console.error('Category not found');
               }
@@ -57,7 +62,7 @@ export class MainFilterContainer implements OnInit {
             console.error('Error fetching category:', error);
           }
         })
-      } 
-  
+      }
+
   }
 }

@@ -380,6 +380,10 @@
   font-weight: bold;
   position: relative;
   bottom: -5px;
+
+}
+.cc:hover{
+  text-decoration: none;
 }
 
 
@@ -501,4 +505,8 @@ a:hover {
   margin-bottom: 20px;
   padding: 0;
 
+}
+
+.category-itesm:hover {
+  text-decoration: none;
 }

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-filtering',
-  imports: [RouterLink,RouterLinkActive,CommonModule],
+  imports: [RouterLink,RouterLinkActive,CommonModule , TranslateModule],
   templateUrl: './filtering.html',
   styleUrl: './filtering.css'
 })

@@ -23,10 +23,14 @@ export class CategoeyBooks implements OnInit,OnChanges  {
 
   constructor(private bookService: BookService) {
 
+    // console.log(this.Books)///test
+    // console.log(this.categoryName)///test
+
+
   }
   ngOnChanges(changes: SimpleChanges): void {
      if (changes['CategoryId'] && !changes['CategoryId'].firstChange) {
-      this.currentPage = 1; 
+      this.currentPage = 1;
       this.getBooksByCategoryId();
     }
   }

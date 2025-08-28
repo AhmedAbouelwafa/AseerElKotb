@@ -182,6 +182,9 @@
       "arabic": "العربية",
       "english": "English"
     }
+  },
+  "Author": {
+    "language": "لغة الكاتب"
   }
 
 

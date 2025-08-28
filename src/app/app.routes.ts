@@ -19,13 +19,13 @@ export const routes: Routes = [
   {
     path: 'book-details/:id' , component : BookDetails,
   },
-  
+
   { path: 'authors/:id', component: AuthorDetails }
   ,
   {
     path: 'book-details/:id' , component : BookDetails,
   },
-  { 
+  {
     path: 'confirm-email', component: ConfirmEmail
   },
   {
@@ -45,7 +45,11 @@ export const routes: Routes = [
   }
   ,
   {
+
     path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
+
+    // path: 'MainFilterContainer/:id' , component : MainFilterContainer,
+
   }
   ,
   {
