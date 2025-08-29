@@ -1,3 +1,4 @@
+
 <div id="outerContainer">
     <div id="mainFilterContainer">
         <div id="filterHeader">
@@ -6,66 +7,84 @@
 
         <div id="language">
             <div id="languageHeader" class="header" (click)="toggleSection('language')">
-                <h3>{{'Author.language' | translate}}</h3>
-                <!-- <i class="fa-solid fa-angle-down"></i> -->
-                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.language"></i>
+                <h3>لغة الكاتب</h3>
+                <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.language"></i>
             </div>
 
-            <div id="languageOption" *ngIf="sectionVisibility.language">
-                @for (lang of languages ; track lang) {
-                    <div class="option">
-                        <input type="radio" name="language" id="language" value="">
-                        <label>{{lang}}</label>
-                    </div>
+            @if (sectionVisibility.language) {
+            <div id="languageOption">
+                @for (lang of languages; track lang) {
+                <div class="option">
+                    <input type="radio" 
+                           name="language" 
+                           id="{{'lang-' + lang}}" 
+                           [checked]="selectedLanguage === languageMap[lang]"
+                           (change)="onLanguageChange(lang)"> 
+                    <label for="{{'lang-' + lang}}">{{lang}}</label>
+                </div>
                 }
             </div>
-
+            }
         </div>
 
         <div id="order">
             <div id="orderHeader" class="header" (click)="toggleSection('order')">
                 <h3>ترتيب حسب</h3>
-                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.order"></i>
-                <!-- <i class="fa-solid fa-angle-down"></i> -->
+                <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.order"></i>
             </div>
 
-            <div id="orderOption" *ngIf="sectionVisibility.order" >
-                <select name="" id="">
-                    <option value="Ascending"> ⇡ الأحدث </option>
-                    <option value="Descending">⇣ الأقدم</option>
-                    <option value="most_popular">⇡ الأكثر رواجاً</option>
+            @if (sectionVisibility.order) {
+            <div id="orderOption">
+                <select [ngModel]="selectedSort" (ngModelChange)="onSortChange($event)">
+                    @for (option of sortOptions; track option.value) {
+                        <option [value]="option.value">{{option.label}}</option>
+                    }
                 </select>
-
             </div>
-
+            }
         </div>
 
         <div id="bublisher">
             <div id="bublisherHeader" class="header" (click)="toggleSection('publisher')">
-                <h3>دور النشر </h3>
+                <h3>دور النشر</h3>
                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.publisher"></i>
-                <!-- <i class="fa-solid fa-angle-down"></i> -->
             </div>
 
-            <div class="searchContainer" *ngIf="sectionVisibility.publisher">
-                <input
-                type="text"
+            @if (sectionVisibility.publisher) {
+            <div class="searchContainer">
+                <input 
+                type="text" 
                 placeholder="ابحث عن دور النشر"
                 class="search-input"
+                [ngModel]="searchPublisherTerm"
+                (ngModelChange)="searchPublisherTerm = $event; onSearchInput()"
                 />
             </div>
+            }
 
-            <div id="bublisherOptions" *ngIf="sectionVisibility.publisher">
-                @for (publisher of publishers ; track publisher) {
-                    <div class="option">
-                        <input type="checkbox" name="" id="" value="">
-                        <label>{{publisher}}</label>
-                    </div>
+            @if (sectionVisibility.publisher) {
+            <div id="bublisherOptions">
+                @for (publisher of displayedPublishers; track publisher.id) {
+                <div class="option">
+                    <input type="checkbox" 
+                           [checked]="selectedPublishers.includes(publisher.id)"
+                           (change)="onPublisherChange(publisher.id)"> 
+                    <label>{{publisher.name}}</label>
+                </div>
+                }
+                @if (!showAllPublishers && allPublishers.length > 3 && !searchPublisherTerm) {
+                    <button type="button" (click)="toggleShowAllPublishers()" class="show-more-btn">
+                        عرض المزيد
+                    </button>
+                }
+
+                @if (showAllPublishers && !searchPublisherTerm) {
+                <button type="button" (click)="toggleShowAllPublishers()" class="show-less-btn">
+                    عرض أقل
+                </button>
                 }
             </div>
-
-        <a routerLink="#"  routerLinkActive="active">عرض المزيد</a>
-
+            }
+        </div>
     </div>
-
 </div>

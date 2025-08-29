@@ -25,8 +25,7 @@
                     @for(item of items;track item.bookId) {
                         <div class="itemContainer">
                             <div class="BookInfo">
-                                <!-- <img id="BookCover" src="https://ts1.mm.bing.net/th?id=OIP.P0mVSE32mlt5qmdXGfFRQQAAAA&pid=15.1" alt="BookImage">change this -->
-                                <img id="BookCover" [src]="item.coverImageUrl" alt="BookImage">
+                                <img id="BookCover" [src]="getCoverImageUrl(item)" alt="BookImage">
                                 <span class="Book"> كتاب</span>
                                 <span class="BookTitle">{{item.bookTitle}}</span><!-- change this -->
                             </div>

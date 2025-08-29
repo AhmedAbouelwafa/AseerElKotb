@@ -1,20 +1,19 @@
- .paginationContaner {
+.paginationContainer {
   display: flex;
-  justify-content:end;
+  justify-content: end;
   align-items: center;
-  margin-block: 5rem ;
+  margin-block: 5rem;
+  gap: 0.25rem;
 }
-
 
 .paginationButton {
   border: 1px solid #b3bac1;
   border-radius: 2px;
-  padding:7px;
+  padding: 7px;
   background: white;
-  font-size:15px;
+  font-size: 15px;
   min-width: 2rem;
   cursor: pointer;
-
 }
 
 .paginationButton.active {
@@ -25,17 +24,19 @@
 .paginationButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-} 
+}
+
+.paginationEllipsis {
+  padding: 0 8px;
+  color: #7a8a9b;
+}
 
 @media (max-width: 768px) {
   #pagesNumber {
     display: none;
   }
-  .paginationContaner {
-    margin-inline: 10px;
-  display: flex;
-  justify-content:space-between;
-  align-items: center;
-  
-}
+  .paginationContainer {
+    display: flex;
+    justify-content: space-between;
+  }
 }
