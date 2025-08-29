@@ -8,7 +8,7 @@ import { FilterBooksRequest, Ibook } from '../book-model/Ibook';
   providedIn: 'root'
 })
 export class BookService {
-  private _apiBaseUrl = environment.apiBaseUrl;
+  private _apiBaseUrl = environment.apiBaseUrl+'/api';
 
   constructor(private http: HttpClient) {}
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryServices } from '../../categories/category-services';
+
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { CategoryTitle } from '../category-title/category-title';
 import { SubCategoryCrumb } from '../sub-category-crumb/sub-category-crumb';
@@ -8,6 +8,7 @@ import { Filtering, FilterParams } from '../filtering/filtering';
 import { CategoeyBooks } from '../categoey-books/categoey-books';
 import { FilterBooksRequest } from '../../products/book-model/Ibook';
 import { Subscription } from 'rxjs';
+import { CategoryServices } from '../../categories/category-service/category-services';
 
 @Component({
   selector: 'app-main-filter-container',

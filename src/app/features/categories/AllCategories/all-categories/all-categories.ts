@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { parentCategory } from '../../category-model/Icategory';
-import { CategoryServices } from '../../category-services';
 import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/nav-crumb';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CategoryServices } from '../../category-service/category-services';
 
 @Component({
   selector: 'app-all-categories',
