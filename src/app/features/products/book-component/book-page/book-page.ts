@@ -26,6 +26,7 @@ export class BookPage implements OnInit {
   categoriesWithBooks: CategoryWithBooks[] = [];
   @Input() title: string = "";
   isLoading: boolean = true;
+  isRTL: boolean = false;
 
   constructor(
     private bookService: BookService,
@@ -91,6 +92,13 @@ export class BookPage implements OnInit {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
       this.loadMoreCategories();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.isRTL = this.translate.currentLang === 'ar';
+    this.translate.onLangChange.subscribe(event => {
+      this.isRTL = event.lang === 'ar';
+    });
   }
 
 }

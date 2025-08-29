@@ -98,11 +98,13 @@
 
         <div class="book-snip" *ngIf="book?.description">
           <h3 class="section-title">{{'bookDetails.aboutBook' | translate}}</h3>
+          <div class="gg"></div>
           <p class="book-description">{{ book?.description }}</p>
         </div>
 
         <div class="author-snip">
           <h3 class="section-title">{{'bookDetails.aboutAuthor' | translate}}</h3>
+          <div class="gg"></div>
 
           <div class="author-description">
             <a routerLink="/authors/{{author.id}}" class="text-dark cc">
@@ -176,7 +178,7 @@
             </ul>
 
             <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories'| translate}}</button>
-            
+
           </div>
         </div>
       </div>

@@ -60,6 +60,8 @@ export class Navbar implements OnInit {
   changeLang(lang: string) {
     this.langService.setLang(lang);
     this.showDropdown = false;
+    //reoload page
+    window.location.reload();
   }
 
 

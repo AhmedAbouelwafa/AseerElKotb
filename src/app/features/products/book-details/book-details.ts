@@ -11,8 +11,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthorApiService } from '../../../core/services/Author/author-api-service';
 import { IAuthor } from '../../Authors/Author-Model/iauthor';
 import { CategoryServices } from '../../categories/category-service/category-services';
-import { Icategory } from '../../categories/category-model/Icategory';
-
 
 @Component({
   selector: 'app-book-details',
@@ -32,15 +30,14 @@ export class BookDetails implements OnInit {
   author!: IAuthor;
   categories!: any[];
 
-
-
-
   totalReviews = 0;
   averageRating = 0;
   isLiked = false;
 
-  constructor(private api: BookService, private route: ActivatedRoute,
-    private router: Router ,
+  constructor(
+    private api: BookService,
+    private route: ActivatedRoute,
+    private router: Router,
     private translate: TranslateService,
     private authorService: AuthorApiService,
     private catService : CategoryServices
@@ -53,30 +50,11 @@ export class BookDetails implements OnInit {
       const paramValue = params['id'];
 
       if (!isNaN(Number(paramValue))) {
-
         this.bookId = Number(paramValue);
-        this.fetchBookById(this.bookId, true);
+        this.fetchBookById(this.bookId);
       } else {
-        const slug = paramValue.toLowerCase();
-        this.api.getBookById(this.bookId).subscribe({
-          next: (allBooks) => {
-            console.log(allBooks);
-
-            if (allBooks) {
-              this.bookId = allBooks.id;
-
-              this.fetchBookById(this.bookId, false);
-            } else {
-              alert('الكتاب غير موجود.');
-            }
-          },
-          error: (error) => {
-            console.error('Error fetching books:', error);
-            alert('حدث خطأ أثناء جلب بيانات الكتب.');
-          }
-        });
+        alert("الرابط غير صحيح. لازم يبقى فيه ID.");
       }
-
     });
 
     this.api.getBooks().subscribe({
@@ -87,19 +65,13 @@ export class BookDetails implements OnInit {
         console.error('Error fetching books by author:', error);
       }
     });
-
-
   }
 
-  fetchBookById(id: number, changeUrl: boolean) {
+  fetchBookById(id: number) {
     this.api.getBookById(id).subscribe({
       next: (data) => {
         this.book = data;
         this.authorId = this.book.authorId;
-        if (changeUrl && this.book?.title) {
-          const bookSlug = this.book.title.replace(/\s+/g, '-');
-          this.router.navigate(['/book-details', bookSlug], { replaceUrl: true });
-        }
 
         if (this.book.price && this.book.discountPercentage) {
           this.newPrice = this.book.price - (this.book.price * this.book.discountPercentage / 100);
@@ -107,6 +79,32 @@ export class BookDetails implements OnInit {
         } else {
           this.newPrice = this.book?.price;
         }
+
+        // استدعاء بيانات المؤلف
+        this.authorService.getAuthorById(this.authorId).subscribe({
+          next: (authorData) => {
+            this.author = authorData;
+          },
+          error: (error) => {
+            console.error('Error fetching author:', error);
+          }
+        });
+
+        // استدعاء التصنيفات
+        this.catService.getPaginatedCategories().subscribe({
+          next: (data) => {
+            this.categories = data.map((category : any) => {
+              return {
+                name: category.name,
+                id: category.id
+              }
+            });
+          },
+          error: (error) => {
+            console.error('Error fetching categories:', error);
+          }
+        });
+
       },
       error: (error) => {
         if (error.status === 422) {
@@ -120,32 +118,6 @@ export class BookDetails implements OnInit {
         console.error('Error fetching book:', error);
       }
     });
-
-    this.authorService.getAuthorById(this.authorId).subscribe({
-      next: (data) => {
-       this.author = data;
-
-      },
-      error: (error) => {
-        console.error('Error fetching author:', error);
-      }
-    });
-
-    this.catService.getPaginatedCategories().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.categories = data.map((category : any) => {
-          return {
-            name: category.name,
-            id: category.id
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error fetching categories:', error);
-      }
-    });
-
   }
 
   getCoverImageUrl(): string {
@@ -167,13 +139,4 @@ export class BookDetails implements OnInit {
   toggleHeart() {
     this.isLiked = !this.isLiked;
   }
-
-
-
-
-
-
-
-
-
 }
