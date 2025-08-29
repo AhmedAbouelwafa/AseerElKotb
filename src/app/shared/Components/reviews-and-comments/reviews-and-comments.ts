@@ -59,15 +59,20 @@ export class ReviewsAndComments implements  OnChanges , OnInit {
   // عالمى يبنى اقسم بالله
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.bookId = changes['bookId']?.currentValue;
-    this.allAddedQuotes = this.loadQuotes(this.bookId);
-    this.quotes = this.allAddedQuotes;
+    if (changes['bookId'] && changes['bookId'].currentValue) {
+      this.bookId = changes['bookId'].currentValue;
+      this.loadQuotes(this.bookId); // استدعي API لما يوصلك ID جديد
+    }
   }
 
 
   ngOnInit(): void {
-    this.bookId = this.book?.id || 0;
+    if (this.book?.id) {
+      this.bookId = this.book.id;
+      this.loadQuotes(this.bookId);
+    }
   }
+
 
   deleteQuote(quoteId: number) {
     this.api.deleteQuote(quoteId).subscribe({
@@ -82,27 +87,28 @@ export class ReviewsAndComments implements  OnChanges , OnInit {
 
 
   onQuoteAdded(quote: any) {
-
-
+    this.quotes.push(quote);
+    this.allAddedQuotes.push(quote);
   }
 
   loadQuotes(bookId: number) {
     this.api.getAllQuotes({
-      BookId: this.book?.id,
+      BookId: bookId,
       SearchTerm: '',
       PageNumber: 1,
       PageSize: 10
     }).subscribe({
       next: (data) => {
         this.quotes = data;
+        this.allAddedQuotes = [...data]; // خزن نسخة في allAddedQuotes كمان
         console.log(this.quotes);
       },
       error: (error) => {
         console.error('Error fetching quotes:', error);
       }
     });
-    return this.quotes;
   }
+
 
 
 }

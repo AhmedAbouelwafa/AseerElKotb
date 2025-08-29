@@ -9,8 +9,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './category-card.css'
 })
 export class CategoryCard {
+
+
   @Input() categoryName : string = '';
   @Input() bg : string = '#181427';
 
-  
+
 }

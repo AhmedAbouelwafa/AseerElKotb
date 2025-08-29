@@ -98,18 +98,22 @@
 
         <div class="book-snip" *ngIf="book?.description">
           <h3 class="section-title">{{'bookDetails.aboutBook' | translate}}</h3>
+          <div class="gg"></div>
           <p class="book-description">{{ book?.description }}</p>
         </div>
 
         <div class="author-snip">
           <h3 class="section-title">{{'bookDetails.aboutAuthor' | translate}}</h3>
+          <div class="gg"></div>
 
           <div class="author-description">
-            <div class="imageWithName">
-              <img [src]="getCoverImageUrl()" alt="" class="author-image">
-              <h5 class="author-name">{{book?.title}}</h5>
-            </div>
-            <p class="whoIsAuthor">{{book?.description}}</p>
+            <a routerLink="/authors/{{author.id}}" class="text-dark cc">
+              <div class="imageWithName">
+                <img [src]="getAuthorCoverImageUrl()" alt="" class="author-image">
+                <h5 class="author-name">{{author.name}}</h5>
+              </div>
+            </a>
+            <p class="whoIsAuthor">{{author.bio}}</p>
 
             <div class="anotherBooksForAuthor">
               <h3 class="section-title">{{'bookDetails.otherWorks' | translate}}</h3>
@@ -162,37 +166,19 @@
         <div class="shadow-sm maincat">
           <div class="p-0 cat">
             <h5 class="mb-3 text-muted text-center">{{'bookDetails.categories' | translate}}</h5>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item category-item">
-                {{'categoriesList.novels' | translate}} <span class="badge bg-light text-danger">12,983</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.diverseBooks' | translate}} <span class="badge bg-light text-danger">10,071</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.englishBooks' | translate}} <span class="badge bg-light text-danger">6,956</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.childrenSection' | translate}} <span class="badge bg-light text-danger">6,558</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.translations' | translate}} <span class="badge bg-light text-danger">4,462</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.childrenBooks' | translate}} <span class="badge bg-light text-danger">3,332</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.novelsEn' | translate}} <span class="badge bg-light text-danger">3,288</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.selfPsychology' | translate}} <span class="badge bg-light text-danger">2,678</span>
-              </li>
-              <li class="list-group-item category-item">
-                {{'categoriesList.history' | translate}} <span class="badge bg-light text-danger">2,545</span>
-              </li>
+            <ul class="list-group list-group-flush w-75">
+              @for (category of categories; track category.id) {
+                <a routerLink="/MainFilterContainer/{{category.id}}" class="category-itesm">
+                  <li class="list-group-item category-item">
+                    {{category.name}} <span class="badge bg-light text-danger">12,983</span>
+                  </li>
+                </a>
+              }
+
             </ul>
 
-            <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories' | translate}}</button>
+            <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories'| translate}}</button>
+
           </div>
         </div>
       </div>

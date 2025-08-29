@@ -1,0 +1,164 @@
+<head>
+    <link rel="stylesheet" href="login.css">
+</head>
+<div class="login-container">
+  <!-- Logo -->
+  <div class="logo-container">
+    <div>
+          <img src="/icons/logo.svg" alt="Logo" width="40" height="40" class="me-2">
+    </div>
+  </div>
+
+  <!-- Login Form Card -->
+  <div class="login-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">البريد الإلكتروني</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          [class.is-invalid]="emailError()"
+          formControlName="email"
+        >
+        @if (emailError()) {
+          <div class="invalid-feedback">{{ emailError() }}</div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">كلمة المرور</label>
+        <div class="password-input-container">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="form-control"
+            [class.is-invalid]="passwordError()"
+            formControlName="password"
+          >
+          <button
+            type="button"
+            class="password-toggle "
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+          >
+            @if (showPassword()) {
+              <i class="bi bi-eye-slash"></i>
+            } @else {
+              <i class="bi bi-eye"></i>
+            }
+          </button>
+        </div>
+        @if (passwordError()) {
+          <div class="invalid-feedback">{{ passwordError() }}</div>
+        }
+      </div>
+
+      <!-- Remember Me -->
+      <div class="form-check">
+        <input
+          id="remember"
+          type="checkbox"
+          class="form-check-input"
+          formControlName="remember"
+        >
+        <label for="remember" class="form-check-label">تذكرني</label>
+      </div>
+   <!-- Submit Button and Forgot Password in same line -->
+<div class="d-flex justify-content-end">
+    <!-- Forgot Password -->
+  <div class="forgot-password">
+    <button type="button" class="link-button" (click)="onForgotPassword()">
+      هل فقدت كلمة المرور؟
+    </button>
+  </div>
+  <!-- Submit Button -->
+  <button
+    type="submit"
+    class="btn btn-primary btn-login m-1"
+  >
+    @if (isSubmitting() || auth.loading()) {
+      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+      جاري تسجيل الدخول...
+    } @else {
+      دخول
+    }
+  </button>
+
+
+</div>
+
+<!-- Error Message -->
+@if (auth.loginError()) {
+  <div class="alert alert-danger mt-3" role="alert">
+    {{ auth.loginError() }}
+  </div>
+}
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>أو سجل دخولك بإستخدام</span>
+    </div>
+
+    <!-- Social Login Buttons -->
+    <div class="social-login">
+      <button
+        type="button"
+        class="social-btn google-btn"
+        (click)="onSocialLogin('google')"
+        aria-label="تسجيل الدخول بجوجل"
+      >
+        <i class="bi bi-google"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn instagram-btn"
+        (click)="onSocialLogin('instagram')"
+        aria-label="تسجيل الدخول بإنستغرام"
+      >
+        <i class="bi bi-instagram"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn twitter-btn"
+        (click)="onSocialLogin('twitter')"
+        aria-label="تسجيل الدخول بتويتر"
+      >
+        <i class="bi bi-twitter-x"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn facebook-btn"
+        (click)="onSocialLogin('facebook')"
+        aria-label="تسجيل الدخول بفيسبوك"
+      >
+        <i class="bi bi-facebook"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn apple-btn"
+        (click)="onSocialLogin('apple')"
+        aria-label="تسجيل الدخول بأبل"
+      >
+        <i class="bi bi-apple"></i>
+      </button>
+    </div>
+
+    <!-- Sign Up Link -->
+    <div class="signup-link">
+      <div class="divider">
+              <span >ليس لدى حساب على عصير الكتب</span>
+      </div>
+      <button type="button" class="register_nav" (click)="onRegister()">
+        تسجيل عضوية جديدة
+      </button>
+    </div>
+  </div>
+</div>

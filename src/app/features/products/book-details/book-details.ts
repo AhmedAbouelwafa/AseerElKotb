@@ -8,6 +8,9 @@ import { environment } from '../../../core/configs/environment.config';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ReviewsAndComments } from "../../../shared/Components/reviews-and-comments/reviews-and-comments";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthorApiService } from '../../../core/services/Author/author-api-service';
+import { IAuthor } from '../../Authors/Author-Model/iauthor';
+import { CategoryServices } from '../../categories/category-service/category-services';
 
 @Component({
   selector: 'app-book-details',
@@ -23,14 +26,22 @@ export class BookDetails implements OnInit {
   bookId: number = 0;
   private baseUrl = environment.apiBaseUrl.replace('/api', '');
   booksByAuthor!: Ibook[];
-
-
+  authorId!: number;
+  author!: IAuthor;
+  categories!: any[];
 
   totalReviews = 0;
   averageRating = 0;
   isLiked = false;
 
-  constructor(private api: BookService, private route: ActivatedRoute, private router: Router , private translate: TranslateService) {}
+  constructor(
+    private api: BookService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translate: TranslateService,
+    private authorService: AuthorApiService,
+    private catService : CategoryServices
+  ) {}
 
   ngOnInit(): void {
     window.scrollTo({ top: 0 }); // نضمن إن الصفحة تبدأ من فوق
@@ -39,22 +50,10 @@ export class BookDetails implements OnInit {
       const paramValue = params['id'];
 
       if (!isNaN(Number(paramValue))) {
-
         this.bookId = Number(paramValue);
-        this.fetchBookById(this.bookId, true);
+        this.fetchBookById(this.bookId);
       } else {
-        const slug = paramValue.toLowerCase();
-        this.api.getBooks().subscribe(allBooks => {
-          const foundBook = allBooks.find(b =>
-            b.title.replace(/\s+/g, '-').toLowerCase() === slug
-          );
-          if (foundBook) {
-            this.bookId = foundBook.id;
-            this.fetchBookById(this.bookId, false);
-          } else {
-            alert('الكتاب غير موجود.');
-          }
-        });
+        alert("الرابط غير صحيح. لازم يبقى فيه ID.");
       }
     });
 
@@ -68,15 +67,11 @@ export class BookDetails implements OnInit {
     });
   }
 
-  fetchBookById(id: number, changeUrl: boolean) {
+  fetchBookById(id: number) {
     this.api.getBookById(id).subscribe({
       next: (data) => {
         this.book = data;
-
-        if (changeUrl && this.book?.title) {
-          const bookSlug = this.book.title.replace(/\s+/g, '-');
-          this.router.navigate(['/book-details', bookSlug], { replaceUrl: true });
-        }
+        this.authorId = this.book.authorId;
 
         if (this.book.price && this.book.discountPercentage) {
           this.newPrice = this.book.price - (this.book.price * this.book.discountPercentage / 100);
@@ -84,6 +79,32 @@ export class BookDetails implements OnInit {
         } else {
           this.newPrice = this.book?.price;
         }
+
+        // استدعاء بيانات المؤلف
+        this.authorService.getAuthorById(this.authorId).subscribe({
+          next: (authorData) => {
+            this.author = authorData;
+          },
+          error: (error) => {
+            console.error('Error fetching author:', error);
+          }
+        });
+
+        // استدعاء التصنيفات
+        this.catService.getPaginatedCategories().subscribe({
+          next: (data) => {
+            this.categories = data.map((category : any) => {
+              return {
+                name: category.name,
+                id: category.id
+              }
+            });
+          },
+          error: (error) => {
+            console.error('Error fetching categories:', error);
+          }
+        });
+
       },
       error: (error) => {
         if (error.status === 422) {
@@ -105,6 +126,14 @@ export class BookDetails implements OnInit {
       return this.baseUrl + this.book.coverImageUrl;
     }
     return this.book.coverImageUrl;
+  }
+
+  getAuthorCoverImageUrl(): string {
+    if (!this.author?.imageUrl) return '';
+    if (this.author.imageUrl.startsWith('/uploads')) {
+      return this.baseUrl + this.author.imageUrl;
+    }
+    return this.author.imageUrl;
   }
 
   toggleHeart() {

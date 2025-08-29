@@ -5,14 +5,15 @@ export interface IAuthor {
     imageUrl: string;
     rating: number;
     countryCode: string;
-    
+    coverImageUrl: string;
+
         books: {
         id: number;
         title: string;
         price: number;
         discountedPrice: number;
         coverImageUrl: string;
-        
+
     rating: number;}[];
         reviews: {
         id: number;

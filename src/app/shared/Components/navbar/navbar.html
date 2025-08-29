@@ -25,9 +25,21 @@
             </ul>
           </li>
 
-          <li class="nav-item"><a class="nav-link" routerLink="/kids">{{ 'navbar.menu.kidsSection' | translate }}</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/accessories">{{ 'navbar.menu.accessories' | translate }}</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/toys">{{ 'navbar.menu.toys' | translate }}</a></li>
+
+
+          <li class="nav-item" *ngIf="!isAuthenticated()">
+
+            <a class="nav-link" routerLink="/login">دخول</a>
+
+          </li>
+
+           <li class="nav-item " *ngIf="!isAuthenticated()">
+
+            <a class="nav-link" routerLink="/register">تسجيل</a>
+
+          </li>
+          <li class="nav-item"><a class="nav-link" routerLink="/MainFilterContainer/7">{{ 'navbar.menu.kidsSection' | translate }}</a></li>
+          
         </ul>
 
         <!-- أيقونات المستخدم والقائمة المنسدلة -->
@@ -35,6 +47,7 @@
           <button class="btn p-0">
             <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
             <ul class="dropdown-menu-custom">
+             
               <li>
                 <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
                 <a routerLink="/profile"><i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}</a>
@@ -47,7 +60,7 @@
               <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a></li>
               <li><a routerLink="/cart"><i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }} <span class="badge bg-success">3</span></a></li>
               <li><a routerLink="/api-tokens"><i class="fas fa-key"></i> {{ 'navbar.userMenu.apiTokens' | translate }}</a></li>
-              <li><a routerLink="/logout"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a></li>
+              <li><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a></li>
             </ul>
           </button>
 

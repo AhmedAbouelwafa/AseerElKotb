@@ -1,10 +1,26 @@
-<form class="d-flex me-3 gap-0 formSeearch" role="search">
+<form class="d-flex me-3 gap-0 formSeearch" role="search" (submit)="$event.preventDefault()">
   <input class="form-control search-input" type="search"
          [placeholder]="'search.placeholder' | translate"
          aria-label="Search"
-         [ngStyle]="{ '--placeholder-size': placeholderSize , '--input-width': inputWidth }">
-  <button class="btn-search" type="submit">
-    <i class="fa-solid fa-magnifying-glass"></i>
+         [ngStyle]="{ '--placeholder-size': placeholderSize , '--input-width': inputWidth }"
+         [(ngModel)]="searchQuery"
+         name="searchQuery"
+         (input)="onSearchChange()">
 
-  </button>
+  <!-- <button class="btn-search" type="submit">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button> -->
+
+  <div class="dropsaerch" *ngIf="books.length > 0">
+    <div class="fsw">
+      @for (book of books; track $index) {
+          <a [routerLink]="['/book-details', book.id]" class="searchLink" >
+            <div class="imageWithText">
+              <img [src]="book.cover" alt="">
+              <p class="bookName">{{book.name}}</p>
+            </div>
+          </a>
+      }
+    </div>
+  </div>
 </form>
