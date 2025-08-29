@@ -5,11 +5,18 @@ import { DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { BookPage } from "../book-component/book-page/book-page";
 import { environment } from '../../../core/configs/environment.config';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { ReviewsAndComments } from "../../../shared/Components/reviews-and-comments/reviews-and-comments";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthorApiService } from '../../../core/services/Author/author-api-service';
+import { IAuthor } from '../../Authors/Author-Model/iauthor';
+import { CategoryServices } from '../../categories/category-service/category-services';
+import { Icategory } from '../../categories/category-model/Icategory';
+
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, BookPage , RouterLink],
+  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
@@ -21,56 +28,55 @@ export class BookDetails implements OnInit {
   bookId: number = 0;
   private baseUrl = environment.apiBaseUrl.replace('/api', '');
   booksByAuthor!: Ibook[];
+  authorId!: number;
+  author!: IAuthor;
+  categories!: any[];
 
-  activeTab: string = 'quotes';
 
-  reviews = [
-    { rating: 5, comment: 'ممتاز' },
-    { rating: 4, comment: 'جيد' },
-    { rating: 3, comment: 'مقبول' },
-    { rating: 2, comment: 'سيء' },
-    { rating: 1, comment: 'مسيء' },
-  ];
+
 
   totalReviews = 0;
   averageRating = 0;
   isLiked = false;
 
-  constructor(private api: BookService, private route: ActivatedRoute) {}
+  constructor(private api: BookService, private route: ActivatedRoute,
+    private router: Router ,
+    private translate: TranslateService,
+    private authorService: AuthorApiService,
+    private catService : CategoryServices
+  ) {}
 
   ngOnInit(): void {
-    // ناخد الـ id من الـ route
-    this.route.params.subscribe(params => {
-      this.bookId = Number(params['id']);
+    window.scrollTo({ top: 0 }); // نضمن إن الصفحة تبدأ من فوق
 
-      if (this.bookId > 0) {
-        // نجيب تفاصيل الكتاب
+    this.route.params.subscribe(params => {
+      const paramValue = params['id'];
+
+      if (!isNaN(Number(paramValue))) {
+
+        this.bookId = Number(paramValue);
+        this.fetchBookById(this.bookId, true);
+      } else {
+        const slug = paramValue.toLowerCase();
         this.api.getBookById(this.bookId).subscribe({
-          next: (data) => {
-            this.book = data;
-            if (this.book.price && this.book.discountPercentage) {
-              this.newPrice = this.book.price - (this.book.price * this.book.discountPercentage / 100);
-              this.discount = this.book.price - this.newPrice;
+          next: (allBooks) => {
+            console.log(allBooks);
+
+            if (allBooks) {
+              this.bookId = allBooks.id;
+
+              this.fetchBookById(this.bookId, false);
             } else {
-              this.newPrice = this.book?.price;
+              alert('الكتاب غير موجود.');
             }
           },
           error: (error) => {
-            if (error.status === 422) {
-              console.warn('Book data is invalid or not found.');
-              alert('الكتاب غير متاح أو البيانات غير صحيحة.');
-            } else if (error.status === 404) {
-              alert('الكتاب غير موجود.');
-            } else {
-              alert('حدث خطأ أثناء جلب بيانات الكتاب.');
-            }
-            console.error('Error fetching book:', error);
+            console.error('Error fetching books:', error);
+            alert('حدث خطأ أثناء جلب بيانات الكتب.');
           }
         });
-
-      } else {
-        console.error('Invalid Book ID');
       }
+
     });
 
     this.api.getBooks().subscribe({
@@ -81,6 +87,65 @@ export class BookDetails implements OnInit {
         console.error('Error fetching books by author:', error);
       }
     });
+
+
+  }
+
+  fetchBookById(id: number, changeUrl: boolean) {
+    this.api.getBookById(id).subscribe({
+      next: (data) => {
+        this.book = data;
+        this.authorId = this.book.authorId;
+        if (changeUrl && this.book?.title) {
+          const bookSlug = this.book.title.replace(/\s+/g, '-');
+          this.router.navigate(['/book-details', bookSlug], { replaceUrl: true });
+        }
+
+        if (this.book.price && this.book.discountPercentage) {
+          this.newPrice = this.book.price - (this.book.price * this.book.discountPercentage / 100);
+          this.discount = this.book.price - this.newPrice;
+        } else {
+          this.newPrice = this.book?.price;
+        }
+      },
+      error: (error) => {
+        if (error.status === 422) {
+          console.warn('Book data is invalid or not found.');
+          alert('الكتاب غير متاح أو البيانات غير صحيحة.');
+        } else if (error.status === 404) {
+          alert('الكتاب غير موجود.');
+        } else {
+          alert('حدث خطأ أثناء جلب بيانات الكتاب.');
+        }
+        console.error('Error fetching book:', error);
+      }
+    });
+
+    this.authorService.getAuthorById(this.authorId).subscribe({
+      next: (data) => {
+       this.author = data;
+
+      },
+      error: (error) => {
+        console.error('Error fetching author:', error);
+      }
+    });
+
+    this.catService.getPaginatedCategories().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.categories = data.map((category : any) => {
+          return {
+            name: category.name,
+            id: category.id
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    });
+
   }
 
   getCoverImageUrl(): string {
@@ -91,20 +156,24 @@ export class BookDetails implements OnInit {
     return this.book.coverImageUrl;
   }
 
+  getAuthorCoverImageUrl(): string {
+    if (!this.author?.imageUrl) return '';
+    if (this.author.imageUrl.startsWith('/uploads')) {
+      return this.baseUrl + this.author.imageUrl;
+    }
+    return this.author.imageUrl;
+  }
+
   toggleHeart() {
     this.isLiked = !this.isLiked;
   }
 
-  selectTab(tab: string) {
-    this.activeTab = tab;
-  }
 
-  getRatingPercentage(level: number): number {
-    const count = this.reviews.filter(r => r.rating === level).length;
-    return this.totalReviews === 0 ? 0 : Math.round((count / this.totalReviews) * 100);
-  }
 
-  addReview() {
-    alert('نموذج المراجعة سيفتح هنا لاحقًا');
-  }
+
+
+
+
+
+
 }

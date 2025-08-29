@@ -2,15 +2,25 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/Components/navbar/navbar';
 import { Footer } from "./shared/Components/footer/footer";
-import { BookCard } from "./features/products/card-componenet/book-card/book-card";
-import { BookDetails } from "./features/products/book-details/book-details";
+import { TranslateService } from '@ngx-translate/core';
+import { LangService } from './core/services/LanguageService/lang-service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, Navbar],
+  imports: [RouterOutlet, Footer, Navbar , AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+
 export class App {
-  protected title = 'AseerElKotb';
+  title = 'AseerElKotb';
+  currentLang$: Observable<any>;  // Add type annotation
+
+  constructor(private langService: LangService, private translate: TranslateService) {
+    this.currentLang$ = this.langService.dir$;  // Initialize in constructor
+    translate.setDefaultLang(localStorage.getItem('lang') || 'ar');
+    translate.use(localStorage.getItem('lang') || 'ar');
+  }
 }

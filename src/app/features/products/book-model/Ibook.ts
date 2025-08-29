@@ -8,7 +8,9 @@ export interface Ibook{
   discountPercentage : number,
   publishedDate : Date,
   pageCount : number,
+
   language : bookLang,
+  
   coverImageUrl : string,
   format : string,
   stockQuantity : number,
@@ -22,4 +24,26 @@ export interface Ibook{
   rating : number,
 
 
+}
+
+
+export interface FilterBooksRequest {
+  CategoryIds: number[];
+  PageNumber: number;
+  PageSize: number;
+  SearchTerm?: string;
+  Language?: number|null;
+  PublisherIds?: number[];
+  SortBy?: number;
+}
+
+export interface BookFilterResponse {
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  message: string | null;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  data: any[];
 }

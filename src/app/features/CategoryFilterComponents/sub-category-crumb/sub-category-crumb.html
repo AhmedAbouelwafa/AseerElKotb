@@ -1,0 +1,7 @@
+<div id="subCategories">
+           <a id="arrow" routerLink="#"  routerLinkActive="active" > <i class="fa-solid fa-arrow-right"></i> </a>
+            @for (subCat of subCategories;track subCat.id) {
+
+                 <a class="subCategory" routerLink="#"  routerLinkActive="active" >{{subCat.name}}</a>
+            }
+</div>

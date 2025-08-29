@@ -1,0 +1,22 @@
+textarea.form-control {
+  resize: vertical;
+}
+
+
+
+.classbtn {
+  background: white;
+  border: 1px solid #888;
+  color: black;
+  padding: 7px 100px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+
+}
+
+.modal-headerawy{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}

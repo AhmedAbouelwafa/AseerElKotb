@@ -1,0 +1,29 @@
+<div class="quote-card">
+  <div class="header">
+    <button class="delete-btn" (click)="onDelete()">×</button>
+    <img class="profile-pic" src="/icons/user.png" alt="Profile">
+    <div class="header-content">
+      <div class="author">{{ authorName }}</div>
+      <div class="date">{{ date }}</div>
+
+    </div>
+  </div>
+
+  <div class="quote-text">
+    <i class="fas fa-quote-right text-primary"></i>
+   "  {{ quote }}  "
+    <i class="fas fa-quote-left text-primary"></i>
+  </div>
+
+  <div class="actions">
+    <div class="share">
+      <button><i class="fas fa-link"></i></button>
+      <button><i class="fab fa-twitter"></i></button>
+      <button><i class="fab fa-facebook"></i></button>
+    </div>
+    <div class="votes">
+      <button><i class="fas fa-thumbs-down"></i> 0</button>
+      <button><i class="fas fa-thumbs-up"></i> 0</button>
+    </div>
+  </div>
+</div>

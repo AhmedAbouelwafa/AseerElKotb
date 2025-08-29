@@ -1,0 +1,29 @@
+<div id= "mainContainer" class="main-container">
+
+    <app-category-title [categoryName]="categoryName" [categoryDescription]="categoryDescription"></app-category-title>
+
+     <div id="crumb">
+    <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+
+     <app-sub-category-crumb [parentCategoryId]="CategoryId"></app-sub-category-crumb>
+
+      <hr>
+    </div>
+
+
+    <div id="body">
+
+        <div id="filteration" >
+           <app-filtering></app-filtering>
+        </div>
+
+        <div id="books">
+            <app-categoey-books [CategoryId]="CategoryId"></app-categoey-books>
+        </div>
+
+
+    </div>
+
+
+
+</div>

@@ -1,0 +1,188 @@
+{
+  "hero": {
+    "title": "Aseer AlKotb",
+    "bookTypes": {
+      "paperBooks": "Paper Books for Purchase",
+      "freeBooks": "Free Books to Read",
+      "audioBooks": "Audio Books"
+    },
+    "bestSellers" : "Best Sellers Books Today",
+
+    "tags": {
+      "newlyAdded": "💥 Newly Added",
+      "todayDeal": "🔥 Today's Deal"
+    }
+  },
+  "search": {
+    "placeholder": "Book title, author, publisher or ISBN...",
+    "title": "Search",
+    "noResults": "No results found",
+    "results": "Search Results"
+  },
+  "categories": {
+    "novels": "Novels",
+    "childrenBooks": "Children & Youth Education",
+    "comics": "Comics",
+    "mentalHealth": "Mental Health",
+    "teenagersGuide": "Dealing with Teenagers",
+    "travelLiterature": "Travel Literature",
+    "ramadanSpecial": "Welcome Ramadan ❤️",
+    "religiousBooks": "Religious Books",
+    "selfDevelopment": "Self Development & Psychology",
+    "scientificBooks": "Scientific Books & Encyclopedias",
+    "crimeThriller": "Crime & Thriller 🔴",
+    "letterLiterature": "Letter Literature",
+    "self": "Self",
+    "economics": "Economics",
+    "magazines": "Magazines & Monthly Issues",
+    "more": "More"
+  },
+  "books": {
+    "title": "Books",
+    "latest": "Latest Books",
+    "bestsellers": "Bestsellers",
+    "recommended": "Recommended",
+    "price": "Price",
+    "free": "Free",
+    "buyNow": "Buy Now",
+    "readNow": "Read Now",
+    "listenNow": "Listen Now",
+    "addToCart": "Add to Cart",
+    "addToWishlist": "Add to Wishlist"
+  },
+  "bookDetails": {
+    "buyPaperCopy": "Buy Paper Copy",
+    "notifyWhenAvailable": "Notify me when available for reading",
+    "addReview": "Add Your Review",
+    "before": "Before:",
+    "after": "After:",
+    "youWillSave": "You'll save:",
+    "discount": "Discount",
+    "freeShipping": "Free Shipping",
+    "minimumOrder": "minimum order 600.00 EGP",
+    "secureShopping": "Secure Shopping",
+    "dataProtected": "Your data is always protected",
+    "follow": "Follow",
+    "recommend": "Recommend",
+    "aboutBook": "About the Book",
+    "aboutAuthor": "About the Author",
+    "otherWorks": "Other works by the author",
+    "authors": "Authors",
+    "translator": "Translator",
+    "pages": "Pages",
+    "publishYear": "Publication Year",
+    "format": "Format",
+    "coverType": "Cover Type",
+    "publisher": "Publisher",
+    "categories": "Categories",
+    "readCount": "Read Count",
+    "shortLink": "Short Link",
+    "share": "Share",
+    "similarBooks": "Similar Books",
+    "moreCategories": "More Categories"
+  },
+  "categoriesList": {
+    "novels": "Novels",
+    "diverseBooks": "Diverse Books",
+    "englishBooks": "English Books",
+    "childrenSection": "Children Section",
+    "translations": "Translations",
+    "childrenBooks": "Children Books",
+    "novelsEn": "Novels",
+    "selfPsychology": "Self Development & Psychology",
+    "history": "History"
+  },
+  "navigation": {
+    "home": "Home",
+    "categories": "Categories",
+    "books": "Books",
+    "audioBooks": "Audio Books",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Sign Up"
+  },
+
+  "footer": {
+    "quickLinks": "Quick Links",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "returnPolicy": "Return and Refund Policy",
+    "discountCardInstructions": "Discount Card Instructions",
+    "supportLinks": "Support Links",
+    "contactUs": "Contact Us",
+    "customerService": "Customer Service",
+    "branchLocations": "Our Branch Locations",
+    "appDownload": "Download Aseer AlKotb App",
+    "googlePlay": "Google Play Store",
+    "appStore": "App Store",
+    "paymentMethods": "Payment Methods",
+    "mastercard": "Mastercard",
+    "visa": "Visa",
+    "socialMedia": "Social Media",
+    "telegram": "Telegram",
+    "youtube": "YouTube",
+    "twitter": "X",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "copyright": "© All Rights Reserved, Aseer AlKotb, 2014 - 2025"
+  },
+  "reviewWithComments" : {
+    "reviewsAndComments": "Reviews and Comments",
+    "allReviews": "All Reviews",
+    "quotesFrom": "Quotes From",
+    "reviewsFrom": "Reviews From",
+    "reviews": "Reviews",
+    "quotes": "Quotes",
+    "readers": "Readers",
+    "customerReviews": "Customer Reviews",
+    "overallRating": "Overall Rating",
+    "stars": "Stars",
+    "submitReview": "Submit Review",
+    "shareYourOpinion": "Share your opinion and review the book",
+    "noReviews": "⚠ No reviews yet. Be the first to write a review.",
+    "addQuote": "Add Quote",
+    "noQuotes": "⚠ No quotes yet. Be the first to add a quote.",
+    "noReaders": "⚠ No readers yet",
+    "review": "Review",
+    "quote": "Quote",
+    "bookTitle": "Book Title"
+  },
+
+
+"navbar": {
+    "logo": "Logo",
+    "searchPlaceholder": "Search...",
+    "menu": {
+      "books": "Books",
+      "allBooks": "All Books",
+      "readableBooks": "Readable Books",
+      "purchasableBooks": "Books for Kids",
+      "audioBooks": "Audio Books",
+      "kidsSection": "Kids Section",
+      "accessories": "Accessories ❤️",
+      "toys": "Toys 🎮"
+    },
+    "userMenu": {
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "messages": "Messages",
+      "cart": "Cart",
+      "apiTokens": "API Tokens",
+      "logout": "Logout"
+    },
+    "icons": {
+      "notifications": "Notifications",
+      "cart": "Shopping Cart",
+      "delivery": "Delivery"
+    },
+    "languageSwitcher": {
+      "arabic": "Arabic",
+      "english": "English"
+    }
+  }
+
+}

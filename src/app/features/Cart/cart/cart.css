@@ -1,0 +1,310 @@
+#cartPage{
+    padding: .7rem;
+    box-sizing: border-box ;
+    /* background-color:white; */
+}
+.empty-cart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    color: red;
+    height: 70vh;
+}
+.empty-cart h2{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.empty-cart p{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#cart{
+    width: 100%;
+}
+#NavCrumb{
+    margin-top: 5rem;
+}
+#bigContainer{
+    background-color:white ;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px rgb(231, 230, 230) , -1px -1px 10px rgb(231, 230, 230);
+}
+#main-title{
+    font-weight: bold;
+    text-align: center;
+    margin-top: 3rem;
+}  
+#cart{
+    display: flex;
+    justify-content:space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+#cartItems{
+    width: 70%;
+    padding: .7rem;
+    box-sizing: border-box ;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#topDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+#topDiv h4{
+    font-weight: bold;
+}
+#clearCartBtn{
+    background-color:white;
+    color: red;
+    border: none;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+.itemContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 7px;
+    padding:1rem;
+    background-color: rgb(247, 249, 249);
+    box-shadow: 1px 1px 2px rgb(231, 230, 230) , -1px -1px 2px rgb(231, 230, 230);
+}
+.BookInfo{
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    /* width: 40%; */
+    /* border-bottom: 1px solid rgb(194, 192, 192); */
+}
+#BookCover{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+
+}
+.Book{
+    font-size:12px;
+    font-weight: bold;
+    border-radius:5px;
+    padding-inline: .2rem;
+    background-color: rgb(212, 223, 238);
+}
+.BookTitle{
+    font-weight: bold;
+    font-size: 1rem;
+}
+.priceDetails{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1rem;
+    
+}
+.PriceBeforeDiscount{
+    text-decoration: line-through;
+    color: red;
+    font-size: small;
+}
+
+.PriceAfterDiscount{
+    color: green;
+    font-size: small;
+}
+.DiscountPercentage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .2rem;
+}
+.DiscountText{
+    background-color: rgb(41, 163, 41);
+    color: white;
+    padding: 3px;
+    width: 5rem;
+    border-radius: 35px;
+    font-size: 12px;
+}
+.DiscountValue{
+    background-color: lightgreen;
+    color: green;
+    padding: 3px;
+    padding-inline: 7px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-right: -1.5rem;
+} 
+.PriceAndQuantity{
+    border-top: 1px solid rgb(225, 223, 223);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}  
+.QuantityInput{
+    width: 69px;
+    padding: 4px 5px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border: 1px solid rgb(194, 192, 192);
+    text-align: center;
+    margin-right: 5px;
+}
+.DeleteBtn, .UpdateBtn{
+    border: none;
+    padding:5px 7px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+.UpdateBtn{
+   background-color: rgb(245, 160, 4) ;
+}
+
+.DeleteBtn{
+    background-color: red ;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+#leftSide{
+    width:29% ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+#priceSummary{
+   display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.price{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.priceTitle{
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: rgb(212, 223, 238);
+    padding: 12px;
+    width: 60%;
+      /* padding-inline: 1rem; */
+    
+    
+}
+#BeforeDiscount{
+    border-bottom: 1px solid rgb(194, 192, 192);
+}
+.priceValue{
+     font-size: 1rem;
+    /* font-weight: bold; */
+    background-color: rgb(234, 241, 251);
+    padding: 10px;
+    width: 40%;
+    
+}
+.priceValue{
+text-wrap: balance;
+}
+#CustomerService{
+    width: 100%;
+    background-color: rgb(232, 238, 248);
+    padding: 5px;
+    padding-inline: .25rem;
+    border-radius: 5px;
+    box-shadow: 6px 1px 1px rgb(208, 209, 210) , -1px -1px 3px rgb(231, 230, 230);
+
+}
+#CustomerServiceLink{
+    display: flex;
+    align-items: center;
+    justify-content:start;
+    gap: .4rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+#icon{
+    font-size:x-large;
+}
+#NextStep{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#lastPara{
+    font-weight: bold;
+}
+#checkoutBtn{
+    background-color:#0f172b;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    font-size: large;
+    font-weight: bold;
+}
+#checkoutBtn:hover{
+    background-color:#4c5a6e;
+}
+
+
+
+
+
+ /* Responsive Styles */
+        @media (max-width: 1025px) {
+            #cartItems, #leftSide {
+                width: 100%;
+            }
+            
+            #cart {
+                flex-direction: column;
+            }
+            
+            #cartItems {
+                order: -1;
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+        }
+        
+
+         @media (max-width: 640px) {
+            .PriceAndQuantity {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .priceDetails,.Quantity {
+               width: 100%;
+            }
+            .BookInfo{
+                width: 100%;
+            }
+            .QuantityInput{
+                width:13rem;
+            }
+            
+            .priceTitle, .priceValue {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        

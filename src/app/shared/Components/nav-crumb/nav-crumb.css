@@ -1,0 +1,40 @@
+
+ol{
+    list-style:none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* flex-wrap: nowrap; */
+    white-space: nowrap;
+}
+
+#homeIcon{
+    font-size: 1rem;
+
+}
+a{
+    color: #666666;
+    padding: 10px;
+    padding-inline: 15px;
+    text-decoration: none;
+}
+a:hover{
+    color: #313131;
+}
+.arrow-container {
+  display: inline-flex;  /* Ensures proper alignment */
+  align-items: center;   /* Vertically centers the arrow */
+}
+
+.arrow-icon {
+  height: 38px;         /* Adjust height to fit parent */
+  fill: none;           /* Removes solid fill */
+  stroke:#d6d6d6; /* Uses text color for the stroke */
+  stroke-width:.5;    /* Controls thinness (adjust as needed) */
+  stroke-linecap: round; /* Smooth rounded ends */
+  stroke-linejoin: round; /* Smooth corners */
+}
+
+#mainCategory{
+    font-weight: bold;
+}

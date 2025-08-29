@@ -1,0 +1,41 @@
+ .paginationContaner {
+  display: flex;
+  justify-content:end;
+  align-items: center;
+  margin-block: 5rem ;
+}
+
+
+.paginationButton {
+  border: 1px solid #b3bac1;
+  border-radius: 2px;
+  padding:7px;
+  background: white;
+  font-size:15px;
+  min-width: 2rem;
+  cursor: pointer;
+
+}
+
+.paginationButton.active {
+  background: #bdd4ec;
+  border-color: #4a75a0;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 
+
+@media (max-width: 768px) {
+  #pagesNumber {
+    display: none;
+  }
+  .paginationContaner {
+    margin-inline: 10px;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  
+}
+}

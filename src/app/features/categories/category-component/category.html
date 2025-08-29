@@ -1,25 +1,26 @@
-<div class="categories">
-  <app-category-card [categoryName] ="'روايات'" ></app-category-card>
-  <app-category-card [categoryName] ="'تربية الأطفال والناشئين'"></app-category-card>
-  <app-category-card [categoryName] ="'كوميكس'"></app-category-card>
-  <app-category-card [categoryName] ="'صحة نفسية'"></app-category-card>
-  <app-category-card [categoryName] ="'التعامل مع المراهقين'"></app-category-card>
-  <app-category-card [categoryName] ="'أدب رحلات'"></app-category-card>
-  <app-category-card [categoryName] ="'أهلا رمضان ❤️'"></app-category-card>
-  <app-category-card [categoryName] ="'كتب دينية'"></app-category-card>
+<!-- <div class="categories">
+  <app-category-card [categoryName]="'categories.novels' | translate" ></app-category-card>
+  <app-category-card [categoryName]="'categories.childrenBooks' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.comics' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.mentalHealth' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.teenagersGuide' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.travelLiterature' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.ramadanSpecial' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.religiousBooks' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.selfDevelopment' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.scientificBooks' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.crimeThriller' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.letterLiterature' | translate" ></app-category-card>
+  <app-category-card [categoryName]="'categories.self' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.economics' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.magazines' | translate"></app-category-card>
+  <app-category-card [categoryName]="'categories.more' | translate" [bg]="'#330d16'"></app-category-card>
+</div> -->
 
-
-
-
-  <app-category-card [categoryName] ="'تنمية ذاتية وعلم نفس'"></app-category-card>
-  <app-category-card [categoryName] ="'كتب علمية وموسوعات'"></app-category-card>
-  <app-category-card [categoryName] ="'جريمة وتشويق 🔴'"></app-category-card>
-  <app-category-card [categoryName] ="'أدب رسائل'"></app-category-card>
-  <app-category-card [categoryName] ="'ذات'"></app-category-card>
-  <app-category-card [categoryName] ="'اقتصاد'"></app-category-card>
-  <app-category-card [categoryName] ="'مجلات وأعداد شهرية'"></app-category-card>
-
-  <app-category-card [categoryName] ="'المزيد'" [bg] ="'#330d16'"></app-category-card>
-
+<div class = "categories">
+  @for (category of categories; track category.id) {
+    <app-category-card [categoryName]="category.name" [routerLink]="['/MainFilterContainer', category.id]"></app-category-card>
+  }
+  <app-category-card [categoryName]="'categories.more' | translate" [bg]="'#330d16'"></app-category-card>
 </div>
 
