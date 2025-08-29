@@ -1,10 +1,12 @@
-import { Component, ElementRef, HostListener, ViewChild, OnInit } from '@angular/core';
+
+import { Component, ElementRef, HostListener, ViewChild, OnInit, computed } from '@angular/core';
 import { Search } from "../search/search";
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LangService } from '../../../core/services/LanguageService/lang-service';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { Auth } from '../../../services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +20,8 @@ export class Navbar implements OnInit {
   isRTL: boolean = this.currentLang === 'ar';
   showDropdown = false;
 
-  constructor(private langService: LangService , private translate: TranslateService) {}
+  constructor(private langService: LangService , private translate: TranslateService,
+    private auth: Auth, private router: Router) {}
 
   ngOnInit() {
     this.langService.dir$.subscribe(dir => {
@@ -29,6 +32,9 @@ export class Navbar implements OnInit {
 
   @ViewChild('nav') nav!: ElementRef;
   isNavbarCollapsed = true;
+  // Computed signal to check if user is authenticated
+  readonly isAuthenticated = computed(() => !!this.auth.user());
+
 
   @HostListener('window:scroll',)
   onScroll() {
@@ -41,7 +47,6 @@ export class Navbar implements OnInit {
     }
   }
 
-
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
@@ -50,6 +55,10 @@ export class Navbar implements OnInit {
     this.isNavbarCollapsed = true;
   }
 
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
+  }
 
 
   toggleMenu() {

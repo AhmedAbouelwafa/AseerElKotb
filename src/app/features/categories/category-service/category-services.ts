@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import id from '@angular/common/locales/id';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../../core/configs/environment.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryServices {
-  private baseUrl = 'https://localhost:7207/api/Categories';
+  private baseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +22,7 @@ export class CategoryServices {
       params = params.set('Search', searchTerm);
     }
 
-    return this.http.get(`${this.baseUrl}/GetAll`, { params } ,).pipe(
+    return this.http.get(`${this.baseUrl}/Categories/GetAll`, { params } ,).pipe(
       map((response: any) => response.data)
     );
   }
@@ -29,7 +30,7 @@ export class CategoryServices {
   // Get single category by ID
   // https://localhost:7207/api/Categories/GetById/2
   getCategoryById(Id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/GetById/${Id}`);
+    return this.http.get(`${this.baseUrl}/Categories/GetById/${Id}`);
   }
 
 
@@ -47,7 +48,7 @@ export class CategoryServices {
       params = params.set('Search', search);
     }
 
-    return this.http.get( `${this.baseUrl}/GetSubCategories`,{ params });
+    return this.http.get( `${this.baseUrl}/Categories/GetSubCategories`,{ params });
   }
 
 }

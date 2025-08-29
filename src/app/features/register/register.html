@@ -1,0 +1,270 @@
+<div class="register-container">
+  <!-- Logo -->
+  <div class="logo-container">
+    <div>
+          <img src="/icons/logo.svg" alt="Logo" width="40" height="40" class="me-2">
+    </div>
+  </div>
+
+  <!-- Registration Card -->
+  <div class="register-card">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      
+      <!-- First Name -->
+      <div class="form-group">
+        <label for="firstName" class="form-label">الاسم</label>
+        <input
+          id="firstName"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="firstNameError()"
+          formControlName="firstName"
+          placeholder=""
+          (focus)="onInputFocus($event, 'firstName')"
+          (input)="onInputChange($event, 'firstName')"
+          style="direction: rtl; text-align: right;"
+        >
+        @if (firstNameError()) {
+          <div class="invalid-feedback">{{ firstNameError() }}</div>
+        }
+      </div>
+
+      <!-- Last Name -->
+      <div class="form-group">
+        <label for="lastName" class="form-label">اسم العائلة</label>
+        <input
+          id="lastName"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="lastNameError()"
+          formControlName="lastName"
+          placeholder=""
+          (focus)="onInputFocus($event, 'lastName')"
+          (input)="onInputChange($event, 'lastName')"
+          style="direction: rtl; text-align: right;"
+        >
+        @if (lastNameError()) {
+          <div class="invalid-feedback">{{ lastNameError() }}</div>
+        }
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="userName" class="form-label">اسم المستخدم</label>
+        <input
+          id="userName"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="userNameError()"
+          formControlName="userName"
+          placeholder=""
+          (focus)="onInputFocus($event, 'userName')"
+          (input)="onInputChange($event, 'userName')"
+          style="direction: ltr; text-align: left;"
+        >
+        @if (userNameError()) {
+          <div class="invalid-feedback">{{ userNameError() }}</div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">البريد الإلكتروني</label>
+        <div class="email-input-container">
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            [class.is-invalid]="emailError()"
+            [class.is-valid]="emailAvailable() === true && !emailError()"
+            formControlName="email"
+            placeholder=""
+            (focus)="onInputFocus($event, 'email')"
+            (input)="onInputChange($event, 'email')"
+            style="direction: rtl; text-align: right;"
+          >
+          @if (emailChecking()) {
+            <div class="email-status checking">
+              <span class="spinner-sm"></span>
+            </div>
+          } @else if (emailAvailable() === true) {
+            <div class="email-status available">✓</div>
+          } @else if (emailAvailable() === false) {
+            <div class="email-status unavailable">✗</div>
+          }
+        </div>
+        @if (emailError()) {
+          <div class="invalid-feedback">{{ emailError() }}</div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">كلمة المرور</label>
+        <div class="password-input-container">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="form-control password-input"
+            [class.is-invalid]="passwordError()"
+            formControlName="password"
+            placeholder=""
+            (focus)="onInputFocus($event, 'password')"
+            (input)="onInputChange($event, 'password')"
+            style="direction: rtl; text-align: right;"
+          >
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility('password')"
+            [attr.aria-label]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+          >
+            @if (showPassword()) {
+              <span class="bi bi-eye-slash"></span>
+            } @else {
+              <span class="bi bi-eye"></span>
+            }
+          </button>
+        </div>
+        @if (passwordError()) {
+          <div class="invalid-feedback">{{ passwordError() }}</div>
+        }
+        
+        <!-- Password Strength Indicator -->
+        <div class="password-strength-container">
+          <div class="password-strength-bar">
+            <div class="strength-indicator" [class]="'strength-' + passwordStrength()"></div>
+          </div>
+          <div class="strength-text">
+            @if (passwordStrength() === 'weak') {
+              <span class="strength-weak">ضعيفة</span>
+            } @else if (passwordStrength() === 'medium') {
+              <span class="strength-medium">متوسطة</span>
+            } @else if (passwordStrength() === 'strong') {
+              <span class="strength-strong">قوية</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+        <div class="password-input-container">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            class="form-control password-input"
+            [class.is-invalid]="confirmPasswordError()"
+            formControlName="confirmPassword"
+            placeholder=""
+            (focus)="onInputFocus($event, 'confirmPassword')"
+            (input)="onInputChange($event, 'confirmPassword')"
+            style="direction: rtl; text-align: right;"
+          >
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility('confirmPassword')"
+            [attr.aria-label]="showConfirmPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+          >
+            @if (showConfirmPassword()) {
+              <span class="bi bi-eye-slash"></span>
+            } @else {
+              <span class="bi bi-eye"></span>
+            }
+          </button>
+        </div>
+        @if (confirmPasswordError()) {
+          <div class="invalid-feedback">{{ confirmPasswordError() }}</div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-register"
+      >
+        @if (isSubmitting() || auth.loading()) {
+          <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          جاري إنشاء الحساب...
+        } @else {
+          إنشاء الحساب
+        }
+      </button>
+
+      <!-- Error Message -->
+      @if (auth.loginError()) {
+        <div class="alert alert-danger mt-3" role="alert">
+          {{ auth.loginError() }}
+        </div>
+      }
+
+      <!-- Already have account -->
+      <div class="login-link">
+        <span>لديك حساب بالفعل؟</span>
+        <button type="button" class="link-button" (click)="onLogin()">
+          سجل دخولك باستخدام حسابك الحالي
+        </button>
+      </div>
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>أو سجل دخولك بإستخدام</span>
+    </div>
+
+    <!-- Social Login Buttons -->
+    <div class="social-login">
+      <button
+        type="button"
+        class="social-btn google-btn"
+        (click)="onSocialRegister('google')"
+        aria-label="التسجيل بجوجل"
+        title="Google"
+      >
+        <i class="bi bi-google"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn instagram-btn"
+        (click)="onSocialRegister('instagram')"
+        aria-label="التسجيل بإنستغرام"
+        title="Instagram"
+      >
+        <i class="bi bi-instagram"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn twitter-btn"
+        (click)="onSocialRegister('twitter')"
+        aria-label="التسجيل بتويتر"
+        title="Twitter/X"
+      >
+        <i class="bi bi-twitter-x"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn facebook-btn"
+        (click)="onSocialRegister('facebook')"
+        aria-label="التسجيل بفيسبوك"
+        title="Facebook"
+      >
+        <i class="bi bi-facebook"></i>
+      </button>
+      
+      <button
+        type="button"
+        class="social-btn apple-btn"
+        (click)="onSocialRegister('apple')"
+        aria-label="التسجيل بأبل"
+        title="Apple"
+      >
+        <i class="bi bi-apple"></i>
+      </button>
+    </div>
+  </div>
+</div>

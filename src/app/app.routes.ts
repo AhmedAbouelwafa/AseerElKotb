@@ -3,6 +3,8 @@ import { Hero } from './features/Home/hero';
 import { AuthorDetails } from './features/Authors/author-details/author-details';
 
 import { BookDetails } from './features/products/book-details/book-details';
+import { Login } from './features/login/login';
+import { Register } from './features/register/register';
 import { MainFilterContainer } from './features/CategoryFilterComponents/main-filter-container/main-filter-container';
 import { AllAuthors } from './features/Authors/allAuthors/all-authors/all-authors';
 import { Cart } from './features/Cart/cart/cart';
@@ -16,10 +18,6 @@ export const routes: Routes = [
   {
     path: '' , component : Hero,
   },
-  {
-    path: 'book-details/:id' , component : BookDetails,
-  },
-
   { path: 'authors/:id', component: AuthorDetails }
   ,
   {
@@ -45,8 +43,13 @@ export const routes: Routes = [
   }
   ,
   {
-
-    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
+ 
+    path: 'login',component : Login
+  },
+  {
+    path: 'register', component: Register 
+  },
+{    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
 
     // path: 'MainFilterContainer/:id' , component : MainFilterContainer,
 
@@ -59,5 +62,4 @@ export const routes: Routes = [
   {
     path: 'Cart' , component : Cart,
   },
-
 ];
