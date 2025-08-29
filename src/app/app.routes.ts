@@ -3,10 +3,8 @@ import { Hero } from './features/Home/hero';
 import { AuthorDetails } from './features/Authors/author-details/author-details';
 
 import { BookDetails } from './features/products/book-details/book-details';
-<<<<<<< HEAD
 import { Login } from './features/login/login';
 import { Register } from './features/register/register';
-=======
 import { MainFilterContainer } from './features/CategoryFilterComponents/main-filter-container/main-filter-container';
 import { AllAuthors } from './features/Authors/allAuthors/all-authors/all-authors';
 import { Cart } from './features/Cart/cart/cart';
@@ -16,7 +14,6 @@ import { ConfirmEmailFailed } from './features/pages/ConfirmEmailPages/confirm-e
 import { ResetPassword } from './features/pages/ResetPasswordPages/reset-password/reset-password';
 import { ResetPasswordSuccess } from './features/pages/ResetPasswordPages/reset-password-success/reset-password-success';
 import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-password-failed/reset-password-failed';
->>>>>>> 1b5a6a1854e07b29e79c80fb68968dbe0d5d12c8
 export const routes: Routes = [
   {
     path: '' , component : Hero,
@@ -46,14 +43,13 @@ export const routes: Routes = [
   }
   ,
   {
+ 
     path: 'login',component : Login
   },
   {
     path: 'register', component: Register 
-  }
-=======
-
-    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
+  },
+{    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
 
     // path: 'MainFilterContainer/:id' , component : MainFilterContainer,
 
@@ -66,6 +62,4 @@ export const routes: Routes = [
   {
     path: 'Cart' , component : Cart,
   },
-
->>>>>>> 1b5a6a1854e07b29e79c80fb68968dbe0d5d12c8
 ];
