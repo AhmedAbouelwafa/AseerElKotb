@@ -187,3 +187,47 @@
 .header i {
   transition: transform 0.3s ease;
 }
+
+
+
+
+/* filtering.css */
+.show-more-link, .show-less-link {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.show-more-btn, .show-less-btn {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  color: #e74c3c;
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  padding: 8px;
+}
+
+.show-more-btn:hover, .show-less-btn:hover {
+  text-decoration: underline;
+  background-color: #f9f9f9;
+}
+
+.searchContainer {
+    margin-bottom: 15px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}

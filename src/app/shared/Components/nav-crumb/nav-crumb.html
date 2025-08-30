@@ -2,7 +2,7 @@
             <ol class="w-full bg-white rounded-md shadow px-6 flex space-x-3 ">
 
                     <li>
-                        <a routerLink="#"  routerLinkActive="active"> <i class="fa-solid fa-house" id="homeIcon"></i></a>                       
+                        <a [routerLink]="['/']"  routerLinkActive="active"> <i class="fa-solid fa-house" id="homeIcon"></i></a>                       
                     </li>
 
                 @for(crumb of Navcrumbs ;track crumb ){
@@ -28,9 +28,8 @@
                                 </a>
 
                         </div>
-                    </li>
-
-                }
+                    </li>                }
             </ol>
             
         </nav>
+        

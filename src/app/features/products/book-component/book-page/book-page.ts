@@ -40,8 +40,9 @@ export class BookPage implements OnInit {
 
   ngOnInit(): void {
     this.catService.getPaginatedCategories().subscribe({
-      next: (categories) => {
-        this.allCategories = categories || [];
+      next: (res) => {
+        console.log("Categories response:", res); // عشان تشوف شكل الريسبونس
+        this.allCategories = res?.data || []; // هنا بقت Array مظبوطة
         this.loadMoreCategories();
       },
       error: (error) => {
@@ -49,6 +50,7 @@ export class BookPage implements OnInit {
         this.isLoading = false;
       }
     });
+
   }
 
   // تحميل batch جديدة
