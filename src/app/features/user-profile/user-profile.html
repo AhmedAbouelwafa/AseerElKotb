@@ -1,0 +1,48 @@
+<div class="pt-2 mt-5 mb-4">
+  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+</div>
+
+<div class="user-profile-container">
+  <!-- Header Section -->
+  <div class="profile-header">
+
+    <div class="profile-avatar">
+      <img [src]="'/icons/user.png'" [alt]="user.name" />
+    </div>
+
+    <div class="profile-info">
+      <h1 class="user-name">{{ user.name }}</h1>
+      <div class="user-status">
+        <span class="online-indicator" [class.online]="user.isOnline"></span>
+        <span class="last-seen">{{ user.lastSeen }}</span>
+        <span class="member-duration">عضو منذ أسبوعين</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-container">
+    <div
+      class="stat-item"
+      *ngFor="let stat of stats"
+      [class.active]="stat.isActive"
+      (click)="onStatClick(stat)"
+    >
+      <div class = "d-flex gap-2">
+        <i>{{ stat.icon }}</i>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-underline" [class.show]="stat.isActive"></div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content-section" *ngFor="let stat of stats" [hidden]="!stat.isActive">
+    <div class="section-content">
+      <h3>محتوى قسم {{ stat.label }}</h3>
+      <p>هنا سيتم عرض محتوى {{ stat.label }}</p>
+    </div>
+  </div>
+</div>
