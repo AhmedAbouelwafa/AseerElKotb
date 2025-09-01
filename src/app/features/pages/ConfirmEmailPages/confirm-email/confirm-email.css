@@ -1,0 +1,95 @@
+/* Import Arabic fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
+
+.confirm-email-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Cairo', Arial, sans-serif;
+  direction: rtl;
+}
+
+.logo-container {
+  margin-bottom: 30px;
+}
+
+.confirm-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.confirm-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loading-icon {
+  margin-bottom: 10px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+}
+
+.text-primary {
+  --bs-text-opacity: 1;
+  color: #667eea !important;
+}
+
+.confirm-title {
+  color: #333;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: 'Cairo', Arial, sans-serif;
+}
+
+.confirm-message {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Cairo', Arial, sans-serif;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .confirm-card {
+    padding: 30px 20px;
+    margin: 0 10px;
+  }
+  
+  .confirm-title {
+    font-size: 20px;
+  }
+  
+  .confirm-message {
+    font-size: 14px;
+  }
+}
