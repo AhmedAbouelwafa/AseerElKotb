@@ -49,10 +49,8 @@ export const routes: Routes = [
   {
     path: 'register', component: Register 
   },
-{    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
-
-    // path: 'MainFilterContainer/:id' , component : MainFilterContainer,
-
+  {  
+      path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
   }
   ,
   {
