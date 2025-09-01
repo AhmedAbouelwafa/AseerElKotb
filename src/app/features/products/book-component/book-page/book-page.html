@@ -1,9 +1,9 @@
-<div class="catBooks" (window:scroll)="onScroll()">
+<div class="catBooks container" (window:scroll)="onScroll()">
 
   @for(item of categoriesWithBooks; track item.category.id) {
     <a [routerLink]="['/MainFilterContainer', item.category.id]" class="text-decoration-none">
       <h4>
-        {{item.category.name | translate}} <i class="fa-solid fa-chevron-left"></i>
+        {{item.category.name | translate}} <i class="fa-solid fa-chevron-" [ngClass]="{ 'fa-chevron-left': isRTL, 'fa-chevron-right': !isRTL }"></i>
         <div class="books pt-4 pb-4">
           @for (book of item.books; track book.id) {
             <app-book-card [book]="book"></app-book-card>

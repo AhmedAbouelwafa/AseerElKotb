@@ -164,7 +164,9 @@
       "audioBooks": "Audio Books",
       "kidsSection": "Kids Section",
       "accessories": "Accessories ❤️",
-      "toys": "Toys 🎮"
+      "toys": "Toys 🎮",
+      "register": "Register",
+      "login": "Login"
     },
     "userMenu": {
       "profile": "Profile",

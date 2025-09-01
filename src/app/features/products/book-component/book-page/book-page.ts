@@ -26,6 +26,7 @@ export class BookPage implements OnInit {
   categoriesWithBooks: CategoryWithBooks[] = [];
   @Input() title: string = "";
   isLoading: boolean = true;
+  isRTL: boolean = false;
 
   constructor(
     private bookService: BookService,
@@ -39,8 +40,9 @@ export class BookPage implements OnInit {
 
   ngOnInit(): void {
     this.catService.getPaginatedCategories().subscribe({
-      next: (categories) => {
-        this.allCategories = categories || [];
+      next: (res) => {
+        console.log("Categories response:", res); // عشان تشوف شكل الريسبونس
+        this.allCategories = res?.data || []; // هنا بقت Array مظبوطة
         this.loadMoreCategories();
       },
       error: (error) => {
@@ -48,6 +50,7 @@ export class BookPage implements OnInit {
         this.isLoading = false;
       }
     });
+
   }
 
   // تحميل batch جديدة
@@ -91,6 +94,13 @@ export class BookPage implements OnInit {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
       this.loadMoreCategories();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.isRTL = this.translate.currentLang === 'ar';
+    this.translate.onLangChange.subscribe(event => {
+      this.isRTL = event.lang === 'ar';
+    });
   }
 
 }

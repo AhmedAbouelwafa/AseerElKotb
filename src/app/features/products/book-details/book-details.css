@@ -327,18 +327,16 @@
   margin-bottom: 12px;
   color: #1f2e4d;
   padding-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  right: 0;
+
+.gg{
   width: 125px;
   height: 4px;
   background-color: #F4777C;
   border-radius: 2px;
+  margin-bottom: 15px;
 }
 
 .book-description {
@@ -509,4 +507,9 @@ a:hover {
 
 .category-itesm:hover {
   text-decoration: none;
+}
+
+
+.bc{
+ transform: translateY(100px);
 }

@@ -1,7 +1,11 @@
 <div class="book-details-container">
   <div class="navigation">
-    <a class="nav-btn" routerLink="{{book?.id}}">🡺</a>
-    <a class="nav-btn" routerLink="{{book?.id}}">🡸</a>
+    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-right': isRTL, 'fa-arrow-left': !isRTL}"></i></a>
+    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-left': isRTL, 'fa-arrow-right': !isRTL}"></i></a>
+  </div>
+
+  <div class="bc">
+    <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
   </div>
 
   <div class="book">
@@ -98,11 +102,13 @@
 
         <div class="book-snip" *ngIf="book?.description">
           <h3 class="section-title">{{'bookDetails.aboutBook' | translate}}</h3>
+          <div class="gg"></div>
           <p class="book-description">{{ book?.description }}</p>
         </div>
 
         <div class="author-snip">
           <h3 class="section-title">{{'bookDetails.aboutAuthor' | translate}}</h3>
+          <div class="gg"></div>
 
           <div class="author-description">
             <a routerLink="/authors/{{author.id}}" class="text-dark cc">
@@ -176,7 +182,7 @@
             </ul>
 
             <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories'| translate}}</button>
-            
+
           </div>
         </div>
       </div>
