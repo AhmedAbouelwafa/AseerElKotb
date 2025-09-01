@@ -1,7 +1,11 @@
 <div class="book-details-container">
   <div class="navigation">
-    <a class="nav-btn" routerLink="{{book?.id}}">🡺</a>
-    <a class="nav-btn" routerLink="{{book?.id}}">🡸</a>
+    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-right': isRTL, 'fa-arrow-left': !isRTL}"></i></a>
+    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-left': isRTL, 'fa-arrow-right': !isRTL}"></i></a>
+  </div>
+
+  <div class="bc">
+    <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
   </div>
 
   <div class="book">

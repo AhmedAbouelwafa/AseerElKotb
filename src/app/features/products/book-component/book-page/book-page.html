@@ -1,4 +1,4 @@
-<div class="catBooks" (window:scroll)="onScroll()">
+<div class="catBooks container" (window:scroll)="onScroll()">
 
   @for(item of categoriesWithBooks; track item.category.id) {
     <a [routerLink]="['/MainFilterContainer', item.category.id]" class="text-decoration-none">
