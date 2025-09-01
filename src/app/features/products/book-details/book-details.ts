@@ -11,10 +11,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthorApiService } from '../../../core/services/Author/author-api-service';
 import { IAuthor } from '../../Authors/Author-Model/iauthor';
 import { CategoryServices } from '../../categories/category-service/category-services';
+import { NavcrumbItem, NavCrumb } from '../../../shared/Components/nav-crumb/nav-crumb';
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule],
+  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
@@ -33,6 +34,8 @@ export class BookDetails implements OnInit {
   totalReviews = 0;
   averageRating = 0;
   isLiked = false;
+  isRTL!: boolean;
+  breadcrumbs: NavcrumbItem[] = [];
 
   constructor(
     private api: BookService,
@@ -65,6 +68,8 @@ export class BookDetails implements OnInit {
         console.error('Error fetching books by author:', error);
       }
     });
+
+
   }
 
   fetchBookById(id: number) {
@@ -109,7 +114,7 @@ export class BookDetails implements OnInit {
       error: (error) => {
         if (error.status === 422) {
           console.warn('Book data is invalid or not found.');
-          alert('الكتاب غير متاح أو البيانات غير صحيحة.');
+          alert('الكتاب غير متاح أو البيانات غير صحيحة.'); 
         } else if (error.status === 404) {
           alert('الكتاب غير موجود.');
         } else {
@@ -118,6 +123,14 @@ export class BookDetails implements OnInit {
         console.error('Error fetching book:', error);
       }
     });
+
+    this.isRTL = this.translate.currentLang === 'ar';
+
+    this.breadcrumbs = [
+      {name : 'Home', path : '/'},
+      {name : `${this.book?.title}`, path : '/book-details/' + this.book?.id},
+     ];
+
   }
 
   getCoverImageUrl(): string {

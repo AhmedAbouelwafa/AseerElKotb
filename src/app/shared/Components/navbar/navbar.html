@@ -29,17 +29,17 @@
 
           <li class="nav-item" *ngIf="!isAuthenticated()">
 
-            <a class="nav-link" routerLink="/login">دخول</a>
+            <a class="nav-link" routerLink="/login">{{ 'navbar.menu.login' | translate }}</a>
 
           </li>
 
            <li class="nav-item " *ngIf="!isAuthenticated()">
 
-            <a class="nav-link" routerLink="/register">تسجيل</a>
+            <a class="nav-link" routerLink="/register">{{ 'navbar.menu.register' | translate }}</a>
 
           </li>
           <li class="nav-item"><a class="nav-link" routerLink="/MainFilterContainer/7">{{ 'navbar.menu.kidsSection' | translate }}</a></li>
-          
+
         </ul>
 
         <!-- أيقونات المستخدم والقائمة المنسدلة -->
@@ -47,7 +47,7 @@
           <button class="btn p-0">
             <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
             <ul class="dropdown-menu-custom">
-             
+
               <li>
                 <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
                 <a routerLink="/profile"><i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}</a>
@@ -77,22 +77,24 @@
             <span class="badge">1</span>
           </button>
 
-          <!-- Language Switcher -->
-          <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">
-            <button class="lang-btn" (click)="toggleMenu()">
-              <div class="flag" [ngClass]="'flag-' + currentLang"></div>
-            </button>
-            <div class="menu" [ngClass]="{'show': showDropdown, 'dropdown-menu-start': !isRTL}">
-              <button class="menu-item" (click)="changeLang('ar')">
-                <div class="flag flag-ar"></div>
-                <span>{{ 'navbar.languageSwitcher.arabic' | translate }}</span>
-              </button>
-              <button class="menu-item" (click)="changeLang('en')">
-                <div class="flag flag-en"></div>
-                <span>{{ 'navbar.languageSwitcher.english' | translate }}</span>
-              </button>
-            </div>
-          </div>
+      <!-- Language Switcher -->
+      <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">
+        <button class="lang-btn" (click)="toggleMenu()">
+          <div class="flag" [ngClass]="'flag-' + currentLang"></div>
+        </button>
+        <div class="menu" [ngClass]="{'show': showDropdown}">
+          <button class="menu-item" (click)="changeLang('ar')">
+            <div class="flag flag-ar"></div>
+            <span>{{ 'navbar.languageSwitcher.arabic' | translate }}</span>
+          </button>
+          <button class="menu-item" (click)="changeLang('en')">
+            <div class="flag flag-en"></div>
+            <span>{{ 'navbar.languageSwitcher.english' | translate }}</span>
+          </button>
+        </div>
+      </div>
+
+
         </div>
       </div>
     </div>

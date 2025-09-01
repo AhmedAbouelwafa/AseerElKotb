@@ -1,16 +1,156 @@
+
 .books {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* أكبر شوية */
-  gap: 24px;
-
+  grid-template-columns: repeat(5, 1fr); /* 5 columns on large screens */
+  gap: 20px;
   background-color: #f8f9fa;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
+
+/* Book Card Styling */
 app-book-card {
   display: block;
   background-color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  /* min-height: 280px; */
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+/* Hover Effect */
+app-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Pagination Container */
+.books-pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+
+/* Medium Desktop: 4 cards per row */
+@media (max-width: 1450px) {
+  .books {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+  }
+}
+
+/* Small Desktop/Large Tablet: 3 cards per row */
+@media (max-width: 1310px) {
+  .books {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 18px;
+  }
+}
+
+/* Tablet: 2 cards per row  768*/
+@media (max-width: 995px) {
+  .books {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+    padding: 16px;
+  }
+  
+  app-book-card {
+    /* min-height: 250px; */
+    border-radius: 10px;
+  }
+  
+  .books-pagination {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .books {
+    grid-template-columns: repeat(2, 1fr);
+    
+    gap: 11px; 
+   padding: 16px; 
+  }
+ 
+  .books {
+    min-height: 100%;
+   
+  }
+  .books-pagination {
+    margin-top: 30px;
+  }
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 480px) {
+  .books {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  app-book-card {
+    min-height: 220px;
+    border-radius: 8px;
+  }
+  
+  .books-pagination {
+    margin-top: 25px;
+  }
+}
+
+/* Extra Small Mobile: Optimized single column */
+@media (max-width: 360px) {
+  .books {
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  app-book-card {
+    min-height: 200px;
+  }
+}
+
+/* Alternative Flexbox Approach (if you prefer) */
+/*
+.books {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #f8f9fa;
+  width: 100%;
+  padding: 20px;
+}
+
+app-book-card {
+  flex: 1 1 280px;
+  max-width: 350px;
+  display: block;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   min-height: 280px;
-  transition: transform 0.3s ease;
-  border-radius: 20px;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
 }
+
+@media (max-width: 768px) {
+  app-book-card {
+    flex: 1 1 200px;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  app-book-card {
+    flex: 1 1 160px;
+    max-width: 200px;
+  }
+}
+*/

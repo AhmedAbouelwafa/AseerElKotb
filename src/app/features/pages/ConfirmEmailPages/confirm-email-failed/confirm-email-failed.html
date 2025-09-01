@@ -1,4 +1,34 @@
-    <div class="container">
-      <h1>Email confirmation failed ❌</h1>
-      <p>The confirmation link is invalid or expired.</p>
+<div class="confirm-email-container">
+  <!-- Logo -->
+  <div class="logo-container">
+    <div>
+      <img src="/icons/logo.svg" alt="Logo" width="40" height="40" class="me-2">
     </div>
+  </div>
+
+  <!-- Failed Card -->
+  <div class="confirm-card failed-card">
+    <div class="confirm-content">
+      <!-- Error Icon -->
+      <div class="error-icon">
+        <div class="error-circle">
+          <i class="bi bi-x-lg"></i>
+        </div>
+      </div>
+      
+      <!-- Error Message -->
+      <h2 class="confirm-title error-title">فشل تأكيد البريد الإلكتروني ❌</h2>
+      <p class="confirm-message">رابط التأكيد غير صحيح أو منتهي الصلاحية.</p>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button type="button" class="btn btn-primary btn-retry" (click)="navigateToRegister()">
+          إعادة التسجيل
+        </button>
+        <button type="button" class="btn btn-secondary btn-home" (click)="navigateToHome()">
+          العودة للرئيسية
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
