@@ -19,7 +19,7 @@ export class BookService {
   }
 
   getBookById(id: number): Observable<Ibook> {
-    return this.http.get<Ibook>(`${this._apiBaseUrl}/books/GetById/${id}`).pipe(
+    return this.http.get<Ibook>(`${this._apiBaseUrl}/books/${id}`).pipe(
       map((response: any) => response.data)
     );
   }
@@ -29,15 +29,15 @@ export class BookService {
   // }
 
   getBooksByAuthorId(authorId: number): Observable<Ibook[]> {
-    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByAuthor/${authorId}`);
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/filter/${authorId}`);
   }
 
   getBooksByPublisherId(publisherId: number): Observable<Ibook[]> {
-    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByPublisher/${publisherId}`);
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/filter/${publisherId}`);
   }
 
   getBooksByBookType(bookType: string): Observable<Ibook[]> {
-    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/GetByType/${bookType}`);
+    return this.http.get<Ibook[]>(`${this._apiBaseUrl}/books/filter/${bookType}`);
   }
 
 
