@@ -28,17 +28,12 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>المحافظة</label>
-            <select [(ngModel)]="checkoutData.governorate" class="form-select">
-              <option value="">مصر</option>
-              <option value="cairo">القاهرة</option>
-              <option value="alex">الإسكندرية</option>
-              <option value="giza">الجيزة</option>
-            </select>
+            <label>الدولة</label>
+            <input type="text" value="مصر" class="form-input">
           </div>
           <div class="form-group">
             <label>اختر المحافظة</label>
-            <select [(ngModel)]="checkoutData.city" class="form-select">
+            <select [(ngModel)]="checkoutData.governorate" class="form-select">
               <option value="">اختر المحافظة</option>
             </select>
           </div>
@@ -46,7 +41,9 @@
 
         <div class="form-group">
           <label>المدينة</label>
-          <input type="text" [(ngModel)]="checkoutData.cityName" class="form-input">
+          <select [(ngModel)]="checkoutData.city" class="form-select">
+            <option value="">اختر المدينة</option>
+          </select>
         </div>
 
         <div class="form-row">
@@ -63,8 +60,7 @@
 
       <!-- Order Edit Section -->
       <div class="form-section order-edit-section">
-        <h2 class="section-title order-edit-title">تعديل طلبك</h2>
-
+         <a class="section-title order-edit-title btn" routerLink="/Cart" (click)="navigateToCart()">تعديل طلبك</a>
         <div class="order-items-detailed">
           <div class="order-item-detailed">
             <span class="item-title">المجموع قبل الخصم</span>
