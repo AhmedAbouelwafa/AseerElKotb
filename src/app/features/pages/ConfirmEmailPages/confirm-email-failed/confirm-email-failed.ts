@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirm-email-failed',
@@ -7,5 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './confirm-email-failed.css'
 })
 export class ConfirmEmailFailed {
-
+  
+  constructor(private router: Router) {}
+  
+  navigateToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+  
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
 }

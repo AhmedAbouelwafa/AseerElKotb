@@ -14,9 +14,10 @@ import { ConfirmEmailFailed } from './features/pages/ConfirmEmailPages/confirm-e
 import { ResetPassword } from './features/pages/ResetPasswordPages/reset-password/reset-password';
 import { ResetPasswordSuccess } from './features/pages/ResetPasswordPages/reset-password-success/reset-password-success';
 import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-password-failed/reset-password-failed';
-
+import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-password/forgot-password';
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
+
 
 export const routes: Routes = [
   {
@@ -35,6 +36,9 @@ export const routes: Routes = [
   },
   {
     path: 'confirm-email-failed', component: ConfirmEmailFailed
+  },
+  {
+    path: 'forgot-password', component: ForgotPassword
   },
   {
     path: 'reset-password', component: ResetPassword

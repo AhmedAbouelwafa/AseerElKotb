@@ -89,8 +89,8 @@ protected readonly auth = inject(Auth);
   }
 
   protected onForgotPassword(): void {
-    // Navigate to forgot password page or show modal
-    console.log('Forgot password clicked');
+    // Navigate to forgot password page
+    this.router.navigate(['/forgot-password']);
   }
 
   protected onRegister(): void {
