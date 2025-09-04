@@ -343,13 +343,15 @@
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 }
+
+
+
 .dropdown-menu-custom {
   list-style: none;
   padding: 10px 0;
   margin: 0;
   position: absolute;
   top: 100%;
-  left: 0;
   min-width: 200px;
   background-color: white;
   border-radius: 10px;
@@ -362,6 +364,20 @@
   font-size: 14px;
   color: #333;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* RTL: المنيو تطلع شمال */
+[dir="rtl"] .dropdown-menu-custom {
+  left: 0;
+  right: auto;
+  text-align: right;
+}
+
+/* LTR: المنيو تطلع يمين */
+[dir="ltr"] .dropdown-menu-custom {
+  left: auto;
+  right: 0;
+  text-align: left;
 }
 
 .dropdown-menu-custom li {
@@ -382,11 +398,11 @@
 }
 
 .dropdown-menu-custom li:hover {
-  background-color: rgba(255, 0, 0, 0.1); /* خلفية حمراء شفافة مثل الصورة */
+  background-color: rgba(255, 0, 0, 0.1);
 }
 
 .dropdown-menu-custom li:hover a {
-  color: #e60000; /* لون أحمر عند الـ hover */
+  color: #e60000;
 }
 
 .dropdown-menu-custom .badge {
@@ -395,19 +411,14 @@
   border-radius: 10px;
 }
 
-.nav-item.books:hover .dropdown-menu-custom {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(5px);
-}
-
+.nav-item.books:hover .dropdown-menu-custom,
 .btn:hover .dropdown-menu-custom {
   opacity: 1;
   visibility: visible;
   transform: translateY(5px);
 }
 
-/* Hide dropdown on mobile */
+/* موبايل */
 @media (max-width: 991.98px) {
   .dropdown-menu-custom {
     position: static;
@@ -444,9 +455,27 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .lang-dropdown {
   position: relative;
   display: inline-block;
+
 }
 
 .lang-btn {
@@ -467,6 +496,8 @@
   height: 20px;
   border-radius: 3px;
   display: block;
+  position: relative;
+
 }
 
 .flag-ar {
@@ -529,26 +560,17 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  min-width: 120px;
+  width: 150px;
   z-index: 100;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-5px);
   transition: all 0.2s ease;
+  right: 0px;
 }
 
-/* LTR => القائمة تطلع على يمين الزرار */
-[dir="ltr"] .lang-dropdown .menu {
-  left: 100%;   /* تبعد عن الزرار */
-  right: auto;
-  top: 0;       /* تطلع في نفس مستوى الزرار */
-}
-
-/* RTL => القائمة تطلع على شمال الزرار */
-[dir="rtl"] .lang-dropdown .menu {
-  right: 100%;  /* تبعد عن الزرار */
-  left: auto;
-  top: 0;
+[dir="rtl"] .menu {
+  right: -100px;
 }
 
 

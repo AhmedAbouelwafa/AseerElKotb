@@ -10,14 +10,50 @@
       </div>
 
       <div class="modal-body">
+        <!-- Rating Section (only for reviews) -->
+        <div *ngIf="title === 'review' || title === 'تقييم' || title === 'مراجعة'" class="mb-3">
+          <label class="form-label small text-muted">التقييم بالنجوم</label>
+          <div class="rating-stars">
+            @for (star of [1,2,3,4,5]; track star) {
+              <i 
+                class="fa fa-star rating-star" 
+                [class.active]="star <= rating"
+                (click)="setRating(star)"
+                style="cursor: pointer; font-size: 24px; color: #ddd; margin-right: 5px;">
+              </i>
+            }
+            <span class="ms-2 text-muted">{{rating}}/5</span>
+          </div>
+        </div>
+
         <label class="form-label small text-muted">{{title}}</label>
-        <textarea [(ngModel)]="quoteText" class="form-control" rows="5" placeholder="اكتب ال{{title}} هنا..."></textarea>
+        <!-- For Reviews -->
+        <textarea 
+          *ngIf="title === 'review' || title === 'تقييم' || title === 'مراجعة'"
+          [(ngModel)]="reviewText" 
+          class="form-control" 
+          rows="5" 
+          [placeholder]="'اكتب ال' + title + ' هنا...'">
+        </textarea>
+        <!-- For Quotes -->
+        <textarea 
+          *ngIf="title !== 'review' && title !== 'تقييم' && title !== 'مراجعة'"
+          [(ngModel)]="quoteText" 
+          class="form-control" 
+          rows="5" 
+          [placeholder]="'اكتب ال' + title + ' هنا...'">
+        </textarea>
         <div *ngIf="errorMsg" class="text-danger small mt-2">{{ errorMsg }}</div>
       </div>
 
       <div class="modal-footer bg-light border-0">
         <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">إلغاء</button>
-        <button type="button" class="btn btn-dark" (click)="saveQuote()">إضافة</button>
+        <button 
+          type="button" 
+          class="btn btn-dark" 
+          (click)="(title === 'review' || title === 'تقييم' || title === 'مراجعة') ? saveReview() : saveQuote()">
+          إضافة
+        </button>
       </div>
     </div>
   </div>

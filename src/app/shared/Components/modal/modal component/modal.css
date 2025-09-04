@@ -20,3 +20,17 @@ textarea.form-control {
   justify-content: space-between;
   padding: 20px;
 }
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rating-star.active {
+  color: #f1c40f !important;
+}
+
+.rating-star:hover {
+  color: #f1c40f !important;
+}

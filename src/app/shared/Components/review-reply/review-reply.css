@@ -1,0 +1,154 @@
+.review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.author {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.date {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.rating-section {
+  margin-bottom: 15px;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.rating-text {
+  margin-left: 8px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.review-text {
+  color: #2c3e50;
+  line-height: 1.6;
+  font-size: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #e9ecef;
+}
+
+.share {
+  display: flex;
+  gap: 8px;
+}
+
+.share button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.share button:hover {
+  color: #007bff;
+  background: #f8f9fa;
+}
+
+.votes {
+  display: flex;
+  gap: 10px;
+}
+
+.votes button {
+  background: none;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.votes button:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.votes button:first-child:hover {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.votes button:last-child:hover {
+  color: #28a745;
+  border-color: #28a745;
+}

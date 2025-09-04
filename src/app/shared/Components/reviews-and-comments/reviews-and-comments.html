@@ -68,12 +68,23 @@
             <div class="submit-review">
               <h3>{{ 'reviewWithComments.submitReview' | translate}}</h3>
               <p>{{ 'reviewWithComments.shareYourOpinion' | translate}}</p>
-              <app-modal title="{{ 'reviewWithComments.review' | translate}}"></app-modal>
+              @if(book && book.id){
+                <app-modal title="{{ 'reviewWithComments.review' | translate}}" #addReviewBtn [bookId]="book.id" (reviewAdded)="onReviewAdded($event)"></app-modal>
+              }
             </div>
           </div>
 
-          <div class="alert">
-            {{ 'reviewWithComments.noReviews' | translate}}
+          <div class="reviews-list">
+            @if(reviews && reviews.length > 0){
+              @for (review of reviews; track $index) {
+                <app-review-reply [review]="review.comment" [rating]="review.rating" (delete)="deleteReview(review.id || $index)"></app-review-reply>
+              }
+            }
+            @else {
+              <div class="alert">
+                {{ 'reviewWithComments.noReviews' | translate}}
+              </div>
+            }
           </div>
 
         </div>

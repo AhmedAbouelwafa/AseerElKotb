@@ -45,22 +45,51 @@
         <!-- أيقونات المستخدم والقائمة المنسدلة -->
         <div class="d-flex align-items-center gap-3">
           <button class="btn p-0">
-            <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
-            <ul class="dropdown-menu-custom">
+            <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
 
+            <ul class="dropdown-menu-custom">
               <li>
-                <a><img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle"></a>
-                <a routerLink="/profile"><i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}</a>
+                <a routerLink="/profile">
+                  <img src="/icons/user.png" width="28" class="rounded-circle">
+                  <i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}
+                </a>
               </li>
-              <li><a routerLink="/notifications"><i class="fas fa-bell"></i> {{ 'navbar.userMenu.notifications' | translate }} <span class="badge bg-danger">5</span></a></li>
-              <li><a routerLink="/messages"><i class="fas fa-envelope"></i> {{ 'navbar.userMenu.messages' | translate }} <span class="badge bg-danger">2</span></a></li>
-              <li><a routerLink="/books"><i class="fas fa-book-open"></i> {{ 'navbar.menu.allBooks' | translate }}</a></li>
-              <li><a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> {{ 'navbar.menu.readableBooks' | translate }}</a></li>
-              <li><a routerLink="/books/purchasable"><i class="fas fa-child"></i> {{ 'navbar.menu.purchasableBooks' | translate }}</a></li>
-              <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a></li>
-              <li><a routerLink="/cart"><i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }} <span class="badge bg-success">3</span></a></li>
-              <li><a routerLink="/api-tokens"><i class="fas fa-key"></i> {{ 'navbar.userMenu.apiTokens' | translate }}</a></li>
-              <li><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a></li>
+              <li>
+                <a routerLink="/notifications">
+                  <i class="fas fa-bell"></i> {{ 'navbar.userMenu.notifications' | translate }}
+                  <span class="badge bg-danger">5</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/messages">
+                  <i class="fas fa-envelope"></i> {{ 'navbar.userMenu.messages' | translate }}
+                  <span class="badge bg-danger">2</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/books"><i class="fas fa-book-open"></i> {{ 'navbar.menu.allBooks' | translate }}</a>
+              </li>
+              <li>
+                <a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> {{ 'navbar.menu.readableBooks' | translate }}</a>
+              </li>
+              <li>
+                <a routerLink="/books/purchasable"><i class="fas fa-child"></i> {{ 'navbar.menu.purchasableBooks' | translate }}</a>
+              </li>
+              <li>
+                <a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a>
+              </li>
+              <li>
+                <a routerLink="/cart">
+                  <i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }}
+                  <span class="badge bg-success">3</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/api-tokens"><i class="fas fa-key"></i> {{ 'navbar.userMenu.apiTokens' | translate }}</a>
+              </li>
+              <li>
+                <a (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a>
+              </li>
             </ul>
           </button>
 
@@ -68,10 +97,13 @@
             <i class="fa-regular fa-bell fs-5 opacity-50"></i>
             <span class="badge">1</span>
           </button>
-          <button class="btn btn-nav p-0 position-relative">
-            <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
-            <span class="badge">1</span>
-          </button>
+          <a routerLink="/Cart">
+            <button class="btn btn-nav p-0 position-relative">
+              <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
+              <span class="badge">1</span>
+            </button>
+          </a>
+
           <button class="btn btn-nav p-0 position-relative">
             <i class="fas fa-truck text-success fs-6 opacity-75"></i>
             <span class="badge">1</span>
@@ -79,9 +111,11 @@
 
       <!-- Language Switcher -->
       <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">
+
         <button class="lang-btn" (click)="toggleMenu()">
           <div class="flag" [ngClass]="'flag-' + currentLang"></div>
         </button>
+
         <div class="menu" [ngClass]="{'show': showDropdown}">
           <button class="menu-item" (click)="changeLang('ar')">
             <div class="flag flag-ar"></div>
@@ -92,6 +126,7 @@
             <span>{{ 'navbar.languageSwitcher.english' | translate }}</span>
           </button>
         </div>
+
       </div>
 
 
