@@ -18,6 +18,7 @@ import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-passw
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
 import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
+import { CheckoutPage } from './features/checkout-page/checkout-page';
 
 
 export const routes: Routes = [
@@ -74,6 +75,9 @@ export const routes: Routes = [
   },
   {
     path: 'user-profile' , component : UserProfile,
+  },
+  {
+    path: 'checkout' , component : CheckoutPage
   }
   ,
   {

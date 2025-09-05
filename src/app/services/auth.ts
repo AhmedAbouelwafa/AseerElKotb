@@ -6,7 +6,7 @@ import { map, catchError, tap, finalize } from 'rxjs/operators';
 import { User } from '../models/user';
 import { LoginRequest } from '../models/login-request';
 import { RegisterRequest, RegisterResponse } from '../models/register-request';
-import { environment } from '../../environments/environment';
+import { environment } from '../core/configs/environment.config';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class Auth {
   readonly loading = this.isLoading.asReadonly();
   readonly loginError = this.error.asReadonly();
 
-  private readonly apiUrl = environment.apiUrl;
+  private readonly apiUrl = environment.apiBaseUrl;
 
   constructor(private readonly http: HttpClient) {
     // Initialize user from localStorage if token exists
@@ -44,7 +44,7 @@ export class Auth {
       };
       errors?: string[];
       message: string;
-    }>(`${this.apiUrl}/api/Account/Login`, credentials)
+    }>(`${this.apiUrl}/Account/Login`, credentials)
       .pipe(
         map(response => {
           // Some backends may send a success message but set `succeeded` incorrectly.
@@ -88,7 +88,7 @@ export class Auth {
     this.isLoading.set(true);
     this.error.set('');
 
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/api/Account/Register`, userData)
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/Account/Register`, userData)
       .pipe(
         map(response => {
           if (!response.succeeded) {
@@ -160,7 +160,7 @@ export class Auth {
       succeeded: boolean;
       message: string;
       errors?: string[];
-    }>(`${this.apiUrl}/api/Account/ResendConfirmationEmail`, email, {
+    }>(`${this.apiUrl}/Account/ResendConfirmationEmail`, email, {
       headers: { 'Content-Type': 'application/json' }
     })
       .pipe(

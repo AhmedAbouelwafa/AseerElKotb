@@ -88,17 +88,7 @@
           </button>
         </div>
 
-        <div class="recommendAndFollowButtons">
-          <button class="custom-btn">
-            <span class="btn-text">{{'bookDetails.follow' | translate}} (2)</span>
-            <span class="icon-box"><i class="fa-solid fa-circle-plus"></i></span>
-          </button>
 
-          <button class="custom-btn">
-            <span class="btn-text">{{'bookDetails.recommend' | translate}} (2)</span>
-            <span class="icon-box"><i class="fa-solid fa-book-open"></i></span>
-          </button>
-        </div>
 
         <div class="book-snip" *ngIf="book?.description">
           <h3 class="section-title">{{'bookDetails.aboutBook' | translate}}</h3>
@@ -123,7 +113,7 @@
               <h3 class="section-title">{{'bookDetails.otherWorks' | translate}}</h3>
 
               <div class="AuthorBooks">
-                @for (book of booksByAuthor; track book) {
+                @for (book of authorBooks ; track book) {
                   <div class="bookaya">
                     <i class="fa fa-book-open"></i>
                     <a routerLink="/book-details/{{book.id}}" class="booksauthor">{{book.title}}</a>
@@ -142,9 +132,8 @@
             <table class="book-table">
               <tbody>
                 <tr><th>{{'bookDetails.authors' | translate}}</th><td>{{book?.authorName}}</td></tr>
-                <tr><th>{{'bookDetails.translator' | translate}}</th><td>فاطمة أحمد</td></tr>
                 <tr><th>{{'bookDetails.pages' | translate}}</th><td>{{book?.pageCount}}</td></tr>
-                <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate}}</td></tr>
+                <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate | date:'dd/MM/yyyy' }}</td></tr>
                 <tr><th>{{'bookDetails.format' | translate}}</th><td>{{book?.format}}</td></tr>
                 <tr><th>{{'bookDetails.coverType' | translate}}</th><td>{{book?.format}}</td></tr>
                 <tr><th>{{'bookDetails.publisher' | translate}}</th><td>{{book?.publisherId}}</td></tr>
@@ -179,13 +168,19 @@
                 </a>
               }
 
+
             </ul>
 
-            <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories'| translate}}</button>
+            <a routerLink="/AllCategories">
+              <button class="btn btn-danger btn-sm">{{'bookDetails.moreCategories'| translate}}</button>
+            </a>
 
           </div>
         </div>
+
+
       </div>
+
     </div>
   </div>
 
@@ -193,5 +188,8 @@
     <app-book-page [title]="'bookDetails.similarBooks' | translate"></app-book-page>
   </div>
 
-  <app-reviews-and-comments [book]="book"></app-reviews-and-comments>
+      <app-reviews-and-comments
+          [book]="book">
+     </app-reviews-and-comments>
 </div>
+

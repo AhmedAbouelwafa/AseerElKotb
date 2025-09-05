@@ -11,15 +11,8 @@
 
 
     <!-- تفاصيل الكتاب -->
-    <div class="card-body text-center">
-      <div class="book-rating mb-2">
-        @for (star of stars; track star) {
-          <i class="fa-star" [ngClass]="{
-            'fas text-warning': star < (book.rating || 0),
-            'far text-secondary': star >= (book.rating || 0)
-          }"></i>
-        }
-    </div>
+    <div class="card-body text-center mt-2">
+
 
 
      <h5 class ="card-title fw-bold">{{book.title}}</h5>

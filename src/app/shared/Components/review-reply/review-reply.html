@@ -1,0 +1,38 @@
+<div class="review-card">
+  <div class="header">
+    <button class="delete-btn" (click)="onDelete()">×</button>
+    <img class="profile-pic" src="/icons/user.png" alt="Profile">
+    <div class="header-content">
+      <div class="author">{{ authorName }}</div>
+      <div class="date">{{ date }}</div>
+    </div>
+  </div>
+
+  <div class="rating-section">
+    <div class="stars">
+      @for (star of getStarsArray(); track star) {
+        <i class="fa fa-star text-warning"></i>
+      }
+      @for (star of getEmptyStarsArray(); track star) {
+        <i class="fa fa-star text-muted"></i>
+      }
+      <span class="rating-text">{{rating}}/5</span>
+    </div>
+  </div>
+
+  <div class="review-text">
+    {{ review }}
+  </div>
+
+  <div class="actions">
+    <div class="share">
+      <button><i class="fas fa-link"></i></button>
+      <button><i class="fab fa-twitter"></i></button>
+      <button><i class="fab fa-facebook"></i></button>
+    </div>
+    <div class="votes">
+      <button><i class="fas fa-thumbs-down"></i> 0</button>
+      <button><i class="fas fa-thumbs-up"></i> 0</button>
+    </div>
+  </div>
+</div>

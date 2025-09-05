@@ -5,9 +5,10 @@
 }
 
 .checkout-container {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Almarai';
   background-color: #f8f9fa;
   min-height: 100vh;
+
 }
 
 /* Header Styles */
@@ -81,7 +82,7 @@
 
 .breadcrumb .current {
   color: #007bff;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 /* Main Content */
@@ -94,6 +95,7 @@
 .page-title {
   text-align: center;
   font-size: 2rem;
+  font-weight: bolder;
   margin-bottom: 2rem;
   color: #333;
 }
@@ -116,6 +118,7 @@
 .section-title {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
+  font-weight: bolder;
   color: #333;
   text-align: right;
 }
@@ -134,7 +137,7 @@
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: bold;
+  font-weight: bolder;
   color: #555;
   text-align: right;
 }
@@ -145,6 +148,8 @@
   border: 2px solid #ddd;
   border-radius: 5px;
   font-size: 1rem;
+  font-weight:bold;
+  color: #555;
   text-align: right;
   transition: border-color 0.3s;
 }
@@ -162,7 +167,7 @@
 .order-edit-title {
   color: #dc3545;
   text-align: center;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .order-items-detailed {
@@ -175,6 +180,7 @@
 .order-item-detailed {
   display: flex;
   justify-content: space-between;
+  font-weight: bolder;
   align-items: center;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #dee2e6;
@@ -192,23 +198,24 @@
 .order-item-detailed.total-item {
   background-color: #495057;
   color: white;
-  font-weight: bold;
+  font-weight: bolder;
   font-size: 1.1rem;
 }
 
 .free-shipping {
   color: #dc3545;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .total-price {
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .contact-section {
   text-align: center;
   margin-top: 1rem;
+  font-weight: bolder;
 }
 
 .contact-text {
@@ -218,7 +225,7 @@
 
 .whatsapp-contact {
   color: #25d366;
-  font-weight: bold;
+  font-weight: bolder;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -260,7 +267,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .payment-icon {
@@ -275,6 +282,7 @@
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   height: fit-content;
+  font-weight: bolder;
 }
 
 .order-summary h3 {
@@ -307,12 +315,12 @@
 .order-item.total {
   background-color: #343a40;
   color: white;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .item-price.free {
   color: #28a745;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .promo-section, .terms-section, .contact-info {
@@ -348,7 +356,7 @@
   padding: 1rem 3rem;
   border-radius: 25px;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight:bolder;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);

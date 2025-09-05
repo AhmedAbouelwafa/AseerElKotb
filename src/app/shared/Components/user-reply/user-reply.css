@@ -8,26 +8,98 @@
   position: relative;
 }
 
+
+
 .delete-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #666;
+  top: 12px;
+  left: 12px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6c757d;
   cursor: pointer;
-  padding: 5px;
-  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .delete-btn:hover {
-  color: #dc3545;
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
 }
 
 .delete-btn:focus {
   outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
 }
+
+/* إضافة animation لطيفة */
+@keyframes deleteShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.delete-btn:hover {
+  animation: deleteShake 0.5s ease-in-out;
+}
+
+/* Alternative style - أكثر عصرية */
+.delete-btn.modern {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(238, 90, 82, 0.2);
+}
+
+.delete-btn.modern:hover {
+  background: linear-gradient(135deg, #ff5252, #d32f2f);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(238, 90, 82, 0.4);
+}
+
+/* Style للـ glassmorphism */
+.delete-btn.glass {
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #dc3545;
+}
+
+.delete-btn.glass:hover {
+  background: rgba(220, 53, 69, 0.2);
+  border-color: rgba(220, 53, 69, 0.4);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .header {
   display: flex;

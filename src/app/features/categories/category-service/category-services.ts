@@ -39,6 +39,7 @@ export class CategoryServices {
       .set('ParentCategoryId', parentCategoryId.toString())
       .set('PageNumber', '1') // Assuming you want all subcategories, so page number is 1
       .set('PageSize', '100') // Assuming you want all subcategories, so page size is large enough
+
     if (search) {
       params = params.set('Search', search);
     }

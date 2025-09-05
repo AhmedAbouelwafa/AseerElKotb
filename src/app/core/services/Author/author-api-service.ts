@@ -14,7 +14,7 @@ export class AuthorApiService {
   constructor(private http: HttpClient) {}
 
     getAuthorById(id: number): Observable<IAuthor> {
-    return this.http.get<{ data: IAuthor }>(`${this.baseUrl}/Authors?id=${id}`)
+    return this.http.get<{ data: IAuthor }>(`${this.baseUrl}/Authors/${id}`)
       .pipe(map(response => response.data));
   }
 
@@ -36,3 +36,7 @@ export class AuthorApiService {
   }
 }
 
+    
+
+
+}

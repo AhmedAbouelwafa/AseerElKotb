@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Ibook } from '../book-model/Ibook';
 import { BookService } from '../book-service/book-service';
 import { DecimalPipe } from '@angular/common';
@@ -19,7 +19,7 @@ import { NavcrumbItem, NavCrumb } from '../../../shared/Components/nav-crumb/nav
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
-export class BookDetails implements OnInit {
+export class BookDetails implements OnInit , AfterViewInit {
   book!: Ibook | null;
   newPrice!: number | undefined;
   discount!: number | undefined;
@@ -30,6 +30,7 @@ export class BookDetails implements OnInit {
   authorId!: number;
   author!: IAuthor;
   categories!: any[];
+  authorBooks!: Partial<Ibook>[];
 
   totalReviews = 0;
   averageRating = 0;
@@ -58,6 +59,8 @@ export class BookDetails implements OnInit {
       } else {
         alert("الرابط غير صحيح. لازم يبقى فيه ID.");
       }
+
+
     });
 
     this.api.getBooks().subscribe({
@@ -88,7 +91,10 @@ export class BookDetails implements OnInit {
         // استدعاء بيانات المؤلف
         this.authorService.getAuthorById(this.authorId).subscribe({
           next: (authorData) => {
+            console.log("authorData" , authorData);
             this.author = authorData;
+            this.authorBooks = authorData.books;
+            console.log("authorBooks" , this.authorBooks);
           },
           error: (error) => {
             console.error('Error fetching author:', error);
@@ -98,12 +104,15 @@ export class BookDetails implements OnInit {
         // استدعاء التصنيفات
         this.catService.getPaginatedCategories().subscribe({
           next: (data) => {
-            this.categories = data.map((category : any) => {
+            this.categories = data.data.map((category : any) => {
               return {
                 name: category.name,
                 id: category.id
               }
             });
+            console.log("dataaaaaaaa" , this.categories);
+
+
           },
           error: (error) => {
             console.error('Error fetching categories:', error);
@@ -114,7 +123,7 @@ export class BookDetails implements OnInit {
       error: (error) => {
         if (error.status === 422) {
           console.warn('Book data is invalid or not found.');
-          alert('الكتاب غير متاح أو البيانات غير صحيحة.'); 
+          alert('الكتاب غير متاح أو البيانات غير صحيحة.');
         } else if (error.status === 404) {
           alert('الكتاب غير موجود.');
         } else {
@@ -126,10 +135,6 @@ export class BookDetails implements OnInit {
 
     this.isRTL = this.translate.currentLang === 'ar';
 
-    this.breadcrumbs = [
-      {name : 'Home', path : '/'},
-      {name : `${this.book?.title}`, path : '/book-details/' + this.book?.id},
-     ];
 
   }
 
@@ -152,4 +157,14 @@ export class BookDetails implements OnInit {
   toggleHeart() {
     this.isLiked = !this.isLiked;
   }
+
+
+  ngAfterViewInit(): void {
+    this.breadcrumbs = [
+      {name : 'Home', path : '/'},
+      {name : `${this.book?.title}`, path : '/book-details/' + this.book?.id},
+     ];
+  }
+
+
 }
