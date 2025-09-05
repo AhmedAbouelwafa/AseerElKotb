@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { ShowCartResponse } from '../CartInterfaces/cart-interfaces';
+import { ShowCartResponse, AddItemToCartRequest, AddItemToCartResponse, ApiResponse } from '../CartInterfaces/cart-interfaces';
+import { environment } from '../../../core/configs/environment.config';
 
 
 @Injectable({
@@ -9,38 +10,49 @@ import { ShowCartResponse } from '../CartInterfaces/cart-interfaces';
 })
 export class CartServices {
   
-   private apiUrl = 'https://localhost:7207/api/Cart';
+  private apiUrl = environment.apiBaseUrl + '/Cart';
 
   constructor(private http: HttpClient) { }
 
- getUserCart(userId: number): Observable<ShowCartResponse> {
-  return this.http.get<any>(`${this.apiUrl}?UserId=${userId}`)
+ getUserCart(): Observable<ShowCartResponse> {
+  console.log('CartService: Making request to get user cart');
+  console.log('CartService: API URL:', this.apiUrl);
+  
+  return this.http.get<any>(this.apiUrl)
     .pipe(
-      map(response => response.data) // Extract the data
+      map(response => {
+        console.log('CartService: Raw API response:', response);
+        console.log('CartService: Extracted data:', response.data);
+        return response.data; // Extract the data
+      })
     );
   }
 
-   deleteItem(userId: number, bookId: number): Observable<any> {
+   deleteItem(bookId: number): Observable<any> {
     return this.http.delete<any>(this.apiUrl, { 
-      body: { userId, bookId } 
+      body: { bookId } 
     }).pipe(
       map(response => response.data)
     );
   }
 
   //updateItemQuantity
-  updateItemQuantity(userId: number, bookId: number, newQuantity: number): Observable<any> {
-    return this.http.put<any>(this.apiUrl, { userId, bookId, newQuantity })
+  updateItemQuantity(bookId: number, newQuantity: number): Observable<any> {
+    return this.http.put<any>(this.apiUrl, { bookId, newQuantity })
       .pipe(
         map(response => response.data)
       );
   }
 
-  clearCart(userId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/ClearCart`, { 
-      body: { userId } 
-    }).pipe(
+  clearCart(): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/ClearCart`).pipe(
       map(response => response.data)
     );
   }
+
+  // Add item to cart
+  addItemToCart(request: AddItemToCartRequest): Observable<ApiResponse<AddItemToCartResponse>> {
+    return this.http.post<ApiResponse<AddItemToCartResponse>>(`${this.apiUrl}/Add`, request);
+  }
+
 }

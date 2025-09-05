@@ -18,6 +18,8 @@ import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-passw
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
 import { CheckoutPage } from './features/checkout-page/checkout-page';
+import { Wishlist } from './features/wishlist/wishlist/wishlist';
+import { AuthGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
@@ -79,5 +81,8 @@ export const routes: Routes = [
   },
   {
     path: 'checkout' , component : CheckoutPage
+  },
+  {
+    path: 'wishlist' , component : Wishlist, canActivate: [AuthGuard]
   }
 ];

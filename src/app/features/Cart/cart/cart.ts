@@ -51,7 +51,7 @@ export class Cart implements OnInit {
 
   loadCart(): void {
     this.loading = true;    
-    this.cartService.getUserCart(this.userId).subscribe({
+    this.cartService.getUserCart().subscribe({
       next: (response) => {
         this.cartData = response;
         this.items=this.cartData.items;
@@ -66,7 +66,7 @@ export class Cart implements OnInit {
 
   /// Delete Item From Cart
   deleteItem(bookId: number): void {
-    this.cartService.deleteItem(this.userId, bookId).subscribe({
+    this.cartService.deleteItem(bookId).subscribe({
       next: (response) => {
         // Optionally, you can show a success message here
         this.loadCart(); 
@@ -80,7 +80,7 @@ export class Cart implements OnInit {
   updateItemQuantity(bookId: number, input: HTMLInputElement): void {
   const newQuantity = parseInt(input.value);
   
-  this.cartService.updateItemQuantity(this.userId, bookId, newQuantity).subscribe({
+  this.cartService.updateItemQuantity(bookId, newQuantity).subscribe({
     next: (response) => {
       this.loadCart();
     },
@@ -98,7 +98,7 @@ clearCart(): void {
     if (!confirm('هل أنت متأكد من تفريغ سلة التسوق؟')) {
       return;
     }
-    this.cartService.clearCart(this.userId).subscribe({
+    this.cartService.clearCart().subscribe({
       next: (response) => {
         this.loadCart(); 
       },
@@ -106,6 +106,8 @@ clearCart(): void {
         console.error('Error clearing cart:', err);
       }
     });
+
   }
+  
 
 }

@@ -44,7 +44,7 @@
 
         <!-- أيقونات المستخدم والقائمة المنسدلة -->
         <div class="d-flex align-items-center gap-3">
-          <button class="btn p-0">
+          <button class="btn p-0" *ngIf="isAuthenticated()">
             <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
 
             <ul class="dropdown-menu-custom">
@@ -57,13 +57,13 @@
               <li>
                 <a routerLink="/notifications">
                   <i class="fas fa-bell"></i> {{ 'navbar.userMenu.notifications' | translate }}
-                  <span class="badge bg-danger">5</span>
+                  <span class="badge bg-danger"></span>
                 </a>
               </li>
               <li>
                 <a routerLink="/messages">
                   <i class="fas fa-envelope"></i> {{ 'navbar.userMenu.messages' | translate }}
-                  <span class="badge bg-danger">2</span>
+                  <span class="badge bg-danger"></span>
                 </a>
               </li>
               <li>
@@ -81,7 +81,12 @@
               <li>
                 <a routerLink="/cart">
                   <i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }}
-                  <span class="badge bg-success">3</span>
+                  <span class="badge bg-success"></span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/wishlist">
+                  <i class="fas fa-heart"></i> {{ 'navbar.userMenu.wishlist' | translate }}
                 </a>
               </li>
               <li>
@@ -95,18 +100,23 @@
 
           <button class="btn btn-nav p-0 position-relative">
             <i class="fa-regular fa-bell fs-5 opacity-50"></i>
-            <span class="badge">1</span>
+            <!-- <span class="badge">1</span> -->
           </button>
+          <a routerLink="/wishlist" *ngIf="isAuthenticated()">
+            <button class="btn btn-nav p-0 position-relative">
+              <i class="fas fa-heart fs-6 opacity-50 text-danger"></i>
+            </button>
+          </a>
           <a routerLink="/Cart">
             <button class="btn btn-nav p-0 position-relative">
               <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
-              <span class="badge">1</span>
+              <!-- <span class="badge"></span> -->
             </button>
           </a>
 
           <button class="btn btn-nav p-0 position-relative">
             <i class="fas fa-truck text-success fs-6 opacity-75"></i>
-            <span class="badge">1</span>
+            <!-- <span class="badge"></span> -->
           </button>
 
       <!-- Language Switcher -->

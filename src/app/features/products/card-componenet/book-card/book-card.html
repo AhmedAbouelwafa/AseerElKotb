@@ -27,8 +27,13 @@
             ج.م {{book.price - (book.price * book.discountPercentage / 100) | number}}
           </span>
 
-          <button class="cart-ribbon">
-            <i class="fa-solid fa-cart-shopping"></i>
+          <button class="cart-ribbon" 
+                  (click)="addToCart($event)"
+                  [disabled]="isAddingToCart"
+                  type="button">
+            <i class="fa-solid fa-cart-shopping" 
+               [class.fa-spinner]="isAddingToCart" 
+               [class.fa-spin]="isAddingToCart"></i>
           </button>
 
       </div>
