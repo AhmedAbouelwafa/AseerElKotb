@@ -4,31 +4,36 @@
     </div>
 
     <div id="bigContainer">
-        @for(author of authors; track author) {
+        @for(author of authors;track author.id) {
         <div id="AuthorContainer" >
             <div id="Authors" >
                <div id="data">
-                    <img id="authorImage" [src]="author.imageUrl"  />
-                    <h6>{{author.name}}</h6>
+                    <!-- <img id="authorImage" [src]="getCoverImageUrl(author)"  /> -->
+                     @if(author && getCoverImageUrl(author)) {
+                         <img id="authorImage" [src]="getCoverImageUrl(author)">
+                    } @else {
+                    <i id="AlternativeImage" class="fa-solid fa-circle-user"></i>
+                    }
+                    <a [routerLink]="['/authors', author.id]" routerLinkActive="true">
+                      <h6>{{author.name}}</h6>
+                    </a>
                     <p class="Bio">{{author.bio}}</p>
                </div>
 
                 <div class="book-rating ">
-                    @for (star of stars; track star) {
-                        <i class="fa-star" [ngClass]="{
-                            'fas text-warning': star < (author.rating || 0),
-                            'far text-secondary': star >= (author.rating || 0)
-                            }">
-                        </i>
-                    }
+                    <div class="star-rating">
+                        @for (star of [1,2,3,4,5]; track star) {
+                            <span class="star" [class.yellow]="star <= author.rating">★</span>
+                        }
+                    </div>
 
                 </div>
             </div>
 
                 <div id="info">
                     <div class="info"> {{author.booksCount}} الكتب </div>
-                    <div class="info"> {{author.qoutationsCount}} اقتباسات </div>
-                    <div id="lastDiv" class="info"> {{author.followersCount}} المتابعين </div>
+                    <div class="info"> {{author.QoutationsCount}} اقتباسات </div>
+                    <div id="lastDiv" class="info"> {{author.followerCount}} المتابعين </div>
                 </div>
         </div>
     }
@@ -37,7 +42,8 @@
 
     
     <div id="Pagination">
-        <app-pagination ></app-pagination><!-- fix this -->
+          <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="onPageChange($event)"></app-pagination>
+
     </div >
 
 </div>

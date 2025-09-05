@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { Publisher } from '../../Publisher/Publisher Interfaces/publisher-interfaces';
 import { PublisherServices } from '../../Publisher/PublisherServices/publisher-services';
+import { IPublisher } from '../../Publisher/Publisher Interfaces/publisher-interfaces';
 
 @Component({
   selector: 'app-filtering',
@@ -38,8 +38,8 @@ export class Filtering implements OnInit {
   searchPublisherTerm: string = '';
 
   // Publisher related properties
-  allPublishers: Publisher[] = [];
-  displayedPublishers: Publisher[] = [];
+  allPublishers: IPublisher[] = [];
+  displayedPublishers: IPublisher[] = [];
   showAllPublishers: boolean = false;
   private searchSubject = new Subject<string>();
 

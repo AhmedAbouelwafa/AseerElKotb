@@ -1,0 +1,108 @@
+<div id="mainContainer">
+    <div id="publisherData">
+
+        @if(publisher && getCoverImageUrl(publisher.logoUrl)) {
+        <img [src]="getCoverImageUrl(publisher.logoUrl)" alt="{{ publisher.name }} logo">
+        } @else {
+           <i id="AlternativeImage" class="fa-solid fa-circle-user"></i>
+        }
+        <div id="Fcontainer">
+            <h3>{{publisher?.name}}</h3>
+            <p>{{ publisher?.description }}</p>
+
+             <button id="followBtn" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
+                <span>{{ isFollowing ? 'إلغاء المتابعة' : 'متابعة' }}</span>
+                @if (!isFollowing) {
+                <span><i class="fa-solid fa-plus"></i></span>
+                } @else {
+                <span><i class="fa-solid fa-check"></i></span>
+                }
+            </button>
+        </div>
+    </div>
+
+    <div id="publisherInfo">
+        <div id="btns">
+               <button class="btn" 
+                     id="BooksBtn" 
+                     (click)="showBooks()"
+                     [ngClass]="{'active': activeSection === 'books'}">
+                <span>
+                    <i class="fa-solid fa-book-open"></i>
+                    الكتب
+                </span>
+                <span>{{BookRelatedToPublisherCount}}</span>
+            </button>
+
+           <hr class="vertical-separator">
+
+             <button class="btn" 
+                    id="AuthorsBtn"
+                    (click)="showAuthors()"
+                    [ngClass]="{'active': activeSection === 'authors'}">
+                <span>
+                    <i class="fa-solid fa-user-group"></i>
+                    المؤلفون
+                </span>
+                 <span>{{AuthorsRelatedToPublisherCount}}</span>
+            </button>
+
+            <hr class="vertical-separator">
+            
+            <button class="btn">
+                <span>
+                    <i class="fa-solid fa-users"></i>
+                    يتابعونني
+                </span>
+                <span>{{PublisherFollowerCount}}</span>
+            </button>
+
+        </div>
+        @if(activeSection === 'books') {
+             <div id="booksContainer">
+                @if(Books.length!=0){
+                    <div class="books">
+                    @for (Book of Books ; track Book.id){
+                        <app-book-card  [book]="Book"></app-book-card>
+                        }
+                    </div>
+
+                    <div class="books-pagination">
+                        <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="GetNewPage($event)"></app-pagination>
+                    </div>
+                }
+            </div>
+        }
+       
+        @if(activeSection === 'authors') {
+            <div id="AuthorsBigContainer">
+                <div id="AuthorsContainer">
+                    @if(Authors.length!=0){
+                        @for (Author of Authors ; track Author.id){
+                            <div class="Authors">
+                                <div>
+                                    @if(Author && getCoverImageUrl(Author.imageUrl)) {
+                                        <img id="AuthorImage" [src]="getCoverImageUrl(Author.imageUrl)">
+                                    } @else {
+                                        <i id="AlternativeAuthorImage" class="fa-solid fa-circle-user"></i>
+                                        }
+                                     <a [routerLink]="['/authors', Author.id]" routerLinkActive="true">
+                                            {{Author.name}}
+                                    </a>
+                                </div>                              
+                                <p>{{Author.bio}}</p>
+                            </div>
+                        }
+                        <div class="Authors-pagination">
+                             <app-pagination [CurrentPage]="AuthorcurrentPage" [TotalPages]="AuthortotalPages" (PageChanged)="GetNewPageAuthor($event)"></app-pagination>
+                        </div>
+                    }
+                </div>
+                
+            </div>
+        }
+        
+       
+    </div>
+
+</div>

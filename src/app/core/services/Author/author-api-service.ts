@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAuthor } from '../../../features/Authors/Author-Model/iauthor';
+import { GetAutherFollowerCountResponse, IAuthor, PaginatedAllAuthors } from '../../../features/Authors/Author-Model/iauthor';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../configs/environment.config';
 
@@ -8,7 +8,9 @@ import { environment } from '../../configs/environment.config';
   providedIn: 'root'
 })
 export class AuthorApiService {
-  private baseUrl = environment.apiBaseUrl;
+  // private baseUrl = environment.apiBaseUrl; /////need remove comment
+  private baseUrl='https://localhost:7207/api/Authors'/////neeeeeed change 
+
   constructor(private http: HttpClient) {}
 
     getAuthorById(id: number): Observable<IAuthor> {
@@ -16,7 +18,21 @@ export class AuthorApiService {
       .pipe(map(response => response.data));
   }
 
-    
+// Fetch paginated authors
+  getAllAuthorsPaginated(pageNumber: number = 1, pageSize: number = 28, search: string = ''): Observable<PaginatedAllAuthors> {
+    let params = new HttpParams()
+      .set('PageNumber', pageNumber.toString())
+      .set('PageSize', pageSize.toString());
+    if (search) {
+      params = params.set('Search', search);
+    }
+    return this.http.get<PaginatedAllAuthors>(`${this.baseUrl}/GetAll`, { params });
+  }
 
-
+  getAuthorFollowerCount(AuthorId: number): Observable<GetAutherFollowerCountResponse> {
+    let params = new HttpParams().set('AuthorId', AuthorId.toString());
+    return this.http.get<{ data: GetAutherFollowerCountResponse }>(`${this.baseUrl}/GetAutherFollowerCount`, { params })
+      .pipe(map(response => response.data));
+  }
 }
+

@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Hero } from './features/Home/hero';
 import { AuthorDetails } from './features/Authors/author-details/author-details';
-
 import { BookDetails } from './features/products/book-details/book-details';
 import { Login } from './features/login/login';
 import { Register } from './features/register/register';
@@ -17,6 +16,7 @@ import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-p
 import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-password/forgot-password';
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
+import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
 import { AuthGuard } from './guards/auth.guard';
@@ -51,21 +51,16 @@ export const routes: Routes = [
   },
   {
     path: 'reset-password-failed', component: ResetPasswordFailed
-  }
-  ,
+  },
   {
-
     path: 'login',component : Login
   },
   {
     path: 'register', component: Register
   },
-{    path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
-
-    // path: 'MainFilterContainer/:id' , component : MainFilterContainer,
-
-  }
-  ,
+  {  
+      path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
+  },
   {
     path: 'allAuthors' , component : AllAuthors,
   }
@@ -84,5 +79,8 @@ export const routes: Routes = [
   },
   {
     path: 'wishlist' , component : Wishlist, canActivate: [AuthGuard]
+  },
+  {
+    path: 'Publisher/:id' , component : Publisher,
   }
 ];
