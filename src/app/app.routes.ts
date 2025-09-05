@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Hero } from './features/Home/hero';
 import { AuthorDetails } from './features/Authors/author-details/author-details';
-
 import { BookDetails } from './features/products/book-details/book-details';
 import { Login } from './features/login/login';
 import { Register } from './features/register/register';
@@ -50,10 +49,8 @@ export const routes: Routes = [
   },
   {
     path: 'reset-password-failed', component: ResetPasswordFailed
-  }
-  ,
+  },
   {
-
     path: 'login',component : Login
   },
   {
@@ -61,8 +58,7 @@ export const routes: Routes = [
   },
   {  
       path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
-  }
-  ,
+  },
   {
     path: 'allAuthors' , component : AllAuthors,
   }
@@ -78,8 +74,7 @@ export const routes: Routes = [
   },
   {
     path: 'checkout' , component : CheckoutPage
-  }
-  ,
+  },
   {
     path: 'Publisher/:id' , component : Publisher,
   }
