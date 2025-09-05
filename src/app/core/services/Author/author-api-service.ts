@@ -36,7 +36,3 @@ export class AuthorApiService {
   }
 }
 
-    
-
-
-}
