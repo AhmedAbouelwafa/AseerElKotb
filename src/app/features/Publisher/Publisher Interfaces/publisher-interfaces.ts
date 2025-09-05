@@ -1,4 +1,4 @@
-export interface Publisher {
+export interface IPublisher {
   id: number;
   name: string;
   description: string;
@@ -11,6 +11,6 @@ export interface PublishersResponse {
   pageSize: number;
   totalPages: number;
   totalCount: number;
-  data: Publisher[];
+  data: IPublisher[];
   succeeded: boolean;
 }

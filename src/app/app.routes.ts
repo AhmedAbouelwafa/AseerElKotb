@@ -17,6 +17,7 @@ import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-p
 import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-password/forgot-password';
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
+import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
 
 
 export const routes: Routes = [
@@ -74,4 +75,9 @@ export const routes: Routes = [
   {
     path: 'user-profile' , component : UserProfile,
   }
+  ,
+  {
+    path: 'Publisher/:id' , component : Publisher,
+  }
+  
 ];
