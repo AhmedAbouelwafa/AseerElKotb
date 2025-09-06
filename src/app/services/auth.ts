@@ -38,9 +38,9 @@ export class Auth {
     return this.http.post<{
       succeeded: boolean;
       data?: {
+        id: number;
         token: string;
-        user: User;
-        isEmailConfirmed?: boolean;
+        expiration: string;
       };
       errors?: string[];
       message: string;
@@ -53,25 +53,17 @@ export class Auth {
             throw new Error(response.message || 'Login failed');
           }
 
-          // If backend indicates email not confirmed, show a friendly error
-          if (response.data.isEmailConfirmed === false) {
-            const notConfirmedError = 'يجب تأكيد البريد الإلكتروني قبل تسجيل الدخول';
-            this.error.set(notConfirmedError);
-            throw new Error(notConfirmedError);
-          }
-
-          // Backend returns only id, token, expiration. Build minimal user object.
+          // Backend returns id, token, expiration. Build user object.
           const user: User = {
-            id: (response.data as any).id,
+            id: response.data.id,
             email: credentials.email,
             token: response.data.token
           };
           
           this.currentUser.set(user);
           
-          if (credentials.remember) {
-            localStorage.setItem('auth_token', response.data.token);
-          }
+          // Always store token in localStorage for session persistence
+          localStorage.setItem('auth_token', response.data.token);
           
           return user;
         }),
@@ -194,11 +186,10 @@ export class Auth {
   private initializeUserFromStorage(): void {
     const token = localStorage.getItem('auth_token');
     if (token) {
-      // Create a minimal user object with the stored token
-      // Note: In a real app, you might want to validate this token with the backend
+      // For now, just set a minimal user - you could validate token with backend here
       const user: User = {
-        id: 1, // Placeholder ID as number
-        email: 'user@example.com', // Placeholder email
+        id: 0, // Will be updated when user info is needed
+        email: '', // Will be updated when user info is needed
         token: token
       };
       this.currentUser.set(user);

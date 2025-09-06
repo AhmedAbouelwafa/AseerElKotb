@@ -18,6 +18,8 @@ import { AllCategories } from './features/categories/AllCategories/all-categorie
 import { UserProfile } from './features/user-profile/user-profile';
 import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
 import { CheckoutPage } from './features/checkout-page/checkout-page';
+import { Wishlist } from './features/wishlist/wishlist/wishlist';
+import { AuthGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
@@ -76,7 +78,9 @@ export const routes: Routes = [
     path: 'checkout' , component : CheckoutPage
   },
   {
+    path: 'wishlist' , component : Wishlist, canActivate: [AuthGuard]
+  },
+  {
     path: 'Publisher/:id' , component : Publisher,
   }
-  
 ];
