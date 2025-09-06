@@ -1,0 +1,157 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../core/configs/environment.config';
+import { 
+  AddOrderRequest, 
+  CancelOrderRequest, 
+  GetAllUserOrdersPaginatedRequest,
+  GetUserOrderByTrackingNumberRequest,
+  OrderResponse,
+  PaginatedOrderResponse,
+  ApiResponse,
+  CheckoutRequest
+} from '../order-interfaces/order-interfaces';
+import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
+import { EgyptCities } from '../order-models/egypt-cities.enum';
+import { PaymentMethod } from '../order-models/payment-method.enum';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class OrderService {
+  
+  private apiUrl = environment.apiBaseUrl + '/Orders';
+
+  constructor(private http: HttpClient) { }
+
+  /**
+   * Submit an order (checkout process)
+   * @param request Order details including shipping information
+   * @returns Observable of order response
+   */
+  checkout(request: CheckoutRequest): Observable<OrderResponse> {
+    console.log('OrderService: Making checkout request', request);
+    console.log('OrderService: API URL:', `${this.apiUrl}/Checkout`);
+    
+    // The request already matches backend expectations (AddOrderRequest)
+    const orderRequest: AddOrderRequest = {
+      FirstName: request.FirstName,
+      LastName: request.LastName,
+      StreetAddress: request.StreetAddress,
+      PhoneNumber: request.PhoneNumber,
+      Governorate: request.Governorate,
+      City: request.City,
+      PaymentMethod: request.PaymentMethod
+    };
+    
+    return this.http.post<ApiResponse<OrderResponse>>(`${this.apiUrl}/Checkout`, null, {
+      params: this.buildHttpParams(orderRequest)
+    }).pipe(
+      map(response => {
+        console.log('OrderService: Checkout response:', response);
+        return response.data;
+      })
+    );
+  }
+
+  /**
+   * Cancel an existing order
+   * @param trackingNumber The tracking number of the order to cancel
+   * @returns Observable of cancellation result
+   */
+  cancelOrder(trackingNumber: string): Observable<any> {
+    console.log('OrderService: Cancelling order with tracking number:', trackingNumber);
+    
+    const request: CancelOrderRequest = { trackingNumber };
+    
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/Cancel`, null, {
+      params: this.buildHttpParams(request)
+    }).pipe(
+      map(response => {
+        console.log('OrderService: Cancel order response:', response);
+        return response.data;
+      })
+    );
+  }
+
+  /**
+   * Get all orders for the current user with pagination
+   * @param request Pagination parameters
+   * @returns Observable of paginated orders
+   */
+  getUserOrders(request?: GetAllUserOrdersPaginatedRequest): Observable<PaginatedOrderResponse> {
+    console.log('OrderService: Getting user orders', request);
+    
+    const params = new HttpParams()
+      .set('pageNumber', (request?.pageNumber || 1).toString())
+      .set('pageSize', (request?.pageSize || 10).toString());
+    
+    return this.http.get<ApiResponse<PaginatedOrderResponse>>(`${this.apiUrl}/User/GetAll`, {
+      params: params
+    }).pipe(
+      map(response => {
+        console.log('OrderService: User orders response:', response);
+        return response.data;
+      })
+    );
+  }
+
+  /**
+   * Get a specific order by tracking number for the current user
+   * @param trackingNumber The tracking number to search for
+   * @returns Observable of order details
+   */
+  getOrderByTrackingNumber(trackingNumber: string): Observable<OrderResponse> {
+    console.log('OrderService: Getting order by tracking number:', trackingNumber);
+    
+    const request: GetUserOrderByTrackingNumberRequest = { trackingNumber };
+    
+    return this.http.get<ApiResponse<OrderResponse>>(`${this.apiUrl}/User/GetByTrackingNumber`, {
+      params: this.buildHttpParams(request)
+    }).pipe(
+      map(response => {
+        console.log('OrderService: Order by tracking number response:', response);
+        return response.data;
+      })
+    );
+  }
+
+  /**
+   * Get shipping cost for a specific governorate
+   * @param governorate The governorate to get shipping cost for
+   * @returns Observable of shipping cost
+   */
+  getShippingCost(governorate: EgyptGovernorates): Observable<number> {
+    console.log('OrderService: Getting shipping cost for governorate:', governorate);
+    
+    const params = new HttpParams()
+      .set('Governorate', governorate.toString());
+    
+    return this.http.get<number>(`${this.apiUrl}/GetShippingCost`, {
+      params: params
+    }).pipe(
+      map(cost => {
+        console.log('OrderService: Shipping cost response:', cost);
+        return cost;
+      })
+    );
+  }
+
+  /**
+   * Helper method to build HTTP params from an object
+   * @param obj The object to convert to HTTP params
+   * @returns HttpParams object
+   */
+  private buildHttpParams(obj: any): HttpParams {
+    let params = new HttpParams();
+    
+    Object.keys(obj).forEach(key => {
+      if (obj[key] !== null && obj[key] !== undefined) {
+        params = params.set(key, obj[key].toString());
+      }
+    });
+    
+    return params;
+  }
+}

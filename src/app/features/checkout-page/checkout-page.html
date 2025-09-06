@@ -13,17 +13,17 @@
         <div class="form-row">
           <div class="form-group">
             <label>الاسم الأول</label>
-            <input type="text" [(ngModel)]="checkoutData.firstName" class="form-input">
+            <input type="text" [(ngModel)]="checkoutData.FirstName" class="form-input">
           </div>
           <div class="form-group">
             <label>الاسم الأخير</label>
-            <input type="text" [(ngModel)]="checkoutData.lastName" class="form-input">
+            <input type="text" [(ngModel)]="checkoutData.LastName" class="form-input">
           </div>
         </div>
 
         <div class="form-group">
           <label>العنوان</label>
-          <input type="text" [(ngModel)]="checkoutData.address" class="form-input">
+          <input type="text" [(ngModel)]="checkoutData.StreetAddress" class="form-input">
         </div>
 
         <div class="form-row">
@@ -33,27 +33,31 @@
           </div>
           <div class="form-group">
             <label>اختر المحافظة</label>
-            <select [(ngModel)]="checkoutData.governorate" class="form-select">
+            <select [(ngModel)]="checkoutData.Governorate" 
+                    (ngModelChange)="onGovernorateChange()"
+                    class="form-select">
               <option value="">اختر المحافظة</option>
+              <option *ngFor="let gov of governorates" [value]="gov.value">
+                {{gov.label}}
+              </option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
           <label>المدينة</label>
-          <select [(ngModel)]="checkoutData.city" class="form-select">
+          <select [(ngModel)]="checkoutData.City" class="form-select">
             <option value="">اختر المدينة</option>
+            <option *ngFor="let city of cities" [value]="city.value">
+              {{city.label}}
+            </option>
           </select>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>رقم المحالي</label>
-            <input type="tel" [(ngModel)]="checkoutData.localPhone" class="form-input" placeholder="00000000">
-          </div>
-          <div class="form-group">
-            <label>رقم محلك آخر</label>
-            <input type="tel" [(ngModel)]="checkoutData.altPhone" class="form-input" placeholder="00000000">
+            <label>رقم الهاتف</label>
+            <input type="tel" [(ngModel)]="checkoutData.PhoneNumber" class="form-input" placeholder="01234567890">
           </div>
         </div>
       </div>
@@ -71,12 +75,15 @@
             <span class="item-price">{{cartDiscountedTotal}} ج.م</span>
           </div>
           <div class="order-item-detailed shipping-item">
-            <span class="item-title">الشحن (٤٠٠ درهم)</span>
-            <span class="item-price free-shipping">أكمل عنوانك</span>
+            <span class="item-title">الشحن</span>
+            <span class="item-price" [class.free-shipping]="shippingCost === 0">
+              <span *ngIf="shippingCost > 0; else freeShipping">{{shippingCost}} ج.م</span>
+              <ng-template #freeShipping>مجاني</ng-template>
+            </span>
           </div>
           <div class="order-item-detailed total-item">
             <span class="item-title">الإجمالي</span>
-            <span class="item-price total-price">{{cartDiscountedTotal}} ج.م</span>
+            <span class="item-price total-price">{{finalTotal}} ج.م</span>
           </div>
         </div>
 
@@ -92,8 +99,11 @@
 
       <!-- Submit Button -->
       <div class="submit-section">
-        <button class="submit-btn" (click)="submitOrder()">
-          تأكيد الطلب
+        <button class="submit-btn" 
+                (click)="submitOrder()"
+                [disabled]="isSubmittingOrder || isLoadingCart">
+          <span *ngIf="!isSubmittingOrder">تأكيد الطلب</span>
+          <span *ngIf="isSubmittingOrder">جاري إرسال الطلب...</span>
         </button>
       </div>
     </div>
@@ -104,27 +114,15 @@
         <h2 class="section-title">وسيلة الدفع</h2>
 
         <div class="payment-options">
-          <div class="payment-option" [class.selected]="selectedPayment === 'card'">
+          <div class="payment-option" *ngFor="let payment of paymentMethods" [class.selected]="checkoutData.PaymentMethod === payment.value">
             <input type="radio"
-                   id="card"
+                   [id]="payment.value"
                    name="payment"
-                   value="card"
-                   [(ngModel)]="selectedPayment">
-            <label for="card">
-              <span class="payment-icon">💳</span>
-              الدفع عبر الإنترنت
-            </label>
-          </div>
-
-          <div class="payment-option" [class.selected]="selectedPayment === 'cash'">
-            <input type="radio"
-                   id="cash"
-                   name="payment"
-                   value="cash"
-                   [(ngModel)]="selectedPayment">
-            <label for="cash">
+                   [value]="payment.value"
+                   [(ngModel)]="checkoutData.PaymentMethod">
+            <label [for]="payment.value">
               <span class="payment-icon">💵</span>
-              فودافون كاش
+              {{payment.label}}
             </label>
           </div>
         </div>
