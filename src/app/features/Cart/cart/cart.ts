@@ -34,7 +34,7 @@ export class Cart implements OnInit {
   quantityInput?:string;
 
 
-  private baseUrl = 'https://localhost:7207'////////chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange
+  private baseUrl = environment.apiBaseUrl
   
      getCoverImageUrl(item:CartItemResponse): string {
       if (item.coverImageUrl.startsWith('/uploads')) {

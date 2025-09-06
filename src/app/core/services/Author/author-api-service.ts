@@ -8,8 +8,8 @@ import { environment } from '../../configs/environment.config';
   providedIn: 'root'
 })
 export class AuthorApiService {
-  // private baseUrl = environment.apiBaseUrl; /////need remove comment
-  private baseUrl='https://localhost:7207/api/Authors'/////neeeeeed change 
+  private baseUrl = environment.apiBaseUrl;
+ 
 
   constructor(private http: HttpClient) {}
 
@@ -26,12 +26,12 @@ export class AuthorApiService {
     if (search) {
       params = params.set('Search', search);
     }
-    return this.http.get<PaginatedAllAuthors>(`${this.baseUrl}/GetAll`, { params });
+    return this.http.get<PaginatedAllAuthors>(`${this.baseUrl}/Authors/GetAll`, { params });
   }
 
   getAuthorFollowerCount(AuthorId: number): Observable<GetAutherFollowerCountResponse> {
     let params = new HttpParams().set('AuthorId', AuthorId.toString());
-    return this.http.get<{ data: GetAutherFollowerCountResponse }>(`${this.baseUrl}/GetAutherFollowerCount`, { params })
+    return this.http.get<{ data: GetAutherFollowerCountResponse }>(`${this.baseUrl}/Authors/GetAutherFollowerCount`, { params })
       .pipe(map(response => response.data));
   }
 }
