@@ -35,6 +35,36 @@ export interface GetUserOrderByTrackingNumberRequest {
   trackingNumber: string;
 }
 
+// Payment Status Enum
+export enum PaymentStatus {
+  Pending = 'Pending',
+  Processing = 'Processing',
+  Completed = 'Completed',
+  Failed = 'Failed',
+  Cancelled = 'Cancelled',
+  Refunded = 'Refunded'
+}
+
+// Payment Initialization Info for payment gateway
+export interface PaymentInitializationInfo {
+  paymentId: number;
+  transactionId: string;
+  paymentMethod: PaymentMethod;
+  amount: number;
+  currency: string;
+  status: PaymentStatus;
+  redirectUrl?: string;
+  instructions?: string;
+  requiresRedirect: boolean;
+}
+
+// Add Order Response - New structure from backend
+export interface AddOrderResponse {
+  id: number;
+  trackingNumber: string;
+  paymentInfo?: PaymentInitializationInfo;
+}
+
 // Order Response Interfaces
 export interface OrderItemResponse {
   bookId: number;

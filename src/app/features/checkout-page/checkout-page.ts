@@ -9,7 +9,9 @@ import { OrderService } from '../orders/order-service/order.service';
 import { 
   CheckoutRequest, 
   OrderResponse,
-  OrderStatus 
+  OrderStatus,
+  AddOrderResponse,
+  PaymentInitializationInfo
 } from '../orders/order-interfaces/order-interfaces';
 import { 
   EgyptGovernorates, 
@@ -40,7 +42,7 @@ export class CheckoutPage implements OnInit {
     PhoneNumber: '',
     Governorate: EgyptGovernorates.AL_QAHIRAH,
     City: EgyptCities.DOWNTOWN_CAIRO,
-    PaymentMethod: PaymentMethod.CASH_ON_DELIVERY
+    PaymentMethod: PaymentMethod.CashOnDelivery
   };
   
   // Cart totals for checkout display
@@ -52,9 +54,10 @@ export class CheckoutPage implements OnInit {
  
 
   
-  selectedPayment = PaymentMethod.CASH_ON_DELIVERY;
+  selectedPayment = PaymentMethod.CashOnDelivery;
   isLoadingCart = false;
   isSubmittingOrder = false;
+  isRedirectingToPayment = false;
   
   // Dropdown options
   governorates = Object.entries(GovernorateDisplayNames).map(([key, value]) => ({
@@ -68,7 +71,7 @@ export class CheckoutPage implements OnInit {
   }));
   
   paymentMethods = Object.entries(PaymentMethodDisplayNames).map(([key, value]) => ({
-    value: key as PaymentMethod,
+    value: Number(key) as PaymentMethod,
     label: value
   }));
   
@@ -87,6 +90,40 @@ export class CheckoutPage implements OnInit {
     console.log('Checkout page initialized');
     this.getUserCart();
     this.updateShippingCost();
+    
+    // Check if this is a return from payment gateway
+    this.checkPaymentReturn();
+  }
+
+  /**
+   * Check if user is returning from payment gateway
+   * This method can be enhanced to handle payment success/failure callbacks
+   */
+  private checkPaymentReturn(): void {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment_status');
+    const trackingNumber = urlParams.get('tracking_number');
+    
+    // Also check for stored pending order info
+    const pendingOrderStr = sessionStorage.getItem('pending_order');
+    const pendingOrder = pendingOrderStr ? JSON.parse(pendingOrderStr) : null;
+    
+    if (paymentStatus && (trackingNumber || pendingOrder)) {
+      const finalTrackingNumber = trackingNumber || pendingOrder?.trackingNumber;
+      console.log('Payment return detected:', { paymentStatus, trackingNumber: finalTrackingNumber });
+      
+      // Clear pending order from session storage
+      sessionStorage.removeItem('pending_order');
+      
+      if (paymentStatus === 'success') {
+        alert(`تم الدفع بنجاح!\nرقم التتبع: ${finalTrackingNumber}`);
+        this.router.navigate(['/orders'], { queryParams: { trackingNumber: finalTrackingNumber } });
+      } else if (paymentStatus === 'failed' || paymentStatus === 'cancelled') {
+        alert('فشل في عملية الدفع. يمكنك المحاولة مرة أخرى.');
+        // Stay on checkout page to retry, but clear the cart or restore form
+        this.getUserCart(); // Refresh cart state
+      }
+    }
   }
 
   getUserCart(): void {
@@ -246,14 +283,9 @@ export class CheckoutPage implements OnInit {
     console.log('Submitting order:', checkoutRequest);
     
     this.orderService.checkout(checkoutRequest).subscribe({
-      next: (orderResponse: OrderResponse) => {
+      next: (orderResponse: AddOrderResponse) => {
         console.log('Order submitted successfully:', orderResponse);
-        alert(`تم تأكيد الطلب بنجاح!\nرقم التتبع: ${orderResponse.trackingNumber}`);
-        
-        // Navigate to order confirmation or orders page
-        // You might want to create an order confirmation page
-        this.router.navigate(['/orders'], { queryParams: { trackingNumber: orderResponse.trackingNumber } });
-        
+        this.handleOrderResponse(orderResponse);
         this.isSubmittingOrder = false;
       },
       error: (error) => {
@@ -262,6 +294,75 @@ export class CheckoutPage implements OnInit {
         this.isSubmittingOrder = false;
       }
     });
+  }
+
+  /**
+   * Handle the order response and determine next action based on payment method
+   * @param orderResponse The response from the checkout API
+   */
+  private handleOrderResponse(orderResponse: AddOrderResponse): void {
+    console.log('Processing order response:', orderResponse);
+    
+    // Check if payment info exists and requires redirect
+    if (orderResponse.paymentInfo && orderResponse.paymentInfo.requiresRedirect && orderResponse.paymentInfo.redirectUrl) {
+      this.handlePaymentRedirect(orderResponse);
+    } else {
+      this.handleDirectOrderCompletion(orderResponse);
+    }
+  }
+
+  /**
+   * Handle payment gateway redirect for online payments
+   * @param orderResponse The order response containing payment info
+   */
+  private handlePaymentRedirect(orderResponse: AddOrderResponse): void {
+    const paymentInfo = orderResponse.paymentInfo!;
+    
+    console.log('Payment redirect required:', {
+      paymentMethod: paymentInfo.paymentMethod,
+      amount: paymentInfo.amount,
+      currency: paymentInfo.currency,
+      redirectUrl: paymentInfo.redirectUrl
+    });
+    
+    // Show detailed payment information
+    const paymentMessage = `تم تأكيد الطلب بنجاح!
+رقم التتبع: ${orderResponse.trackingNumber}
+مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}
+سيتم توجيهك إلى بوابة الدفع...`;
+    
+    alert(paymentMessage);
+    
+    // Set redirect state for UI feedback
+    this.isRedirectingToPayment = true;
+    
+    // Store order info in session storage for return handling
+    sessionStorage.setItem('pending_order', JSON.stringify({
+      trackingNumber: orderResponse.trackingNumber,
+      paymentId: paymentInfo.paymentId,
+      transactionId: paymentInfo.transactionId
+    }));
+    
+    // Redirect to payment gateway after short delay
+    setTimeout(() => {
+      console.log('Redirecting to payment gateway:', paymentInfo.redirectUrl);
+      window.location.href = paymentInfo.redirectUrl!;
+    }, 2000);
+  }
+
+  /**
+   * Handle direct order completion (e.g., cash on delivery)
+   * @param orderResponse The order response
+   */
+  private handleDirectOrderCompletion(orderResponse: AddOrderResponse): void {
+    console.log('Direct order completion - no payment redirect needed');
+    
+    // Show success message for cash on delivery or completed payments
+    alert(`تم تأكيد الطلب بنجاح!
+رقم التتبع: ${orderResponse.trackingNumber}`);
+    
+    // Navigate to order confirmation or orders page
+    this.router.navigate(['/orders'], { queryParams: { trackingNumber: orderResponse.trackingNumber } });
   }
  
 }

@@ -101,9 +101,10 @@
       <div class="submit-section">
         <button class="submit-btn" 
                 (click)="submitOrder()"
-                [disabled]="isSubmittingOrder || isLoadingCart">
-          <span *ngIf="!isSubmittingOrder">تأكيد الطلب</span>
-          <span *ngIf="isSubmittingOrder">جاري إرسال الطلب...</span>
+                [disabled]="isSubmittingOrder || isLoadingCart || isRedirectingToPayment">
+          <span *ngIf="!isSubmittingOrder && !isRedirectingToPayment">تأكيد الطلب</span>
+          <span *ngIf="isSubmittingOrder && !isRedirectingToPayment">جاري إرسال الطلب...</span>
+          <span *ngIf="isRedirectingToPayment">جاري التوجيه لبوابة الدفع...</span>
         </button>
       </div>
     </div>
@@ -123,9 +124,9 @@
             <label [for]="payment.value">
               <span class="payment-icon">
                 <ng-container [ngSwitch]="payment.value">
-                  <span *ngSwitchCase="'CASH_ON_DELIVERY'">💵</span>
-                  <span *ngSwitchCase="'CREDIT_CARD'">💳</span>
-                  <span *ngSwitchCase="'VODAFONE_CASH'">📱</span>
+                  <span *ngSwitchCase="1">💵</span>
+                  <span *ngSwitchCase="2">💳</span>
+                  <span *ngSwitchCase="3">📱</span>
                   <span *ngSwitchDefault>💰</span>
                 </ng-container>
               </span>
