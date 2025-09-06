@@ -142,6 +142,14 @@ export class CheckoutPage implements OnInit {
   }
 
   updateShippingCost(): void {
+    // Check if cart discounted total is 600 or more for free shipping
+    if (this.cartDiscountedTotal >= 600) {
+      console.log('Free shipping applied - cart total >= 600:', this.cartDiscountedTotal);
+      this.shippingCost = 0;
+      this.updateFinalTotal();
+      return;
+    }
+    
     if (this.checkoutData.Governorate) {
       console.log('Getting shipping cost for governorate:', this.checkoutData.Governorate);
       

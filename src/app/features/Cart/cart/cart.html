@@ -69,6 +69,21 @@
                             <span class="priceValue">{{cartData.sumDiscountedPrice| currency:'EGP' }}</span><!-- change this -->
                         </div>
 
+                        <!-- Free Shipping Message -->
+                        <div class="free-shipping-info">
+                            @if (cartData.sumDiscountedPrice >= 600) {
+                                <div class="free-shipping-message qualified">
+                                    <i class="fa-solid fa-truck"></i>
+                                    <span>🎉 تهانينا! حصلت على شحن مجاني</span>
+                                </div>
+                            } @else {
+                                <div class="free-shipping-message not-qualified">
+                                    <i class="fa-solid fa-truck"></i>
+                                    <span>أضف {{600 - cartData.sumDiscountedPrice | currency:'EGP'}} أخرى للحصول على شحن مجاني</span>
+                                </div>
+                            }
+                        </div>
+
                     </div>
 
                     <div id="CustomerService">

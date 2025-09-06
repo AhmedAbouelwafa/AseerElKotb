@@ -121,7 +121,14 @@
                    [value]="payment.value"
                    [(ngModel)]="checkoutData.PaymentMethod">
             <label [for]="payment.value">
-              <span class="payment-icon">💵</span>
+              <span class="payment-icon">
+                <ng-container [ngSwitch]="payment.value">
+                  <span *ngSwitchCase="'CASH_ON_DELIVERY'">💵</span>
+                  <span *ngSwitchCase="'CREDIT_CARD'">💳</span>
+                  <span *ngSwitchCase="'VODAFONE_CASH'">📱</span>
+                  <span *ngSwitchDefault>💰</span>
+                </ng-container>
+              </span>
               {{payment.label}}
             </label>
           </div>
