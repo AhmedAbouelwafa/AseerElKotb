@@ -81,7 +81,7 @@ export class OrderService {
    * @returns Observable of paginated orders
    */
   getUserOrders(request?: GetAllUserOrdersPaginatedRequest): Observable<PaginatedOrderResponse> {
-    console.log('OrderService: Getting user orders', request);
+    // console.log('OrderService: Getting user orders', request);
     
     const params = new HttpParams()
       .set('pageNumber', (request?.pageNumber || 1).toString())
@@ -91,10 +91,21 @@ export class OrderService {
       params: params
     }).pipe(
       map(response => {
-        console.log('OrderService: User orders response:', response);
+        // console.log('OrderService: User orders response:', response);
         return response.data;
       })
     );
+  }
+  getAllUserOrders(request?:any): Observable<any> {
+    // console.log('OrderService: Getting user orders', request);
+    
+    const params = new HttpParams()
+      .set('pageNumber', (request?.pageNumber || 1).toString())
+      .set('pageSize', (request?.pageSize || 10).toString());
+    
+    return this.http.get<any>(`${this.apiUrl}/User/GetAll`, {
+      params: params
+    })
   }
 
   /**
@@ -154,4 +165,6 @@ export class OrderService {
     
     return params;
   }
+
+  
 }

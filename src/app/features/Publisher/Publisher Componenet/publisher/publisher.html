@@ -93,12 +93,12 @@
                                 <p>{{Author.bio}}</p>
                             </div>
                         }
-                        <div class="Authors-pagination">
-                             <app-pagination [CurrentPage]="AuthorcurrentPage" [TotalPages]="AuthortotalPages" (PageChanged)="GetNewPageAuthor($event)"></app-pagination>
-                        </div>
                     }
                 </div>
                 
+            </div>
+            <div class="Authors-pagination">
+                 <app-pagination [CurrentPage]="AuthorcurrentPage" [TotalPages]="AuthortotalPages" (PageChanged)="GetNewPageAuthor($event)"></app-pagination>
             </div>
         }
         

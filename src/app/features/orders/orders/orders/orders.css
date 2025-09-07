@@ -1,0 +1,110 @@
+#mainContainer{
+    margin: 0;
+    padding: 5rem;
+}
+
+#Table{
+    width: 100%;
+    margin-top: 5rem;
+}
+th,td{
+  padding: .7rem;
+}
+th{
+background-color: rgb(251, 253, 254);
+}
+td{
+ background-color: white;
+ padding-inline: 1rem;
+}
+tr{
+   box-shadow: 1px 1px 1px rgb(240, 239, 239),-1px -1px 1px rgb(216, 216, 216);
+}
+/* .status{
+    padding: .3rem;
+    background-color: rgb(100, 148, 214);
+} */
+.status {
+    display: inline-block;
+    padding: .3rem;
+    color: white;
+    border-radius: 1rem;
+    font-size: small;
+    min-width: 80px; /* Fixed width for consistent size */
+    text-align: center; /* Center text for better appearance */
+}
+
+.pending {
+    background-color: #ff9800; /* Orange for Pending */
+}
+
+.confirmed {
+    background-color: #4caf50; /* Green for Confirmed */
+}
+
+.processing {
+    background-color: #2196f3; /* Blue for Processing */
+}
+
+.shipped {
+    background-color: lightcoral /* Indigo for Shipped */
+}
+
+.delivered {
+    background-color: #9c27b0; /* Purple for Delivered */
+}
+
+.cancelled {
+    background-color: #f44336; /* Red for Cancelled */
+}
+
+.unknown {
+    background-color: #757575; /* Gray for Unknown */
+}
+
+.btn{
+    border:none;
+    box-shadow: 1px 1px 1px rgb(240, 239, 239),-1px -1px 1px rgb(240, 239, 239);;
+}
+
+@media (min-width:1200px) {
+   .btn{
+    margin-left: -4rem;
+   }
+   
+}
+@media (min-width:900px) {
+   .btn{
+    margin-left: -2.5rem;
+   }
+   .status {
+    padding-inline:.5rem;
+    }
+}
+
+@media (max-width:760px) {
+    #mainContainer {
+        padding:.8rem;
+    }
+    td,th,.btn,.status{
+        font-size:.9rem;
+        font-weight: bold;
+    }
+    .status {
+    /* padding-inline:.3rem; */
+    font-size: .7rem;
+    }
+}
+
+@media (max-width: 560px) {
+    #mainContainer {
+        padding:.2rem;
+    }
+    td,th,.btn,.status{
+        font-size:.7rem;
+        font-weight: bold;
+    }
+    
+    
+}
+
