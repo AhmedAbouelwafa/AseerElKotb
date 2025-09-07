@@ -83,7 +83,7 @@
             }
           </span>
 
-          <button class="heart-icon" (click)="toggleHeart()">
+          <button class="heart-btn" (click)="toggleHeart()" type="button">
             <i [ngClass]="{ 'fas': isLiked, 'far': !isLiked }" class="fa-heart heart-icon"></i>
           </button>
         </div>

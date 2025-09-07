@@ -4,13 +4,13 @@ import { RouterLink, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { Pagination } from '../../../shared/Components/pagination/pagination';
-import { WishlistService } from '../wishlist-service/wishlist-service';
+import { WishlistService } from '../../../services/wishlist-service';
 import { 
   GetWishlistItemsRequest, 
   GetWishlistItemsResponse, 
   AddToCartRequest,
   RemoveFromWishlistRequest
-} from '../wishlist-interfaces/wishlist-interfaces';
+} from '../../../models/wishlist-interfaces';
 import { Auth } from '../../../services/auth';
 
 @Component({

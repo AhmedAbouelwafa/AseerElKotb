@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../core/configs/environment.config';
+import { environment } from '../core/configs/environment.config';
 import { 
   AddOrderRequest, 
   CancelOrderRequest, 
@@ -10,11 +10,12 @@ import {
   OrderResponse,
   PaginatedOrderResponse,
   ApiResponse,
-  CheckoutRequest
-} from '../order-interfaces/order-interfaces';
-import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
-import { EgyptCities } from '../order-models/egypt-cities.enum';
-import { PaymentMethod } from '../order-models/payment-method.enum';
+  CheckoutRequest,
+  AddOrderResponse
+} from '../models/order-interfaces';
+import { EgyptGovernorates } from '../models/egypt-governorates.enum';
+import { EgyptCities } from '../models/egypt-cities.enum';
+import { PaymentMethod } from '../models/payment-method.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +29,9 @@ export class OrderService {
   /**
    * Submit an order (checkout process)
    * @param request Order details including shipping information
-   * @returns Observable of order response
+   * @returns Observable of add order response with payment info
    */
-  checkout(request: CheckoutRequest): Observable<OrderResponse> {
+  checkout(request: CheckoutRequest): Observable<AddOrderResponse> {
     console.log('OrderService: Making checkout request', request);
     console.log('OrderService: API URL:', `${this.apiUrl}/Checkout`);
     
@@ -45,7 +46,7 @@ export class OrderService {
       PaymentMethod: request.PaymentMethod
     };
     
-    return this.http.post<ApiResponse<OrderResponse>>(`${this.apiUrl}/Checkout`, null, {
+    return this.http.post<ApiResponse<AddOrderResponse>>(`${this.apiUrl}/Checkout`, null, {
       params: this.buildHttpParams(orderRequest)
     }).pipe(
       map(response => {

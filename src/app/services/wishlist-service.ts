@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../core/configs/environment.config';
+import { environment } from '../core/configs/environment.config';
 import { 
   GetWishlistItemsRequest, 
   GetWishlistItemsResponse, 
   ApiResponsePaginated,
   AddToCartRequest,
-  RemoveFromWishlistRequest
-} from '../wishlist-interfaces/wishlist-interfaces';
+  RemoveFromWishlistRequest,
+  ApiResponse
+} from '../models/wishlist-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +41,27 @@ export class WishlistService {
   }
 
   /**
+   * Add item to wishlist
+   */
+  addToWishlist(bookId: number): Observable<any> {
+    const params = new HttpParams().set('bookId', bookId.toString());
+    return this.http.post(`${this.apiBaseUrl}/Wishlist/Add`, null, { params });
+  }
+
+  /*
    * Remove item from wishlist
    */
   removeFromWishlist(request: RemoveFromWishlistRequest): Observable<any> {
-    return this.http.delete(`${this.apiBaseUrl}/Wishlist/Remove`, {
-      body: request
-    });
+    const params = new HttpParams().set('bookId', request.bookId.toString());
+    return this.http.delete(`${this.apiBaseUrl}/Wishlist/Remove`, { params });
+  }
+
+  /*
+   * Check if book is in wishlist
+   */
+  isBookInWishlist(bookId: number): Observable<any> {
+    const params = new HttpParams().set('bookId', bookId.toString());
+    return this.http.get(`${this.apiBaseUrl}/Wishlist/IsInWishlist`, { params });
   }
 
   /**
@@ -57,5 +73,11 @@ export class WishlistService {
       return baseUrl + imageUrl;
     }
     return imageUrl || '/images/default-book-cover.jpg';
+  }
+  clearWishlist() {
+    return this.http.delete<ApiResponse<any>>(`${environment.apiBaseUrl}/wishlist/Clear`);
+  }
+  getWislistCount(){
+    return this.http.get<ApiResponse<any>>(`${environment.apiBaseUrl}/wishlist/Count`);
   }
 }
