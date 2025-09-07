@@ -30,6 +30,14 @@ export interface ApiResponsePaginated<T> {
   meta: any;
   errors: any;
 }
+export interface ApiResponse<T> {
+  data: T;
+  message: string | null;
+  succeeded: boolean;
+  statusCode: number;
+  meta: any;
+  errors: any;
+}
 
 // Add to Cart Interface
 export interface AddToCartRequest {

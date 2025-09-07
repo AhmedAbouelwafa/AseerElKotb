@@ -272,32 +272,38 @@
   font-size: 10px;
 }
 
-.heart-icon {
-  color: #F1495B;
+.heart-btn {
+  border: none;
+  background-color: transparent;
+  padding: 8px;
+  margin-left: 10px;
   cursor: pointer;
   transition: transform 0.2s;
+  outline: none;
+  z-index: 10;
+  position: relative;
 }
 
-.heart-icon:hover {
+.heart-btn:hover {
   transform: scale(1.1);
 }
 
-.book-rating .heart-icon {
-  border: none;
-  background-color: transparent;
-  padding: 0;
+.heart-btn:focus {
+  outline: none;
 }
 
-.book-rating .heart-icon i {
-  font-size: 15px;
-  margin-right: 5px;
+.heart-btn .heart-icon {
+  font-size: 18px;
+  color: #F1495B;
+  transition: color 0.2s;
+  pointer-events: none;
 }
 
-.heart-icon i {
+.heart-btn .heart-icon.fas {
   color: #F1495B;
 }
 
-.heart-icon i.fas {
+.heart-btn .heart-icon.far {
   color: #F1495B;
 }
 

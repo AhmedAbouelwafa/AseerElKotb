@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../core/configs/environment.config';
+import { environment } from '../core/configs/environment.config';
 import { 
   AddOrderRequest, 
   CancelOrderRequest, 
@@ -12,10 +12,10 @@ import {
   ApiResponse,
   CheckoutRequest,
   AddOrderResponse
-} from '../order-interfaces/order-interfaces';
-import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
-import { EgyptCities } from '../order-models/egypt-cities.enum';
-import { PaymentMethod } from '../order-models/payment-method.enum';
+} from '../models/order-interfaces';
+import { EgyptGovernorates } from '../models/egypt-governorates.enum';
+import { EgyptCities } from '../models/egypt-cities.enum';
+import { PaymentMethod } from '../models/payment-method.enum';
 
 @Injectable({
   providedIn: 'root'

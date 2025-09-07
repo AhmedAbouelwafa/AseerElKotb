@@ -5,26 +5,26 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CartServices } from '../Cart/CartServices/cart-services';
 import { ShowCartResponse } from '../Cart/CartInterfaces/cart-interfaces';
 import { Auth } from '../../services/auth';
-import { OrderService } from '../orders/order-service/order.service';
+import { OrderService } from '../../services/order.service';
 import { 
   CheckoutRequest, 
   OrderResponse,
   OrderStatus,
   AddOrderResponse,
   PaymentInitializationInfo
-} from '../orders/order-interfaces/order-interfaces';
+} from '../../models/order-interfaces';
 import { 
   EgyptGovernorates, 
   GovernorateDisplayNames 
-} from '../orders/order-models/egypt-governorates.enum';
+} from '../../models/egypt-governorates.enum';
 import { 
   EgyptCities, 
   CityDisplayNames 
-} from '../orders/order-models/egypt-cities.enum';
+} from '../../models/egypt-cities.enum';
 import { 
   PaymentMethod,
   PaymentMethodDisplayNames 
-} from '../orders/order-models/payment-method.enum';
+} from '../../models/payment-method.enum';
 
 
 

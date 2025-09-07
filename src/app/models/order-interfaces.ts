@@ -1,6 +1,6 @@
-import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
-import { EgyptCities } from '../order-models/egypt-cities.enum';
-import { PaymentMethod } from '../order-models/payment-method.enum';
+import { EgyptGovernorates } from './egypt-governorates.enum';
+import { EgyptCities } from './egypt-cities.enum';
+import { PaymentMethod } from './payment-method.enum';
 
 // Base API Response Structure (reusing from cart interfaces pattern)
 export interface ApiResponse<T> {
