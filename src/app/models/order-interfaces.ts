@@ -107,13 +107,34 @@ export interface OrderResponse {
   orderDate: Date;
   orderStatus: OrderStatus;
   finalAmount:number
-  books: OrderItemResponse[];
+  books: OrderItemResponse[];////////does is correct/////////////
   paymentMethod:number;
   paymentStatus:number;
   userName:string
 
 }
+///////////////////for GetUserOrderByTrackingNumber///////////////////////////////
+export interface BookDTO {
+  title: string;
+  unitPrice: number;
+  quantity: number;
+}
 
+export interface GetUserOrderByTrackingNumberResponse {
+  id: number;
+  userName: string;
+  paymentMethod: string;
+  paymentStatus: string;
+  governorate: string;
+  city: string;
+  orderStatus: string;
+  trackingNumber: string;
+  finalAmount: number;
+  orderDate: string;
+  books: BookDTO[];
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
 export interface PaginatedOrderResponse {
   items: OrderResponse[];
   totalCount: number;

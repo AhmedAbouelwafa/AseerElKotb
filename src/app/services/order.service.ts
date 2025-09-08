@@ -11,7 +11,8 @@ import {
   PaginatedOrderResponse,
   ApiResponse,
   CheckoutRequest,
-  AddOrderResponse
+  AddOrderResponse,
+  GetUserOrderByTrackingNumberResponse
 } from '../models/order-interfaces';
 import { EgyptGovernorates } from '../models/egypt-governorates.enum';
 import { EgyptCities } from '../models/egypt-cities.enum';
@@ -81,7 +82,7 @@ export class OrderService {
    * @param request Pagination parameters
    * @returns Observable of paginated orders
    */
-  getUserOrders(request?: GetAllUserOrdersPaginatedRequest): Observable<PaginatedOrderResponse> {
+  getUserOrders(request?: GetAllUserOrdersPaginatedRequest): Observable<PaginatedOrderResponse> {////neeeed??????
     // console.log('OrderService: Getting user orders', request);
     
     const params = new HttpParams()
@@ -108,27 +109,30 @@ export class OrderService {
       params: params
     })
   }
-
   /**
    * Get a specific order by tracking number for the current user
    * @param trackingNumber The tracking number to search for
    * @returns Observable of order details
    */
-  getOrderByTrackingNumber(trackingNumber: string): Observable<OrderResponse> {
-    console.log('OrderService: Getting order by tracking number:', trackingNumber);
-    
-    const request: GetUserOrderByTrackingNumberRequest = { trackingNumber };
-    
-    return this.http.get<ApiResponse<OrderResponse>>(`${this.apiUrl}/User/GetByTrackingNumber`, {
-      params: this.buildHttpParams(request)
-    }).pipe(
-      map(response => {
-        console.log('OrderService: Order by tracking number response:', response);
-        return response.data;
-      })
+  // getOrderByTrackingNumber(trackingNumber: string): Observable<OrderResponse> {
+  //   const request: GetUserOrderByTrackingNumberRequest = { trackingNumber };
+  //   return this.http.get<ApiResponse<OrderResponse>>(`${this.apiUrl}/User/GetByTrackingNumber`, {
+  //     params: this.buildHttpParams(request)
+  //   }).pipe(
+  //     map(response => {
+  //       console.log('OrderService: Order by tracking number response:', response);
+  //       return response.data;
+  //     })
+  //   );
+  // }
+  getOrderByTrackingNumber(trackingNumber: string): Observable<GetUserOrderByTrackingNumberResponse> {
+    return this.http.get<GetUserOrderByTrackingNumberResponse>(
+      `${this.apiUrl}/User/GetByTrackingNumber`,
+      { 
+        params: { TrackingNumber: trackingNumber } 
+      }
     );
   }
-
   /**
    * Get shipping cost for a specific governorate
    * @param governorate The governorate to get shipping cost for

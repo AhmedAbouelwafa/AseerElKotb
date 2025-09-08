@@ -21,6 +21,7 @@ import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
 import { AuthGuard } from './guards/auth.guard';
 import { Orders } from './features/orders/orders/orders/orders';
+import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
 
 
 
@@ -87,5 +88,9 @@ export const routes: Routes = [
   },
   {
     path: 'Orders' , component : Orders,
+  },
+  {
+    path: 'OrderDetails/:trackingNumber' , component : OrderDetails,
   }
+  
 ];

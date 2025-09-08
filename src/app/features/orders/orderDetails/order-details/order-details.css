@@ -1,0 +1,12 @@
+#mainContainer{
+    margin: 0;
+    padding: 5rem;
+}
+#BigContainer{
+    padding: 1rem;
+ box-shadow: 1px 1px 10px rgb(231, 230, 230) , -1px -1px 10px rgb(231, 230, 230);
+}
+
+#OrderHeader h2{
+    /* font-weight: bold; */
+}

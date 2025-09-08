@@ -13,15 +13,15 @@
         
         @for(order of orders;track order.id){
             <tr>
-                <td>{{order.id}}</td>
+                <td>{{order.trackingNumber}}</td>
                 <td>{{order.orderDate | date:'dd/MM/yyyy' }}</td>
                 <td>
                     <span class="status {{getStatusClass(order.orderStatus)}}">{{order.orderStatus| orderStatus}}</span>
                 </td>
                 <td>{{order.finalAmount|customCurrencyPipe:'EGP'}}</td>
                 <td>
-                    <a routerLink="#" routerLinkActive="true">
-                        <button class="btn">عرض</button>
+                    <a [routerLink]="['/OrderDetails', order.trackingNumber]" routerLinkActive="true">
+                         <button class="btn">عرض</button>
                     </a>
                 </td>
             </tr>
