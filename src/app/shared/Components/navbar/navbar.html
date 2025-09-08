@@ -79,14 +79,19 @@
                 <a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a>
               </li>
               <li>
-                <a routerLink="/cart">
+                <a routerLink="/Cart">
                   <i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }}
-                  <span class="badge bg-success"></span>
+                  <span class="badge bg-success" *ngIf="cartItemsCount() > 0">{{ cartItemsCount() }}</span>
                 </a>
               </li>
               <li>
                 <a routerLink="/wishlist">
                   <i class="fas fa-heart"></i> {{ 'navbar.userMenu.wishlist' | translate }}
+                </a>
+              </li>
+              <li>
+                <a routerLink="/orders">
+                  <i class="fas fa-box"></i> {{ 'navbar.userMenu.orders' | translate }}
                 </a>
               </li>
               <li>
@@ -110,7 +115,7 @@
           <a routerLink="/Cart">
             <button class="btn btn-nav p-0 position-relative">
               <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
-              <!-- <span class="badge"></span> -->
+              <span class="badge" *ngIf="isAuthenticated() && cartItemsCount() > 0">{{ cartItemsCount() }}</span>
             </button>
           </a>
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/nav-crumb';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { GetAllUserOrdersPaginatedRequest, OrderResponse, OrderStatus, PaginatedOrderResponse } from '../../order-interfaces/order-interfaces';
-import { OrderService } from '../../order-service/order.service';
 import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 import { OrderStatusPipe } from '../../../../Pipe/OrderStatusPipe/order-status-pipe';
 import { RouterModule } from '@angular/router';
+import { OrderService } from '../../../../services/order.service';
+import { GetAllUserOrdersPaginatedRequest, OrderResponse, OrderStatus } from '../../../../models/order-interfaces';
 
 
 @Component({

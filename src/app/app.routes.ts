@@ -86,6 +86,6 @@ export const routes: Routes = [
     path: 'Publisher/:id' , component : Publisher,
   },
   {
-    path: 'Orders' , component : Orders,
+    path: 'orders' , component : Orders, canActivate: [AuthGuard]
   }
 ];

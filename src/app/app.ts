@@ -6,10 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { LangService } from './core/services/LanguageService/lang-service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { ToastNotificationComponent } from './shared/Components/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, Navbar , AsyncPipe],
+  imports: [RouterOutlet, Footer, Navbar , AsyncPipe, ToastNotificationComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

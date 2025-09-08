@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartItemResponse, ShowCartResponse } from '../CartInterfaces/cart-interfaces';
@@ -6,6 +6,7 @@ import { CartServices } from '../CartServices/cart-services';
 import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../core/configs/environment.config';
+import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-cart',
@@ -43,7 +44,7 @@ export class Cart implements OnInit {
         return item.coverImageUrl;
     }
 
-  constructor(private cartService: CartServices) {}
+  constructor(private cartService: CartServices, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -66,14 +67,16 @@ export class Cart implements OnInit {
 
   /// Delete Item From Cart
   deleteItem(bookId: number): void {
-    this.cartService.deleteItem(bookId).subscribe({
-      next: (response) => {
-        // Optionally, you can show a success message here
-        this.loadCart(); 
-      },
-      error: (err) => {
-       
-      }
+    this.toastService.showConfirmDelete('هذا الكتاب من السلة', () => {
+      this.cartService.deleteItem(bookId).subscribe({
+        next: (response) => {
+          this.loadCart();
+          this.toastService.showSuccess('تم الحذف', 'تم حذف الكتاب من السلة بنجاح!');
+        },
+        error: (err) => {
+          this.toastService.showError('خطأ في الحذف', 'حدث خطأ أثناء حذف الكتاب. يرجى المحاولة مرة أخرى.');
+        }
+      });
     });
   }
   
@@ -85,7 +88,7 @@ export class Cart implements OnInit {
       this.loadCart();
     },
     error: (err) => {
-      alert('فشل في تحديث الكمية');
+      this.toastService.showError('خطأ في التحديث', 'فشل في تحديث الكمية. يرجى المحاولة مرة أخرى.');
       // Revert to original value
       const originalItem = this.cartData.items.find(item => item.bookId === bookId);
       if (originalItem) {
@@ -95,18 +98,18 @@ export class Cart implements OnInit {
   });
 }
 clearCart(): void {
-    if (!confirm('هل أنت متأكد من تفريغ سلة التسوق؟')) {
-      return;
-    }
-    this.cartService.clearCart().subscribe({
-      next: (response) => {
-        this.loadCart(); 
-      },
-      error: (err) => {
-        console.error('Error clearing cart:', err);
-      }
+    this.toastService.showConfirmClearCart(() => {
+      this.cartService.clearCart().subscribe({
+        next: (response) => {
+          this.loadCart();
+          this.toastService.showSuccess('تم التفريغ', 'تم تفريغ سلة التسوق بنجاح!');
+        },
+        error: (err) => {
+          console.error('Error clearing cart:', err);
+          this.toastService.showError('خطأ', 'حدث خطأ أثناء تفريغ السلة. يرجى المحاولة مرة أخرى.');
+        }
+      });
     });
-
   }
   
 

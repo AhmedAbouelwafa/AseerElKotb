@@ -10,6 +10,8 @@ import {
   RemoveFromWishlistRequest,
   ApiResponse
 } from '../models/wishlist-interfaces';
+import { CartServices } from '../features/Cart/CartServices/cart-services';
+import { AddItemToCartRequest } from '../features/Cart/CartInterfaces/cart-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ import {
 export class WishlistService {
   private readonly apiBaseUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cartService: CartServices) {}
 
   /**
    * Get wishlist items with pagination
@@ -37,7 +39,11 @@ export class WishlistService {
    * Add item to cart from wishlist
    */
   addToCart(request: AddToCartRequest): Observable<any> {
-    return this.http.post(`${this.apiBaseUrl}/Cart/Add`, request);
+    // Use the cart service to ensure proper notifications
+    const cartRequest: AddItemToCartRequest = {
+      bookId: request.bookId
+    };
+    return this.cartService.addItemToCart(cartRequest);
   }
 
   /**

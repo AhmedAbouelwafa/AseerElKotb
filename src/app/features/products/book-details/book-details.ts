@@ -15,6 +15,7 @@ import { NavcrumbItem, NavCrumb } from '../../../shared/Components/nav-crumb/nav
 import { WishlistService } from '../../../services/wishlist-service';
 import { Auth } from '../../../services/auth';
 import { RemoveFromWishlistRequest } from '../../../models/wishlist-interfaces';
+import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-book-details',
@@ -49,7 +50,8 @@ export class BookDetails implements OnInit , AfterViewInit {
     private authorService: AuthorApiService,
     private catService : CategoryServices,
     private wishlistService: WishlistService,
-    private auth: Auth
+    private auth: Auth,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +64,10 @@ export class BookDetails implements OnInit , AfterViewInit {
         this.bookId = Number(paramValue);
         this.fetchBookById(this.bookId);
       } else {
-        alert("الرابط غير صحيح. لازم يبقى فيه ID.");
+        this.toastService.showError(
+          'رابط غير صحيح',
+          'الرابط غير صحيح. لازم يبقى فيه ID صحيح للكتاب.'
+        );
       }
 
 
@@ -136,11 +141,20 @@ export class BookDetails implements OnInit , AfterViewInit {
       error: (error) => {
         if (error.status === 422) {
           console.warn('Book data is invalid or not found.');
-          alert('الكتاب غير متاح أو البيانات غير صحيحة.');
+          this.toastService.showError(
+            'كتاب غير متاح',
+            'الكتاب غير متاح أو البيانات غير صحيحة.'
+          );
         } else if (error.status === 404) {
-          alert('الكتاب غير موجود.');
+          this.toastService.showError(
+            'كتاب غير موجود',
+            'الكتاب المطلوب غير موجود. يرجى التحقق من الرابط.'
+          );
         } else {
-          alert('حدث خطأ أثناء جلب بيانات الكتاب.');
+          this.toastService.showError(
+            'خطأ في جلب البيانات',
+            'حدث خطأ أثناء جلب بيانات الكتاب. يرجى المحاولة مرة أخرى.'
+          );
         }
         console.error('Error fetching book:', error);
       }
@@ -209,10 +223,17 @@ export class BookDetails implements OnInit , AfterViewInit {
         next: (response) => {
           this.isLiked = false;
           console.log('تم حذف الكتاب من المفضلة', response);
-          // You can add a toast notification here
+          this.toastService.showSuccess(
+            'تم بنجاح',
+            'تم حذف الكتاب من قائمة المفضلة'
+          );
         },
         error: (error) => {
           console.error('خطأ في حذف الكتاب من المفضلة:', error);
+          this.toastService.showError(
+            'خطأ في الحذف',
+            'حدث خطأ أثناء حذف الكتاب من المفضلة. يرجى المحاولة مرة أخرى.'
+          );
           if (error.status === 401) {
             this.router.navigate(['/login']);
           }
@@ -225,10 +246,17 @@ export class BookDetails implements OnInit , AfterViewInit {
         next: (response) => {
           this.isLiked = true;
           console.log('تم إضافة الكتاب للمفضلة', response);
-          // You can add a toast notification here
+          this.toastService.showSuccess(
+            'تم بنجاح',
+            'تم إضافة الكتاب إلى قائمة المفضلة'
+          );
         },
         error: (error) => {
           console.error('خطأ في إضافة الكتاب للمفضلة:', error);
+          this.toastService.showError(
+            'خطأ في الإضافة',
+            'حدث خطأ أثناء إضافة الكتاب للمفضلة. يرجى المحاولة مرة أخرى.'
+          );
           if (error.status === 401) {
             this.router.navigate(['/login']);
           }

@@ -1,0 +1,38 @@
+<!-- alert-modal.html -->
+<div #alertModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content rounded-3 shadow border-0">
+      <!-- Modal Header -->
+      <div class="modal-header border-0 pb-2" [ngClass]="headerClass + ' text-white'">
+        <h5 class="modal-title fw-bold text-white" id="alertModalLabel">
+          <i class="fas {{ iconClass.split(' ')[0] }} me-2"></i>
+          {{ config.title }}
+        </h5>
+        <button type="button" 
+                class="btn-close btn-close-white" 
+                (click)="closeModal()" 
+                aria-label="إغلاق"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body py-4 text-center">
+        <div class="mb-3">
+          <i class="fas {{ iconClass }} fa-4x mb-3"></i>
+        </div>
+        <p class="fs-6 mb-0" [innerHTML]="config.message"></p>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-0 pt-0 justify-content-center">
+        <button type="button" 
+                class="btn px-5"
+                [ngClass]="config.type === 'success' ? 'btn-success' : 
+                          config.type === 'error' ? 'btn-danger' : 
+                          config.type === 'warning' ? 'btn-warning' : 'btn-info'"
+                (click)="closeModal()">
+          {{ config.buttonText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
