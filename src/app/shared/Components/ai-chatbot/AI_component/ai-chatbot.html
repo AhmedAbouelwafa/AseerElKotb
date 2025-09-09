@@ -1,0 +1,147 @@
+<!-- Help Center Modal -->
+<div class="modal-overlay" [class.show]="showModal" (click)="closeModal()">
+  <div class="help-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="help-icon">📖</div>
+        <span>مركز المساعدة</span>
+      </div>
+      <button class="close-btn" (click)="closeModal()">×</button>
+      <div class="subtitle">نحن هنا لمساعدتك</div>
+    </div>
+
+    <div class="modal-content">
+      <h3>مرحباً كيف يمكننا خدمتك اليوم؟</h3>
+      <p>اختر أحد الخيارات أدناه أو ابدأ محادثة جديدة</p>
+
+      <div class="options-list">
+        <div class="option-item" (click)="selectOption('طلب')">
+          <span>🏥 تتبع حالة طلبي</span>
+          <span class="arrow">→</span>
+        </div>
+        <div class="option-item" (click)="selectOption('استبدال')">
+          <span>🔄 سياسة الاستبدال والاسترداد</span>
+          <span class="arrow">→</span>
+        </div>
+        <div class="option-item" (click)="selectOption('دفع')">
+          <span>💳 مشاكل الدفع</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <button class="new-chat-btn" (click)="startNewChat()">
+        📖 ابدأ محادثة جديدة
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Interface -->
+<div class="chat-container" [class.show]="showChat">
+  <div class="chat-header">
+    <div class="chat-title">
+      <div class="bot-avatar">🤖</div>
+      <div class="title-text">
+        <h4>عصير الكتب</h4>
+        <span class="status">متاح الآن</span>
+      </div>
+    </div>
+    <button class="minimize-btn" (click)="minimizeChat()">−</button>
+  </div>
+
+  <div class="chat-messages" #chatMessages>
+    <div *ngFor="let message of messages"
+         class="message"
+         [class.user-message]="message.isUser"
+         [class.bot-message]="!message.isUser">
+      <div class="message-content">
+        <div class="message-bubble" [class.typing]="message.isTyping">
+          <span *ngIf="!message.isTyping">{{ message.isUser ? message.question : message.answer }}</span>
+          <div *ngIf="message.isTyping" class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <!-- Display sources if available -->
+          @if (!message.isUser && !message.isTyping && message.sources && message.sources.length > 0) {
+            <div class="sources">
+              <h6>المصادر:</h6>
+
+              @for (source of message.sources; track $index) {
+
+                <div class="source-item">
+                  @if (source?.coverImageUrl) {
+                    <img [src]="source.coverImageUrl" alt="Cover" class="source-image">
+                  }
+                 <a [routerLink]="['/book-details/', source?.bookId]">
+                  <div class="source-details">
+                    <strong>{{ source?.title }}</strong>
+                    <p>{{ source?.snippet }}</p>
+                  </div>
+                 </a>
+                </div>
+              } @empty {
+                <p>لا يوجد مصادر</p>
+              }
+            </div>
+          }
+
+
+        </div>
+        <div class="message-time">{{ message.time }}</div>
+      </div>
+    </div>
+
+    <!-- Special inquiry notice -->
+    <div class="inquiry-notice" *ngIf="showInquiryNotice">
+      <div class="notice-content">
+        <span>💡 أطلب رقم الاستفسار عن حالة طلبي رقم #12345</span>
+        <div class="notice-time">10:31 صباحاً</div>
+      </div>
+    </div>
+
+    <!-- Confirmation notice -->
+    <div class="confirmation-notice" *ngIf="showConfirmationNotice">
+      <div class="notice-content">
+        <span>✅ بالتأكيد! يمكننا مساعدتك للتحقق من حالة الطلب.</span>
+        <div class="notice-time">10:31 صباحاً</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="currentMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="اكتب رسالتك هنا..."
+      class="message-input">
+    <button (click)="sendMessage()" class="send-btn" [disabled]="!currentMessage.trim()">
+      ➤
+    </button>
+  </div>
+</div>
+
+<!-- Thank You Modal -->
+<div class="modal-overlay" [class.show]="showThankYouModal" (click)="closeThankYouModal()">
+  <div class="thank-you-modal" (click)="$event.stopPropagation()">
+    <div class="thank-icon">✅</div>
+    <h3>شكراً لتواصلك معنا!</h3>
+    <p>نأمل أن نكون قد قدمنا المساعدة التي تحتاجها</p>
+
+    <div class="rating-section">
+      <span>يرجى تقييم المحادثة</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="skip-btn" (click)="closeThankYouModal()">تخطي</button>
+      <button class="rate-btn" (click)="openRating()">إرسال التقييم</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Chat Button -->
+<button class="floating-chat-btn" (click)="toggleChat()" *ngIf="!showChat && !showModal">
+  <div class="chat-icon">📖</div>
+  <div class="notification-dot" *ngIf="hasUnreadMessages"></div>
+</button>

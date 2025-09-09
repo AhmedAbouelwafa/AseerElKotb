@@ -20,6 +20,7 @@ import { Publisher } from './features/Publisher/Publisher Componenet/publisher/p
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
 import { AuthGuard } from './guards/auth.guard';
+import { SimilarBooks } from './features/products/similar-books/similar-books';
 
 
 export const routes: Routes = [
@@ -58,7 +59,7 @@ export const routes: Routes = [
   {
     path: 'register', component: Register
   },
-  {  
+  {
       path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
   },
   {
@@ -82,5 +83,9 @@ export const routes: Routes = [
   },
   {
     path: 'Publisher/:id' , component : Publisher,
+  }
+  ,
+  {
+    path: 'similar-books', component : SimilarBooks
   }
 ];

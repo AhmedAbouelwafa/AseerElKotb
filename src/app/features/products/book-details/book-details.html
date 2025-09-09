@@ -1,7 +1,7 @@
 <div class="book-details-container">
   <div class="navigation">
-    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-right': isRTL, 'fa-arrow-left': !isRTL}"></i></a>
-    <a class="nav-btn" routerLink="{{book?.id}}"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-left': isRTL, 'fa-arrow-right': !isRTL}"></i></a>
+    <a class="nav-btn" (click)="reduce()"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-right': isRTL, 'fa-arrow-left': !isRTL}"></i></a>
+    <a class="nav-btn" (click)="increase()"><i class="fa-solid fa-arrow-" [ngClass] = "{'fa-arrow-left': isRTL, 'fa-arrow-right': !isRTL}"></i></a>
   </div>
 
   <div class="bc">
@@ -15,20 +15,17 @@
         <img [src]="getCoverImageUrl()" alt="" />
 
         <div class="button-container">
-          <button class="btn btn-buy">
+          <button class="btn btn-buy" (click)="addToCart()">
             <span class="text">{{'bookDetails.buyPaperCopy' | translate}}</span>
             <span class="icon">🛒</span>
           </button>
 
-          <button class="btn btn-alert">
-            <span class="text">{{'bookDetails.notifyWhenAvailable' | translate}}</span>
-            <span class="icon">📖</span>
-          </button>
+          <app-modal title="{{ 'reviewWithComments.review' | translate}}" #addReviewBtn [bookId]="bookId" (reviewAdded)="onReviewAdded($event)" class = "add-review">
 
-          <button class="btn btn-review">
-            <span class="text">{{'bookDetails.addReview' | translate}}</span>
-            <span class="icon">⭐</span>
-          </button>
+        </app-modal>
+
+          <!-- المودال نفسه -->
+
         </div>
 
         <div class="book-price">
@@ -79,7 +76,7 @@
               <i class="fa-star" [ngClass]="{
                 'fas text-warning': star < (book?.rating || 0),
                 'far text-secondary': star >= (book?.rating || 0)
-              }"></i>
+              }" ></i>
             }
           </span>
 
@@ -114,10 +111,13 @@
 
               <div class="AuthorBooks">
                 @for (book of authorBooks ; track book) {
+                  <a routerLink="/book-details/{{book.id}}" class="text-decoration-none">
                   <div class="bookaya">
                     <i class="fa fa-book-open"></i>
-                    <a routerLink="/book-details/{{book.id}}" class="booksauthor">{{book.title}}</a>
+
+                    <a routerLink="/book-details/{{book.id}}" class="booksauthor text-decoration-none text-dark fw-bold ">{{book.title}}</a>
                   </div>
+                  </a>
                 }
               </div>
             </div>
@@ -163,7 +163,7 @@
               @for (category of categories; track category.id) {
                 <a routerLink="/MainFilterContainer/{{category.id}}" class="category-itesm">
                   <li class="list-group-item category-item">
-                    {{category.name}} <span class="badge bg-light text-danger">12,983</span>
+                    {{category.name}} <span class="badge bg-light text-danger">0</span>
                   </li>
                 </a>
               }
@@ -185,7 +185,11 @@
   </div>
 
   <div class="allbooks py-5">
-    <app-book-page [title]="'bookDetails.similarBooks' | translate"></app-book-page>
+    <div class="centraya text-center">
+      <h4 class="simi">{{'bookDetails.similarBooks' | translate}}</h4>
+
+    </div>
+    <app-similar-books [catBasedOn]="catId"></app-similar-books>
   </div>
 
       <app-reviews-and-comments

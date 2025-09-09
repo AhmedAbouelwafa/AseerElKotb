@@ -1,11 +1,14 @@
 <!-- quote-modal.component.html -->
-<button class="classbtn" (click)="openModal()">إضافة {{title}}</button>
+<button class="classbtn" (click)="openModal()">
+  <span>  {{'modal.add' | translate}} {{title}}</span>
+  <span>⭐</span>
+</button>
 
 <div #quoteModal class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;">
     <div class="modal-content rounded-3 shadow">
       <div class="modal-headerawy border-0">
-        <h5 class="modal-title">إضافة {{title}}</h5>
+        <h5 class="modal-title">{{'modal.add' | translate}} {{title}}</h5>
         <button type="button" class="btn-close" (click)="closeModal()"></button>
       </div>
 
@@ -33,7 +36,7 @@
           [(ngModel)]="reviewText" 
           class="form-control" 
           rows="5" 
-          [placeholder]="'اكتب ال' + title + ' هنا...'">
+          [placeholder]="'modal.write' + title + 'modal.here...'">
         </textarea>
         <!-- For Quotes -->
         <textarea 
@@ -41,7 +44,7 @@
           [(ngModel)]="quoteText" 
           class="form-control" 
           rows="5" 
-          [placeholder]="'اكتب ال' + title + ' هنا...'">
+          [placeholder]="'modal.write' + title + 'modal.here...'">  
         </textarea>
         <div *ngIf="errorMsg" class="text-danger small mt-2">{{ errorMsg }}</div>
       </div>

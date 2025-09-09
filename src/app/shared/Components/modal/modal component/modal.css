@@ -5,14 +5,21 @@ textarea.form-control {
 
 
 .classbtn {
-  background: white;
+  background-color: #757d8a;
+  color: white;
   border: 1px solid #888;
-  color: black;
-  padding: 7px 100px;
+  font-weight: bold;
+  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  
+  display: flex;
+  justify-content: space-between;
+}
 
+.classbtn:hover {
+  background-color: #5f6773;
 }
 
 .modal-headerawy{

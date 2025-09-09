@@ -186,6 +186,16 @@
       "arabic": "Arabic",
       "english": "English"
     }
+  },
+  "modal": {
+    "add": "Add",
+    "write": "Write",
+    "here": "Here",
+    "quote": "Quote",
+    "review": "Review",
+    "rating": "Rating",
+    "submit": "Submit",
+    "cancel": "Cancel"
   }
 
 }

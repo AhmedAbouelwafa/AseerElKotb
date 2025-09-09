@@ -6,10 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { LangService } from './core/services/LanguageService/lang-service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { AICHATBOT } from "./shared/Components/ai-chatbot/AI_component/ai-chatbot";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Footer, Navbar , AsyncPipe],
+  imports: [RouterOutlet, Footer, Navbar, AsyncPipe, AICHATBOT],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

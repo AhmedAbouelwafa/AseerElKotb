@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../modal service/modal-service';
+import { TranslateModule } from '@ngx-translate/core';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-modal',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule , TranslateModule],
   templateUrl: './modal.html',
   styleUrl: './modal.css'
 })

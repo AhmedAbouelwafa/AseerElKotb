@@ -12,10 +12,15 @@ import { AuthorApiService } from '../../../core/services/Author/author-api-servi
 import { IAuthor } from '../../Authors/Author-Model/iauthor';
 import { CategoryServices } from '../../categories/category-service/category-services';
 import { NavcrumbItem, NavCrumb } from '../../../shared/Components/nav-crumb/nav-crumb';
+import { SimilarBooks } from "../similar-books/similar-books";
+import { CartServices } from '../../Cart/CartServices/cart-services';
+import { Modal } from "../../../shared/Components/modal/modal component/modal";
+import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
+import { WishlistService } from '../../wishlist/wishlist-service/wishlist-service';
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb],
+  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb, SimilarBooks, Modal],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
@@ -37,6 +42,10 @@ export class BookDetails implements OnInit , AfterViewInit {
   isLiked = false;
   isRTL!: boolean;
   breadcrumbs: NavcrumbItem[] = [];
+  catId!: number;
+  clicked = false;
+  reviews: any[] = [];
+  allAddedReviews: any[] = [];
 
   constructor(
     private api: BookService,
@@ -44,7 +53,10 @@ export class BookDetails implements OnInit , AfterViewInit {
     private router: Router,
     private translate: TranslateService,
     private authorService: AuthorApiService,
-    private catService : CategoryServices
+    private catService : CategoryServices,
+    private cartService : CartServices,
+    private modalService : ModalService,
+    private wishListService : WishlistService
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +91,7 @@ export class BookDetails implements OnInit , AfterViewInit {
     this.api.getBookById(id).subscribe({
       next: (data) => {
         this.book = data;
+        this.catId = this.book.categoryIds[0];
         this.authorId = this.book.authorId;
 
         if (this.book.price && this.book.discountPercentage) {
@@ -156,15 +169,112 @@ export class BookDetails implements OnInit , AfterViewInit {
 
   toggleHeart() {
     this.isLiked = !this.isLiked;
+    this.wishListService.addToCart({bookId : this.bookId , quantity : 1}).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
 
   ngAfterViewInit(): void {
     this.breadcrumbs = [
-      {name : 'Home', path : '/'},
       {name : `${this.book?.title}`, path : '/book-details/' + this.book?.id},
      ];
   }
 
+  reduce()
+  {
+    if(this.bookId > 1)
+    {
+      this.bookId--;
+      this.router.navigate(['/book-details', this.bookId]);
+    }
+    else{
+      this.bookId++;
+      this.router.navigate(['/book-details', this.bookId]);
+    }
+  }
 
+  increase()
+  {
+    if(this.bookId <= this.booksByAuthor.length)
+    {
+      this.bookId++;
+      this.router.navigate(['/book-details', this.bookId]);
+    }
+    else{
+      this.bookId--;
+      this.router.navigate(['/book-details', this.bookId]);
+    }
+  }
+
+
+  addToCart()
+  {
+    this.cartService.addItemToCart({bookId : this.bookId}).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+    alert("تمت إضافة الكتاب إلى العربة");
+  }
+
+
+  loadReviews(bookId: number) {
+    this.modalService.getAllReviews({
+      BookId: bookId,
+      SearchTerm: '',
+      PageNumber: 1,
+      PageSize: 10
+    }).subscribe({
+      next: (data) => {
+        this.reviews = data || [];
+        this.allAddedReviews = [...(data || [])];
+        this.calculateAverageRating();
+        console.log('Loaded reviews:', this.reviews);
+      },
+      error: (error) => {
+        console.error('Error fetching reviews:', error);
+        this.reviews = [];
+        this.allAddedReviews = [];
+        this.totalReviews = 0;
+        this.averageRating = 0;
+      }
+    });
+  }
+
+
+  onReviewAdded(newReview: any) {
+    console.log('New review received:', newReview);
+
+    if (newReview && newReview.id) {
+      this.reviews.unshift(newReview);
+      this.allAddedReviews.unshift(newReview);
+      this.calculateAverageRating();
+      console.log('Updated reviews:', this.reviews);
+    } else {
+      console.error('Invalid review structure:', newReview);
+      this.loadReviews(this.bookId);
+    }
+  }
+
+  calculateAverageRating() {
+    if (this.reviews.length === 0) {
+      this.totalReviews = 0;
+      this.averageRating = 0;
+      return;
+    }
+
+    this.totalReviews = this.reviews.length;
+    const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
+    this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10; // تقريب لرقم عشري واحد
+  }
 }
+
