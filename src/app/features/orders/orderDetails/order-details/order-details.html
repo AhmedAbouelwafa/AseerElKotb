@@ -27,18 +27,31 @@
 
         </div>
     <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-        <div class="statusProgress">
+    @if(currentStatus===CancelledOrderStatus)
+    {
+         <div class="status-btns">
+                    <span
+                        class=" cancelledBtn"
+                        [ngClass]="{'active': currentStatus ===CancelledOrderStatus }">
+                        {{ orderStatusDisplayNames[CancelledOrderStatus] }}
+                    </span>
+            </div>
+    }   
+    @if(currentStatus!==CancelledOrderStatus){
+        
+    <div class="statusProgress">
             <div class="status-btns">
                 @for (status of statusProgression; track status) {
-                    <button 
+                    <span
                         class="status-btn"
-                        [ngClass]="{'active': currentStatus === status}"
-                        (click)="setCurrentStatus(status)">
+                        [ngClass]="{'active': currentStatus === status}">
                         {{ orderStatusDisplayNames[status] }}
-                    </button>
+                    </span>
                 }
             </div>
         </div>
+        
+    }
      <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
        <div id="tableContainer">
@@ -51,7 +64,7 @@
                 @for( item of sampleOrderData.books;track item.id){
                     <tr>
                         <td id="Item">
-                            <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png">
+                            <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png"><!--need change with actual photo-->
                             {{item.title}}
                         </td>
                         <td>{{item.quantity}}</td>

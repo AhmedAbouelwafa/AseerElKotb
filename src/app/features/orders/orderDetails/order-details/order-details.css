@@ -133,32 +133,43 @@ border-bottom: none;
      }
 }
 /*////////////////progress///////////////////////////*/
-.statusProgress{
+/* Status Progression */
+.statusProgress {
   display: flex;
   justify-content: space-around;
   padding: 1rem;
 }
 
-.status-btns{
+.status-btns {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-
-.status-btn {
+.status-btn,.cancelledBtn {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.3s ease;
   border: none;
-  cursor: pointer;
   background-color: #f3f4f6;
   color: #374151;
 }
 
-.demo-button.active {
-  background-color: #00b894;
+.status-btn.active {
+  background-color: #00b894; /* Green for active status */
+  color: white;
+}
+.cancelledBtn{
+    padding: .3rem;
+  margin-inline: 47%;
+  padding-inline: 3rem;
+  text-align: center;
+  font-size:large;
+}
+
+.cancelledBtn.active{
+  background-color:red; 
   color: white;
 }
 
@@ -169,3 +180,4 @@ border-bottom: none;
     justify-content: center;
   }
 }
+

@@ -97,7 +97,6 @@ export const routes: Routes = [
   ,
   {
     path: 'similar-books', component : SimilarBooks
-    path: 'Orders' , component : Orders,
   },
   {
     path: 'OrderDetails/:trackingNumber' , component : OrderDetails,

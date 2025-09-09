@@ -3,12 +3,13 @@ import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/
 import { OrderService } from '../../../../services/order.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 import { GetUserOrderByTrackingNumberResponse, OrderStatus } from '../../../../models/order-interfaces';
+import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 
 @Component({
   selector: 'app-order-details',
-  imports: [NavCrumb,RouterModule,DatePipe,CustomCurrencyPipePipe,CommonModule],
+  standalone:true,
+  imports: [[NavCrumb, RouterModule, DatePipe, CustomCurrencyPipePipe, CommonModule]],
   templateUrl: './order-details.html',
   styleUrl: './order-details.css'
 })
@@ -21,7 +22,7 @@ export class OrderDetails implements OnInit {
   ];
   order:GetUserOrderByTrackingNumberResponse|null=null;
   trackingNumber:any;
-  currentStatus: OrderStatus = OrderStatus.Pending;
+  currentStatus: OrderStatus = OrderStatus.Pending;///////change with actual
 
   constructor(private route: ActivatedRoute,private orderService:OrderService)
   {}
@@ -40,6 +41,12 @@ export class OrderDetails implements OnInit {
        this.orderService.getOrderByTrackingNumber(this.trackingNumber).subscribe({
           next: (response) => {
             this.order = response;
+            // this.currentStatus=response.OrderStatus
+            this.breadcrumbs= [
+            { name: 'الملف الشخصي', path: '/user-profile' },
+            { name: ' الطلبات ', path: '/Orders' },
+            { name: response.TrackingNumber, path: '#' }
+          ];
             console.log(response)
           },
           error: (error) => {
@@ -89,16 +96,15 @@ export class OrderDetails implements OnInit {
     [OrderStatus.Pending]: 'قيد الانتظار',
     [OrderStatus.Cancelled]: 'ملغي'
   };
+  CancelledOrderStatus=OrderStatus.Cancelled 
 
   // Order status progression (right to left for Arabic)
-  statusProgression: OrderStatus[] = [
-    OrderStatus.Delivered,
-    OrderStatus.Shipped,
-    OrderStatus.Processing,
+ statusProgression: OrderStatus[] = [
+    OrderStatus.Pending,
     OrderStatus.Confirmed,
-    OrderStatus.Pending
+    OrderStatus.Processing,
+    OrderStatus.Shipped,
+    OrderStatus.Delivered,    
   ];
-  setCurrentStatus(status: OrderStatus): void {
-    this.currentStatus = status;
-  }
+
 }
