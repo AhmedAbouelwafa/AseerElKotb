@@ -26,6 +26,7 @@ import { Orders } from './features/orders/orders/orders/orders';
 
 
 
+import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
 
 
 
@@ -96,5 +97,9 @@ export const routes: Routes = [
   ,
   {
     path: 'similar-books', component : SimilarBooks
+  },
+  {
+    path: 'OrderDetails/:trackingNumber' , component : OrderDetails,
   }
+  
 ];

@@ -107,13 +107,33 @@ export interface OrderResponse {
   orderDate: Date;
   orderStatus: OrderStatus;
   finalAmount:number
-  books: OrderItemResponse[];
+  books: BookDTO[];////////does is correct/////////////
   paymentMethod:number;
   paymentStatus:number;
   userName:string
 
 }
+///////////////////for GetUserOrderByTrackingNumber///////////////////////////////
+export interface BookDTO {
+  title: string;
+  unitPrice: number;
+  quantity: number;
+}
+export interface GetUserOrderByTrackingNumberResponse {
+  id: number;
+  userName: string;
+  paymentMethod: PaymentMethod; // Use enum
+  paymentStatus: PaymentStatus; // Use enum
+  governorate: EgyptGovernorates; // Use enum
+  city: EgyptCities; // Use enum
+  orderStatus: OrderStatus; // Use enum
+  trackingNumber: string;
+  finalAmount: number;
+  orderDate: Date; // Use Date for consistency
+  books: BookDTO[];
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////
 export interface PaginatedOrderResponse {
   items: OrderResponse[];
   totalCount: number;
@@ -126,12 +146,12 @@ export interface PaginatedOrderResponse {
 
 // Order Status Enum
 export enum OrderStatus {
-  Pending = 0,
-  Confirmed = 1,
-  Processing = 2,
-  Shipped = 3,
-  Delivered = 4,
-  Cancelled = 5
+  Pending = 1,
+  Confirmed = 2,
+  Processing = 3,
+  Shipped = 4,
+  Delivered = 5,
+  Cancelled = 6
 }
 
 export const OrderStatusDisplayNames: Record<OrderStatus, string> = {
