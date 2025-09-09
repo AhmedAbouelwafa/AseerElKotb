@@ -14,6 +14,7 @@ export class ChatService {
   constructor(private http: HttpClient) {}
 
   callChatAPI(request: ChatMessageRequest): Observable<ChatMessageResponse> {
-    return this.http.post<ChatMessageResponse>(`${this.baseUrl}/Chat`, request).pipe(map((response: any) => response.data));
+    return this.http.post<ChatMessageResponse>(`${this.baseUrl}/Rag/ask`, request).pipe(map((response: any) => response.data));
   }
+
 }

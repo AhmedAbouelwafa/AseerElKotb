@@ -1,6 +1,6 @@
 export interface ChatMessageRequest {
-  Question: string; 
+  Question: string;
   Language?: string;
   Category?: string;
-  Limit?: number;
+  Limit: 1;
 }
