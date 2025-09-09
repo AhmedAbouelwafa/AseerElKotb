@@ -1,0 +1,32 @@
+<div id="mainContainer">
+    <div id="nav-crumb">
+         <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+    </div>
+
+    <table id="Table">
+        
+            <th>رقم الطلب</th>
+            <th>تاريخ تقدم الطلب</th>
+            <th>حالة الطلب</th>
+            <th>اجمالي الطلب</th>
+            <!-- <th></th>put anthor filed -->
+        
+        @for(order of orders;track order.id){
+            <tr>
+                <td>{{order.id}}</td>
+                <td>{{order.orderDate | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <span class="status {{getStatusClass(order.orderStatus)}}">{{order.orderStatus| orderStatus}}</span>
+                </td>
+                <td>{{order.finalAmount|customCurrencyPipe:'EGP'}}</td>
+                <td>
+                    <a routerLink="#" routerLinkActive="true">
+                        <button class="btn">عرض</button>
+                    </a>
+                </td>
+            </tr>
+        }
+       
+    </table>
+   
+</div>

@@ -6,6 +6,10 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment.development';
 import { Location } from '@angular/common';
 import { Subject, takeUntil, finalize } from 'rxjs';
+import { CartServices } from '../../Cart/CartServices/cart-services';
+import { AddItemToCartRequest } from '../../Cart/CartInterfaces/cart-interfaces';
+import { Auth } from '../../../services/auth';
+import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 @Component({
   selector: 'app-author-details',
   imports: [CommonModule,RouterLink],
@@ -21,6 +25,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
   error: string | null = null;
   isFollowing = false;
   avatarUrl = 'https://cdn.aseeralkotb.com/images/default-avatar.jpg';
+  isAddingToCart: { [bookId: number]: boolean } = {};
   
   quote = {
     id: 19736,
@@ -158,7 +163,10 @@ export class AuthorDetails implements OnInit, OnDestroy {
     private route: ActivatedRoute, 
     private authorService: AuthorApiService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private cartService: CartServices,
+    private auth: Auth,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -297,15 +305,47 @@ export class AuthorDetails implements OnInit, OnDestroy {
       event.stopPropagation();
     }
     
-    // تنفيذ إضافة الكتاب للسلة
-    console.log('Adding book to cart:', book);
+    // Check if user is authenticated
+    if (!this.auth.user()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Prevent multiple simultaneous requests for the same book
+    if (this.isAddingToCart[book.id]) {
+      return;
+    }
+
+    this.isAddingToCart[book.id] = true;
     
-    // يمكنك إضافة منطق إضافة الكتاب للسلة هنا
-    // مثل استدعاء خدمة السلة
-    // this.cartService.addToCart(book);
-    
-    // إظهار رسالة تأكيد
-    // this.showSuccessMessage('تم إضافة الكتاب للسلة بنجاح');
+    const request: AddItemToCartRequest = {
+      bookId: book.id
+    };
+
+    this.cartService.addItemToCart(request).subscribe({
+      next: (response) => {
+        if (response.succeeded) {
+          this.toastService.showSuccess('مبروك!', 'تم إضافة الكتاب إلى السلة بنجاح!');
+        } else {
+          this.toastService.showError('خطأ', 'فشل في إضافة الكتاب إلى السلة: ' + response.message);
+        }
+        this.isAddingToCart[book.id] = false;
+      },
+      error: (error) => {
+        console.error('خطأ في إضافة الكتاب إلى السلة:', error);
+        
+        // Handle authentication errors
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        } else if (error.status === 400 && error.error?.message?.includes('out of stock')) {
+          this.toastService.showWarning('غير متوفر', 'الكتاب غير متوفر في المخزن حالياً');
+        } else {
+          this.toastService.showError('خطأ', 'حدث خطأ أثناء إضافة الكتاب إلى السلة. يرجى المحاولة مرة أخرى.');
+        }
+        
+        this.isAddingToCart[book.id] = false;
+      }
+    });
   }
 
   /**

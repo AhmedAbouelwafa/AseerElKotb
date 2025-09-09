@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../modal service/modal-service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule , TranslateService } from '@ngx-translate/core';
+
+
 
 declare var bootstrap: any;
 
@@ -30,7 +32,12 @@ export class Modal {
 
   modalInstance: any;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService , private translate: TranslateService)
+  {
+    this.translate.get(['modal.quote', 'modal.here']).subscribe(translations => {
+      console.log("translations",translations);
+    });
+  }
 
   openModal() {
     this.modalInstance = new bootstrap.Modal(this.quoteModalRef.nativeElement);
@@ -45,7 +52,7 @@ export class Modal {
     console.log('saveQuote called with title:', this.title);
     console.log('quoteText:', this.quoteText);
     console.log('bookId:', this.bookId);
-    
+
     if (!this.quoteText.trim()) {
       this.errorMsg = `مطلوب كتابة ال${this.title}`;
       return;
@@ -85,7 +92,7 @@ export class Modal {
     console.log('reviewText:', this.reviewText);
     console.log('rating:', this.rating);
     console.log('bookId:', this.bookId);
-    
+
     if (!this.reviewText.trim()) {
       this.errorMsg = `مطلوب كتابة ال${this.title}`;
       return;
@@ -122,11 +129,11 @@ export class Modal {
         console.error('Error status:', error.status);
         console.error('Error message:', error.message);
         console.error('Error body:', error.error);
-        
+
         if (error.error && error.error.errors) {
           console.log('Validation errors:', error.error.errors);
         }
-        
+
         if (error.error && error.error.message) {
           this.errorMsg = error.error.message;
         } else {
@@ -139,4 +146,14 @@ export class Modal {
   setRating(rating: number) {
     this.rating = rating;
   }
+
+  // Determine if current modal is for reviews (supports both languages)
+  get isReview(): boolean {
+    const normalizedTitle = (this.title || '').toLowerCase().trim();
+    // match Arabic/English variants
+    return normalizedTitle === 'review' || normalizedTitle === 'تقييم' || normalizedTitle === 'مراجعة';
+  }
+
+
+
 }

@@ -14,12 +14,12 @@
 
       <div class="modal-body">
         <!-- Rating Section (only for reviews) -->
-        <div *ngIf="title === 'review' || title === 'تقييم' || title === 'مراجعة'" class="mb-3">
-          <label class="form-label small text-muted">التقييم بالنجوم</label>
+        <div *ngIf="isReview" class="mb-3">
+          <label class="form-label small text-muted">{{ 'modal.rating' | translate }}</label>
           <div class="rating-stars">
             @for (star of [1,2,3,4,5]; track star) {
-              <i 
-                class="fa fa-star rating-star" 
+              <i
+                class="fa fa-star rating-star"
                 [class.active]="star <= rating"
                 (click)="setRating(star)"
                 style="cursor: pointer; font-size: 24px; color: #ddd; margin-right: 5px;">
@@ -31,31 +31,33 @@
 
         <label class="form-label small text-muted">{{title}}</label>
         <!-- For Reviews -->
-        <textarea 
-          *ngIf="title === 'review' || title === 'تقييم' || title === 'مراجعة'"
-          [(ngModel)]="reviewText" 
-          class="form-control" 
-          rows="5" 
-          [placeholder]="'modal.write' + title + 'modal.here...'">
+        <textarea
+          *ngIf="isReview"
+          [(ngModel)]="reviewText"
+          class="form-control"
+          rows="5"
+          placeholder="{{ 'modal.write' | translate }} {{ 'modal.review' | translate }} {{ 'modal.here' | translate }}">
         </textarea>
         <!-- For Quotes -->
-        <textarea 
-          *ngIf="title !== 'review' && title !== 'تقييم' && title !== 'مراجعة'"
-          [(ngModel)]="quoteText" 
-          class="form-control" 
-          rows="5" 
-          [placeholder]="'modal.write' + title + 'modal.here...'">  
-        </textarea>
+        <textarea
+        *ngIf="!isReview"
+        [(ngModel)]="quoteText"
+        class="form-control"
+        rows="5"
+        placeholder="{{ 'modal.write' | translate }} {{ title }} {{ 'modal.here' | translate }}">
+      </textarea>
+
+
         <div *ngIf="errorMsg" class="text-danger small mt-2">{{ errorMsg }}</div>
       </div>
 
       <div class="modal-footer bg-light border-0">
-        <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">إلغاء</button>
-        <button 
-          type="button" 
-          class="btn btn-dark" 
+        <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">{{'modal.cancel' | translate}}</button>
+        <button
+          type="button"
+          class="btn btn-dark"
           (click)="(title === 'review' || title === 'تقييم' || title === 'مراجعة') ? saveReview() : saveQuote()">
-          إضافة
+          {{'modal.add' | translate}}
         </button>
       </div>
     </div>

@@ -20,7 +20,13 @@ import { Publisher } from './features/Publisher/Publisher Componenet/publisher/p
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
 import { AuthGuard } from './guards/auth.guard';
+
 import { SimilarBooks } from './features/products/similar-books/similar-books';
+import { Orders } from './features/orders/orders/orders/orders';
+
+
+
+
 
 
 export const routes: Routes = [
@@ -83,6 +89,9 @@ export const routes: Routes = [
   },
   {
     path: 'Publisher/:id' , component : Publisher,
+  },
+  {
+    path: 'orders' , component : Orders, canActivate: [AuthGuard]
   }
   ,
   {

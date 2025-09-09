@@ -1,6 +1,6 @@
-import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
-import { EgyptCities } from '../order-models/egypt-cities.enum';
-import { PaymentMethod } from '../order-models/payment-method.enum';
+import { EgyptGovernorates } from './egypt-governorates.enum';
+import { EgyptCities } from './egypt-cities.enum';
+import { PaymentMethod } from './payment-method.enum';
 
 // Base API Response Structure (reusing from cart interfaces pattern)
 export interface ApiResponse<T> {
@@ -78,25 +78,40 @@ export interface OrderItemResponse {
   totalDiscountedPrice: number;
 }
 
+// export interface OrderResponse {
+//   id: number;
+//   trackingNumber: string;
+//   userId: number;
+//   firstName: string;
+//   lastName: string;
+//   address: string;
+//   governorate: EgyptGovernorates;
+//   governorateName: string;
+//   city: string;
+//   localPhone: string;
+//   altPhone?: string;
+//   orderDate: Date;
+//   status: OrderStatus;
+//   statusName: string;
+//   items: OrderItemResponse[];
+//   subtotal: number;
+//   shippingCost: number;
+//   totalAmount: number;
+// }
+
 export interface OrderResponse {
   id: number;
   trackingNumber: string;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  address: string;
-  governorate: EgyptGovernorates;
-  governorateName: string;
-  city: string;
-  localPhone: string;
-  altPhone?: string;
+  governorate: number;
+  city: number;
   orderDate: Date;
-  status: OrderStatus;
-  statusName: string;
-  items: OrderItemResponse[];
-  subtotal: number;
-  shippingCost: number;
-  totalAmount: number;
+  orderStatus: OrderStatus;
+  finalAmount:number
+  books: OrderItemResponse[];
+  paymentMethod:number;
+  paymentStatus:number;
+  userName:string
+
 }
 
 export interface PaginatedOrderResponse {
@@ -126,6 +141,15 @@ export const OrderStatusDisplayNames: Record<OrderStatus, string> = {
   [OrderStatus.Shipped]: 'تم الشحن',
   [OrderStatus.Delivered]: 'تم التسليم',
   [OrderStatus.Cancelled]: 'ملغي'
+};
+
+export const OrderStatusDisplayNamesInEnglish: Record<OrderStatus, string> = {
+  [OrderStatus.Pending]: 'Pending',
+  [OrderStatus.Confirmed]: 'Confirmed',
+  [OrderStatus.Processing]: ' Processing',
+  [OrderStatus.Shipped]: ' Shipped',
+  [OrderStatus.Delivered]: ' Delivered',
+  [OrderStatus.Cancelled]: 'Cancelled'
 };
 
 // Checkout specific interface

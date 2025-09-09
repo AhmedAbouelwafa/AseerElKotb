@@ -16,11 +16,14 @@ import { SimilarBooks } from "../similar-books/similar-books";
 import { CartServices } from '../../Cart/CartServices/cart-services';
 import { Modal } from "../../../shared/Components/modal/modal component/modal";
 import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
-import { WishlistService } from '../../wishlist/wishlist-service/wishlist-service';
+import { Auth } from '../../../services/auth';
+import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
+import { WishlistService } from '../../../services/wishlist-service';
+import { RemoveFromWishlistRequest } from '../../../models/wishlist-interfaces';
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, BookPage, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb, SimilarBooks, Modal],
+  imports: [DecimalPipe, CommonModule, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb, SimilarBooks, Modal],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
@@ -54,9 +57,13 @@ export class BookDetails implements OnInit , AfterViewInit {
     private translate: TranslateService,
     private authorService: AuthorApiService,
     private catService : CategoryServices,
+
     private cartService : CartServices,
     private modalService : ModalService,
-    private wishListService : WishlistService
+
+    private wishlistService: WishlistService,
+    private auth: Auth,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +76,10 @@ export class BookDetails implements OnInit , AfterViewInit {
         this.bookId = Number(paramValue);
         this.fetchBookById(this.bookId);
       } else {
-        alert("الرابط غير صحيح. لازم يبقى فيه ID.");
+        this.toastService.showError(
+          'رابط غير صحيح',
+          'الرابط غير صحيح. لازم يبقى فيه ID صحيح للكتاب.'
+        );
       }
 
 
@@ -99,6 +109,14 @@ export class BookDetails implements OnInit , AfterViewInit {
           this.discount = this.book.price - this.newPrice;
         } else {
           this.newPrice = this.book?.price;
+        }
+
+        // Check if book is in wishlist (only for authenticated users)
+        if (this.auth.user()) {
+          console.log('User is authenticated, checking wishlist status');
+          this.checkIfBookInWishlist();
+        } else {
+          console.log('User is not authenticated');
         }
 
         // استدعاء بيانات المؤلف
@@ -136,11 +154,20 @@ export class BookDetails implements OnInit , AfterViewInit {
       error: (error) => {
         if (error.status === 422) {
           console.warn('Book data is invalid or not found.');
-          alert('الكتاب غير متاح أو البيانات غير صحيحة.');
+          this.toastService.showError(
+            'كتاب غير متاح',
+            'الكتاب غير متاح أو البيانات غير صحيحة.'
+          );
         } else if (error.status === 404) {
-          alert('الكتاب غير موجود.');
+          this.toastService.showError(
+            'كتاب غير موجود',
+            'الكتاب المطلوب غير موجود. يرجى التحقق من الرابط.'
+          );
         } else {
-          alert('حدث خطأ أثناء جلب بيانات الكتاب.');
+          this.toastService.showError(
+            'خطأ في جلب البيانات',
+            'حدث خطأ أثناء جلب بيانات الكتاب. يرجى المحاولة مرة أخرى.'
+          );
         }
         console.error('Error fetching book:', error);
       }
@@ -167,9 +194,24 @@ export class BookDetails implements OnInit , AfterViewInit {
     return this.author.imageUrl;
   }
 
+  checkIfBookInWishlist(): void {
+    if (this.book?.id) {
+      this.wishlistService.isBookInWishlist(this.book.id).subscribe({
+        next: (response) => {
+          this.isLiked = response.data || false;
+        },
+        error: (error) => {
+          console.error('Error checking wishlist status:', error);
+          this.isLiked = false;
+        }
+      });
+    }
+  }
+
   toggleHeart() {
+
     this.isLiked = !this.isLiked;
-    this.wishListService.addToCart({bookId : this.bookId , quantity : 1}).subscribe({
+    this.wishlistService.addToCart({bookId : this.bookId , quantity : 1}).subscribe({
       next: (data) => {
         console.log(data);
       },
@@ -177,6 +219,74 @@ export class BookDetails implements OnInit , AfterViewInit {
         console.error(error);
       }
     });
+
+    console.log('Heart clicked! Current isLiked state:', this.isLiked);
+
+    // Check if user is authenticated
+    if (!this.auth.user()) {
+      console.log('User not authenticated, redirecting to login');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (!this.book?.id) {
+      console.error('Book ID is not available');
+      return;
+    }
+
+    console.log('Toggling heart for book ID:', this.book.id);
+
+    if (this.isLiked) {
+      // Remove from wishlist
+      const request: RemoveFromWishlistRequest = {
+        bookId: this.book.id
+      };
+
+      console.log('Removing from wishlist:', request);
+      this.wishlistService.removeFromWishlist(request).subscribe({
+        next: (response) => {
+          this.isLiked = false;
+          console.log('تم حذف الكتاب من المفضلة', response);
+          this.toastService.showSuccess(
+            'تم بنجاح',
+            'تم حذف الكتاب من قائمة المفضلة'
+          );
+        },
+        error: (error) => {
+          console.error('خطأ في حذف الكتاب من المفضلة:', error);
+          this.toastService.showError(
+            'خطأ في الحذف',
+            'حدث خطأ أثناء حذف الكتاب من المفضلة. يرجى المحاولة مرة أخرى.'
+          );
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    } else {
+      // Add to wishlist
+      console.log('Adding to wishlist for book ID:', this.book.id);
+      this.wishlistService.addToWishlist(this.book.id).subscribe({
+        next: (response) => {
+          this.isLiked = true;
+          console.log('تم إضافة الكتاب للمفضلة', response);
+          this.toastService.showSuccess(
+            'تم بنجاح',
+            'تم إضافة الكتاب إلى قائمة المفضلة'
+          );
+        },
+        error: (error) => {
+          console.error('خطأ في إضافة الكتاب للمفضلة:', error);
+          this.toastService.showError(
+            'خطأ في الإضافة',
+            'حدث خطأ أثناء إضافة الكتاب للمفضلة. يرجى المحاولة مرة أخرى.'
+          );
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    }
   }
 
 
@@ -215,15 +325,45 @@ export class BookDetails implements OnInit , AfterViewInit {
 
   addToCart()
   {
+    // Redirect to login if user is not authenticated
+    if (!this.auth.user()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.cartService.addItemToCart({bookId : this.bookId}).subscribe({
       next: (data) => {
         console.log(data);
+        // Notify navbar to refresh badge count
+        this.cartService.notifyCartChanged();
+        this.toastService.showSuccess('تمت الإضافة', 'تمت إضافة الكتاب إلى السلة');
       },
       error: (error) => {
-        console.error(error);
+        console.error('Add to cart error:', error);
+        const backendMsg = error?.error?.message || error?.message;
+        let userMsg = 'حدث خطأ أثناء إضافة الكتاب إلى السلة';
+        switch (error?.status) {
+          case 400:
+            userMsg = backendMsg || 'طلب غير صالح';
+            break;
+          case 401:
+            userMsg = 'يلزم تسجيل الدخول لإضافة عناصر إلى السلة';
+            break;
+          case 404:
+            userMsg = 'الكتاب غير موجود';
+            break;
+          case 409:
+            userMsg = backendMsg || 'العنصر موجود بالفعل في السلة';
+            break;
+          case 422:
+            userMsg = 'بيانات غير صالحة';
+            break;
+          default:
+            userMsg = backendMsg || userMsg;
+        }
+        this.toastService.showError('فشل الإضافة', userMsg);
       }
     });
-    alert("تمت إضافة الكتاب إلى العربة");
   }
 
 

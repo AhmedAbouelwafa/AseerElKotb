@@ -91,6 +91,8 @@ background-color: #ccc;
 /* CSS for Authors related to publisher - Enhanced Responsive Design */
 #AuthorsBigContainer {
   margin: 1rem;
+  padding: 1rem;
+  box-shadow: 1px 1px 1px rgb(240, 239, 239),-1px -1px 1px rgb(240, 239, 239);
 }
 
 #AuthorsContainer {

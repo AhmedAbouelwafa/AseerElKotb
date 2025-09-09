@@ -13,7 +13,7 @@ import { RegisterRequest } from '../../models/register-request';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
@@ -45,12 +45,12 @@ export class Register implements OnInit {
   private passwordMatchValidator = (form: AbstractControl) => {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
-    
+
     // Only validate if both fields have values
     if (!password || !confirmPassword) {
       return null;
     }
-    
+
     if (password !== confirmPassword) {
       return { passwordMismatch: true };
     }
@@ -63,7 +63,7 @@ export class Register implements OnInit {
     }
 
     this.emailChecking.set(true);
-    
+
     return of(control.value).pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -96,7 +96,7 @@ export class Register implements OnInit {
   protected readonly isFormValid = computed(() => {
     const formValid = this.registerForm.valid;
     const emailAvail = this.emailAvailable() !== false;
-    
+
     // Debug logging
     console.log('Form validation debug:', {
       formValid,
@@ -109,7 +109,7 @@ export class Register implements OnInit {
       passwordValid: this.registerForm.get('password')?.valid,
       confirmPasswordValid: this.registerForm.get('confirmPassword')?.valid
     });
-    
+
     return formValid && emailAvail;
   });
 
@@ -157,7 +157,7 @@ export class Register implements OnInit {
   protected readonly confirmPasswordError = computed(() => {
     const control = this.registerForm.get('confirmPassword');
     const formErrors = this.registerForm.errors;
-    
+
     if (control?.touched) {
       if (control.errors?.['required']) return 'تأكيد كلمة المرور مطلوب';
       if (formErrors?.['passwordMismatch']) return 'كلمات المرور غير متطابقة';
@@ -218,7 +218,7 @@ export class Register implements OnInit {
 
   protected onInputChange(event: Event, fieldType: string): void {
     const input = event.target as HTMLInputElement;
-    
+
     if (fieldType === 'firstName' || fieldType === 'lastName') {
       input.style.direction = 'rtl';
       input.style.textAlign = 'right';
@@ -241,7 +241,7 @@ export class Register implements OnInit {
     }
 
     this.isSubmitting.set(true);
-    
+
     const formValue = this.registerForm.value;
     const registerData: RegisterRequest = {
       firstName: formValue.firstName.trim(),

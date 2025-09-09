@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, HostListener, ViewChild, OnInit, computed } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, OnInit, computed, signal, effect, OnDestroy } from '@angular/core';
 import { Search } from "../search/search";
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -7,6 +7,9 @@ import { LangService } from '../../../core/services/LanguageService/lang-service
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Auth } from '../../../services/auth';
+import { CartServices } from '../../../features/Cart/CartServices/cart-services';
+import { ShowCartResponse } from '../../../features/Cart/CartInterfaces/cart-interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -15,18 +18,63 @@ import { Auth } from '../../../services/auth';
   styleUrl: './navbar.css',
   standalone: true
 })
-export class Navbar implements OnInit {
+export class Navbar implements OnInit, OnDestroy {
   currentLang: string = localStorage.getItem('lang') || 'ar';
   isRTL: boolean = this.currentLang === 'ar';
   showDropdown = false;
+  cartItemsCount = signal<number>(0);
+  private cartSubscription?: Subscription;
 
   constructor(private langService: LangService , private translate: TranslateService,
-    private auth: Auth, private router: Router) {}
+    private auth: Auth, private router: Router, private cartService: CartServices) {
+    // Watch for authentication changes using effect
+    effect(() => {
+      const user = this.auth.user();
+      if (user) {
+        // User logged in, load cart count
+        this.loadCartItemsCount();
+      } else {
+        // User logged out, reset cart count
+        this.cartItemsCount.set(0);
+      }
+    });
+  }
 
   ngOnInit() {
     this.langService.dir$.subscribe(dir => {
       this.isRTL = dir === 'rtl';
       this.currentLang = localStorage.getItem('lang') || 'ar';
+    });
+    
+    // Load cart items count if user is authenticated
+    if (this.isAuthenticated()) {
+      this.loadCartItemsCount();
+    }
+    
+    // Subscribe to cart changes for automatic updates
+    this.cartSubscription = this.cartService.cartUpdated$.subscribe(() => {
+      if (this.isAuthenticated()) {
+        this.loadCartItemsCount();
+      }
+    });
+  }
+  
+  ngOnDestroy() {
+    // Clean up subscription to prevent memory leaks
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
+
+  private loadCartItemsCount(): void {
+    this.cartService.getUserCart().subscribe({
+      next: (cartResponse: ShowCartResponse) => {
+        this.cartItemsCount.set(cartResponse.totalItemsCount);
+      },
+      error: (error) => {
+        console.error('Error loading cart items count:', error);
+        this.cartItemsCount.set(0);
+      }
     });
   }
 
@@ -57,7 +105,22 @@ export class Navbar implements OnInit {
 
   logout(): void {
     this.auth.logout();
+    this.cartItemsCount.set(0); // Reset cart count on logout
     this.router.navigate(['/']);
+  }
+
+  // Method to refresh cart items count (can be called from other components)
+  refreshCartCount(): void {
+    if (this.isAuthenticated()) {
+      this.loadCartItemsCount();
+    } else {
+      this.cartItemsCount.set(0);
+    }
+  }
+
+  // Method to update cart count manually (useful when adding/removing items)
+  updateCartCount(count: number): void {
+    this.cartItemsCount.set(count);
   }
 
 

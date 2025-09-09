@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../core/configs/environment.config';
+import { environment } from '../core/configs/environment.config';
 import { 
   AddOrderRequest, 
   CancelOrderRequest, 
@@ -12,10 +12,10 @@ import {
   ApiResponse,
   CheckoutRequest,
   AddOrderResponse
-} from '../order-interfaces/order-interfaces';
-import { EgyptGovernorates } from '../order-models/egypt-governorates.enum';
-import { EgyptCities } from '../order-models/egypt-cities.enum';
-import { PaymentMethod } from '../order-models/payment-method.enum';
+} from '../models/order-interfaces';
+import { EgyptGovernorates } from '../models/egypt-governorates.enum';
+import { EgyptCities } from '../models/egypt-cities.enum';
+import { PaymentMethod } from '../models/payment-method.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +82,7 @@ export class OrderService {
    * @returns Observable of paginated orders
    */
   getUserOrders(request?: GetAllUserOrdersPaginatedRequest): Observable<PaginatedOrderResponse> {
-    console.log('OrderService: Getting user orders', request);
+    // console.log('OrderService: Getting user orders', request);
     
     const params = new HttpParams()
       .set('pageNumber', (request?.pageNumber || 1).toString())
@@ -92,10 +92,21 @@ export class OrderService {
       params: params
     }).pipe(
       map(response => {
-        console.log('OrderService: User orders response:', response);
+        // console.log('OrderService: User orders response:', response);
         return response.data;
       })
     );
+  }
+  getAllUserOrders(request?:any): Observable<any> {
+    // console.log('OrderService: Getting user orders', request);
+    
+    const params = new HttpParams()
+      .set('pageNumber', (request?.pageNumber || 1).toString())
+      .set('pageSize', (request?.pageSize || 10).toString());
+    
+    return this.http.get<any>(`${this.apiUrl}/User/GetAll`, {
+      params: params
+    })
   }
 
   /**
@@ -155,4 +166,6 @@ export class OrderService {
     
     return params;
   }
+
+  
 }

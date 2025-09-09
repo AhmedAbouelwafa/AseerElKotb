@@ -5,26 +5,27 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CartServices } from '../Cart/CartServices/cart-services';
 import { ShowCartResponse } from '../Cart/CartInterfaces/cart-interfaces';
 import { Auth } from '../../services/auth';
-import { OrderService } from '../orders/order-service/order.service';
+import { OrderService } from '../../services/order.service';
+import { ToastService } from '../../shared/Components/toast-notification/toast-notification';
 import { 
   CheckoutRequest, 
   OrderResponse,
   OrderStatus,
   AddOrderResponse,
   PaymentInitializationInfo
-} from '../orders/order-interfaces/order-interfaces';
+} from '../../models/order-interfaces';
 import { 
   EgyptGovernorates, 
   GovernorateDisplayNames 
-} from '../orders/order-models/egypt-governorates.enum';
+} from '../../models/egypt-governorates.enum';
 import { 
   EgyptCities, 
   CityDisplayNames 
-} from '../orders/order-models/egypt-cities.enum';
+} from '../../models/egypt-cities.enum';
 import { 
   PaymentMethod,
   PaymentMethodDisplayNames 
-} from '../orders/order-models/payment-method.enum';
+} from '../../models/payment-method.enum';
 
 
 
@@ -83,7 +84,8 @@ export class CheckoutPage implements OnInit {
     private router: Router,
     private cartService: CartServices,
     private auth: Auth,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -116,10 +118,10 @@ export class CheckoutPage implements OnInit {
       sessionStorage.removeItem('pending_order');
       
       if (paymentStatus === 'success') {
-        alert(`تم الدفع بنجاح!\nرقم التتبع: ${finalTrackingNumber}`);
+        this.toastService.showSuccess('تم الدفع بنجاح!', `رقم التتبع: ${finalTrackingNumber}`);
         this.router.navigate(['/orders'], { queryParams: { trackingNumber: finalTrackingNumber } });
       } else if (paymentStatus === 'failed' || paymentStatus === 'cancelled') {
-        alert('فشل في عملية الدفع. يمكنك المحاولة مرة أخرى.');
+        this.toastService.showError('فشل في عملية الدفع', 'يمكنك المحاولة مرة أخرى.');
         // Stay on checkout page to retry, but clear the cart or restore form
         this.getUserCart(); // Refresh cart state
       }
@@ -227,32 +229,32 @@ export class CheckoutPage implements OnInit {
     const { FirstName, LastName, StreetAddress, PhoneNumber, Governorate, City } = this.checkoutData;
     
     if (!FirstName.trim()) {
-      alert('يرجى إدخال الاسم الأول');
+      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال الاسم الأول');
       return false;
     }
     
     if (!LastName.trim()) {
-      alert('يرجى إدخال الاسم الأخير');
+      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال الاسم الأخير');
       return false;
     }
     
     if (!StreetAddress.trim()) {
-      alert('يرجى إدخال العنوان');
+      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال العنوان بالتفصيل');
       return false;
     }
     
     if (!PhoneNumber.trim()) {
-      alert('يرجى إدخال رقم الهاتف');
+      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال رقم هاتف صحيح');
       return false;
     }
     
     if (!Governorate) {
-      alert('يرجى اختيار المحافظة');
+      this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المحافظة');
       return false;
     }
     
     if (!City) {
-      alert('يرجى اختيار المدينة');
+      this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المدينة');
       return false;
     }
     
@@ -290,7 +292,7 @@ export class CheckoutPage implements OnInit {
       },
       error: (error) => {
         console.error('Error submitting order:', error);
-        alert('حدث خطأ أثناء تأكيد الطلب. يرجى المحاولة مرة أخرى.');
+        this.toastService.showError('خطأ في الطلب', 'حدث خطأ أثناء تأكيد الطلب. يرجى المحاولة مرة أخرى.');
         this.isSubmittingOrder = false;
       }
     });
@@ -326,12 +328,9 @@ export class CheckoutPage implements OnInit {
     });
     
     // Show detailed payment information
-    const paymentMessage = `تم تأكيد الطلب بنجاح!
-رقم التتبع: ${orderResponse.trackingNumber}
-مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}
-سيتم توجيهك إلى بوابة الدفع...`;
+    const paymentMessage = `رقم التتبع: ${orderResponse.trackingNumber}<br>مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}<br><br>سيتم توجيهك إلى بوابة الدفع...`;
     
-    alert(paymentMessage);
+    this.toastService.showInfo('تم تأكيد الطلب بنجاح!', paymentMessage);
     
     // Set redirect state for UI feedback
     this.isRedirectingToPayment = true;
@@ -358,8 +357,7 @@ export class CheckoutPage implements OnInit {
     console.log('Direct order completion - no payment redirect needed');
     
     // Show success message for cash on delivery or completed payments
-    alert(`تم تأكيد الطلب بنجاح!
-رقم التتبع: ${orderResponse.trackingNumber}`);
+    this.toastService.showSuccess('تم تأكيد الطلب بنجاح!', `رقم التتبع: ${orderResponse.trackingNumber}`);
     
     // Navigate to order confirmation or orders page
     this.router.navigate(['/orders'], { queryParams: { trackingNumber: orderResponse.trackingNumber } });

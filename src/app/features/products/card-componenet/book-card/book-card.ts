@@ -8,6 +8,7 @@ import { CartServices } from '../../../Cart/CartServices/cart-services';
 import { AddItemToCartRequest } from '../../../Cart/CartInterfaces/cart-interfaces';
 import { Auth } from '../../../../services/auth';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../../shared/Components/toast-notification/toast-notification';
 
 @Component({
   selector: 'app-book-card',
@@ -24,7 +25,8 @@ export class BookCard {
   constructor(
     private cartService: CartServices,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   getCoverImageUrl(): string {
@@ -65,10 +67,9 @@ export class BookCard {
       next: (response) => {
         if (response.succeeded) {
           // Show success message
-          console.log('تم إضافة الكتاب إلى السلة بنجاح');
-          // You can add a toast notification here
+          this.toastService.showSuccess('مبروك!', 'تم إضافة الكتاب إلى السلة بنجاح!');
         } else {
-          console.error('فشل في إضافة الكتاب إلى السلة:', response.message);
+          this.toastService.showError('خطأ', 'فشل في إضافة الكتاب إلى السلة: ' + response.message);
         }
         this.isAddingToCart = false;
       },
@@ -79,7 +80,9 @@ export class BookCard {
         if (error.status === 401) {
           this.router.navigate(['/login']);
         } else if (error.status === 400 && error.error?.message?.includes('out of stock')) {
-          console.error('الكتاب غير متوفر في المخزن');
+          this.toastService.showWarning('غير متوفر', 'الكتاب غير متوفر في المخزن حالياً');
+        } else {
+          this.toastService.showError('خطأ', 'حدث خطأ أثناء إضافة الكتاب إلى السلة. يرجى المحاولة مرة أخرى.');
         }
         
         this.isAddingToCart = false;

@@ -1,0 +1,43 @@
+<!-- confirmation-modal.html -->
+<div #confirmationModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content rounded-3 shadow border-0">
+      <!-- Modal Header -->
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="confirmationModalLabel">
+          <i *ngIf="config.icon" 
+             class="fas {{ config.icon }} me-2 {{ config.iconClass }}"></i>
+          {{ config.title }}
+        </h5>
+        <button type="button" 
+                class="btn-close" 
+                (click)="onCancel()" 
+                aria-label="إغلاق"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body py-4">
+        <div class="text-center">
+          <div *ngIf="config.icon" class="mb-3">
+            <i class="fas {{ config.icon }} fa-3x {{ config.iconClass }}"></i>
+          </div>
+          <p class="fs-6 text-muted mb-0" [innerHTML]="config.message"></p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" 
+                class="btn {{ config.cancelButtonClass }} px-4"
+                (click)="onCancel()">
+          {{ config.cancelText }}
+        </button>
+        <button type="button" 
+                class="btn {{ config.confirmButtonClass }} px-4"
+                (click)="onConfirm()">
+          {{ config.confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
