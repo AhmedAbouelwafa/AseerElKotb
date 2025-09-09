@@ -7,6 +7,7 @@ import { UserReply } from "../user-reply/user-reply";
 import { ReviewReply } from "../review-reply/review-reply";
 import { ModalService } from '../modal/modal service/modal-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../toast-notification/toast-notification';
 
 @Component({
   selector: 'app-reviews-and-comments',
@@ -36,7 +37,7 @@ export class ReviewsAndComments implements OnChanges, OnInit {
 
   activeTab: string = 'quotes';
 
-  constructor(private api: ModalService, private translate: TranslateService) {}
+  constructor(private api: ModalService, private translate: TranslateService, private toastService: ToastService) {}
 
   getRatingPercentage(level: number): number {
     const count = this.reviews.filter(r => r.rating === level).length;
@@ -44,7 +45,10 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   }
 
   addReview() {
-    alert('نموذج المراجعة سيفتح هنا لاحقًا');
+    this.toastService.showInfo(
+      'قريباً',
+      'نموذج المراجعة سيفتح هنا لاحقاً. نحن نعمل على تطوير هذه الميزة.'
+    );
   }
 
   selectTab(tab: string) {

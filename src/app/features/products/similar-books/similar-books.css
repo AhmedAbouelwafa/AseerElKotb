@@ -1,0 +1,6 @@
+.catBooks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; /* المسافة بين الكروت */
+  padding: 20px 0;
+}

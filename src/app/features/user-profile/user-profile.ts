@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavCrumb } from "../../shared/Components/nav-crumb/nav-crumb";
 
 @Component({
@@ -9,6 +10,7 @@ import { NavCrumb } from "../../shared/Components/nav-crumb/nav-crumb";
   styleUrl: './user-profile.css'
 })
 export class UserProfile {
+  constructor(private router: Router) {}
   user = {
     name: 'Ahmed Abouelwafa',
     lastSeen: 'منذ 4 ثواني',
@@ -18,6 +20,7 @@ export class UserProfile {
 
   stats = [
     { label: 'النشاطات', value: 3, icon: '📊', isActive: true },
+    { label: 'طلباتي', value: 0, icon: '📦', isActive: false, routerLink: '/orders' },
     { label: 'ترشيحاتي', value: 1, icon: '🎯', isActive: false },
     { label: 'مراجعاتي', value: 1, icon: '⭐', isActive: false },
     { label: 'اقتباساتي', value: 1, icon: '💬', isActive: false },
@@ -30,6 +33,12 @@ export class UserProfile {
   ];
 
   onStatClick(stat: any) {
+    // If stat has a routerLink, navigate to it
+    if (stat.routerLink) {
+      this.router.navigate([stat.routerLink]);
+      return;
+    }
+    
     // Reset all stats
     this.stats.forEach(s => s.isActive = false);
     // Set clicked stat as active

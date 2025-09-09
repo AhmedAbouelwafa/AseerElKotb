@@ -1,0 +1,48 @@
+<!-- toast-notification.html -->
+<div class="toast-container">
+  <div class="toast-notification" 
+       *ngFor="let notification of notifications$ | async; trackBy: trackByFn"
+       [ngClass]="'toast-' + notification.type">
+    
+    <!-- Icon -->
+    <div class="toast-icon">
+      <i class="fas" [ngClass]="getIconClass(notification.type)"></i>
+    </div>
+
+    <!-- Content -->
+    <div class="toast-content">
+      <h4 class="toast-title">{{ notification.title }}</h4>
+      <p class="toast-message">{{ notification.message }}</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="toast-actions">
+      <!-- For regular notifications -->
+      <button *ngIf="!notification.showCancel" 
+              class="toast-btn toast-btn-primary"
+              [ngClass]="'toast-btn-' + notification.type"
+              (click)="closeNotification(notification.id)">
+        حسناً
+      </button>
+
+      <!-- For confirmation notifications -->
+      <div *ngIf="notification.showCancel" class="toast-confirm-actions">
+        <button class="toast-btn toast-btn-cancel"
+                (click)="onCancel(notification)">
+          {{ notification.cancelText || 'إلغاء' }}
+        </button>
+        <button class="toast-btn toast-btn-confirm"
+                (click)="onConfirm(notification)">
+          {{ notification.confirmText || 'تأكيد' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Close button -->
+    <button class="toast-close" 
+            (click)="closeNotification(notification.id)"
+            aria-label="إغلاق">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
