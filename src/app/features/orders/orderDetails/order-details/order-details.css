@@ -3,10 +3,169 @@
     padding: 5rem;
 }
 #BigContainer{
-    padding: 1rem;
+ padding: 1rem;
  box-shadow: 1px 1px 10px rgb(231, 230, 230) , -1px -1px 10px rgb(231, 230, 230);
 }
 
 #OrderHeader h2{
-    /* font-weight: bold; */
+    margin-bottom: 1rem;
+}
+#OrderHeaderData{
+    display: flex;
+    justify-content: space-between;
+}
+
+#OrderHeaderData p{
+    display: flex;
+    gap: .9rem;
+}
+#link{
+    display:flex;
+    align-items: center;
+    gap: .5rem;
+}
+#link a{
+    text-decoration: none;
+    color: black;
+}
+/*/////////////////////table/////////////////////////////*/
+#tableContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#table{
+    /* width:75%; */
+    width:100%;
+    margin-block: 4rem;
+    /* margin-bottom: 4rem; */
+}
+th,td{
+  padding: .7rem;
+  padding-inline: 1rem;
+}
+th{
+/* background-color: rgb(251, 253, 254); */
+}
+td{
+ background-color: white;
+ /* padding-inline: 1rem; */
+}
+tr{
+   box-shadow: 1px 1px 1px rgb(240, 239, 239),-1px -1px 1px rgb(216, 216, 216);
+}
+#BookCover{
+    width: 30px;
+    width: 30px;
+}
+#Item{
+    display: flex;
+    gap: 1.5rem;
+}
+
+#moreDetails{
+    padding: 1.7rem;
+    border-radius: .5rem;
+    background-color: rgb(250, 250, 250);
+    display: flex;
+    justify-content: space-between;
+}
+#moreDetails h6{
+    font-weight: bold;
+}
+#customer-adress span,#customer-data span ,#payment-way span{
+    display: flex;
+    flex-direction: column;
+}
+
+#price-details{
+    width: 40%;
+}
+.price{
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: .5rem;
+border-bottom: 1px solid lightgray;
+}
+#TotalPrice{
+border-bottom: none;
+}
+#TotalPrice #TotalPriceText{
+    font-weight: bold;
+}
+#TotalPrice #TotalPriceValue{
+
+    color: red;
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+@media (max-width: 950px) {
+    #mainContainer{
+    margin: 0;
+    padding: 0;
+    }
+    #OrderHeaderData{
+    display: flex;
+    flex-direction: column;
+    }
+    #table{
+    width:100%;
+    margin-bottom: 4rem;
+    }
+    #moreDetails{
+    display: flex;
+    gap:1.5rem;
+    flex-wrap: wrap;
+
+    }
+    #price-details{
+    width: 100%;
+    }
+}
+ 
+@media (max-width: 560px) {
+    /* #item{
+        font-size: .7rem;
+    } */
+     th,td{
+        font-size: .7rem;
+        font-weight: bold;
+     }
+}
+/*////////////////progress///////////////////////////*/
+.statusProgress{
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+}
+
+.status-btns{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.status-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.demo-button.active {
+  background-color: #00b894;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  
+  .demo-buttons {
+    justify-content: center;
+  }
 }

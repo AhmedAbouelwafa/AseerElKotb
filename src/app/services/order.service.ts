@@ -125,14 +125,16 @@ export class OrderService {
   //     })
   //   );
   // }
-  getOrderByTrackingNumber(trackingNumber: string): Observable<GetUserOrderByTrackingNumberResponse> {
-    return this.http.get<GetUserOrderByTrackingNumberResponse>(
-      `${this.apiUrl}/User/GetByTrackingNumber`,
-      { 
-        params: { TrackingNumber: trackingNumber } 
-      }
-    );
-  }
+getOrderByTrackingNumber(trackingNumber: string): Observable<any> {
+  const params = new HttpParams().set('TrackingNumber', trackingNumber); // lowercase 't'
+  
+  return this.http.get<any>(
+    `${this.apiUrl}/User/GetByTrackingNumber`,
+    { params }
+  ).pipe(
+    map(response => response.data)
+  );
+}
   /**
    * Get shipping cost for a specific governorate
    * @param governorate The governorate to get shipping cost for

@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/nav-crumb';
 import { OrderService } from '../../../../services/order.service';
-import { ActivatedRoute } from '@angular/router';
-import { GetUserOrderByTrackingNumberResponse, OrderResponse } from '../../../../models/order-interfaces';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
+import { GetUserOrderByTrackingNumberResponse, OrderStatus } from '../../../../models/order-interfaces';
 
 @Component({
   selector: 'app-order-details',
-  imports: [NavCrumb],
+  imports: [NavCrumb,RouterModule,DatePipe,CustomCurrencyPipePipe,CommonModule],
   templateUrl: './order-details.html',
   styleUrl: './order-details.css'
 })
@@ -18,7 +20,9 @@ export class OrderDetails implements OnInit {
       { name: '  ', path: '#' }
   ];
   order:GetUserOrderByTrackingNumberResponse|null=null;
-  private trackingNumber:any;
+  trackingNumber:any;
+  currentStatus: OrderStatus = OrderStatus.Pending;
+
   constructor(private route: ActivatedRoute,private orderService:OrderService)
   {}
 
@@ -31,6 +35,7 @@ export class OrderDetails implements OnInit {
       }
  }
 
+
     loadData(){
        this.orderService.getOrderByTrackingNumber(this.trackingNumber).subscribe({
           next: (response) => {
@@ -41,6 +46,59 @@ export class OrderDetails implements OnInit {
             console.error('Error loading orders:', error);
           }
         });
-    }
-     
+    } 
+/////////////////////////////////////////////Static Data//////////////////////////////////////////////////////////////
+  // Sample order data
+  sampleOrderData = {
+    id: 1001,
+    userName: "John Doe",
+    paymentMethod: "Credit Card",
+    paymentStatus: "Paid",
+    governorate: "Cairo",
+    city: "Giza",
+    orderStatus: "Shipped",
+    trackingNumber: "TRK123456789",
+    finalAmount: 75.50,
+    orderDate: "2025-09-01T10:30:00Z",
+    books: [
+      {
+        id: 1,
+        title: "زقاق المدق",
+        unitPrice: 15.99,
+        quantity: 2
+      },
+      {
+        id: 2,
+        title: "رسائل من القران",
+        unitPrice: 12.99,
+        quantity: 1
+      },
+      {
+        id: 3,
+        title: "كيف تربي ابنك",
+        unitPrice: 18.99,
+        quantity: 3
+      }
+    ]
+  };
+  orderStatusDisplayNames: Record<OrderStatus, string> = {
+    [OrderStatus.Delivered]: 'تم التوصيل',
+    [OrderStatus.Shipped]: 'جاهز التسليم', 
+    [OrderStatus.Processing]: 'تم التأكيد',
+    [OrderStatus.Confirmed]: 'تم التأكيد',
+    [OrderStatus.Pending]: 'قيد الانتظار',
+    [OrderStatus.Cancelled]: 'ملغي'
+  };
+
+  // Order status progression (right to left for Arabic)
+  statusProgression: OrderStatus[] = [
+    OrderStatus.Delivered,
+    OrderStatus.Shipped,
+    OrderStatus.Processing,
+    OrderStatus.Confirmed,
+    OrderStatus.Pending
+  ];
+  setCurrentStatus(status: OrderStatus): void {
+    this.currentStatus = status;
+  }
 }

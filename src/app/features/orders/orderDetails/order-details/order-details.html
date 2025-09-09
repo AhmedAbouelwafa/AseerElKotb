@@ -8,15 +8,113 @@
 
         <div id="OrderHeader">
             <h2>تفاصيل الطلب </h2>
+            <div id="OrderHeaderData">
+                <p>
+                    <span>رقم الطلب</span>
+                    <span>{{sampleOrderData.trackingNumber}}</span>
+                    <span>{{sampleOrderData.orderDate| date:'M/d/yy, h:mm a' }}</span>
+                </p>
+                <span id="link">
+                    <i class="fa-solid fa-link"></i>
+                   <a routerLink="#" routerLinkActive="true">سياسة الارجاع و الاسترداد</a>
+                </span>
+            </div>
         </div>
+
+        <hr>
 
         <div id="OrderProcess">
 
         </div>
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        <div class="statusProgress">
+            <div class="status-btns">
+                @for (status of statusProgression; track status) {
+                    <button 
+                        class="status-btn"
+                        [ngClass]="{'active': currentStatus === status}"
+                        (click)="setCurrentStatus(status)">
+                        {{ orderStatusDisplayNames[status] }}
+                    </button>
+                }
+            </div>
+        </div>
+     <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-        <table id="table">
+       <div id="tableContainer">
+             <table id="table">
+        
+                <th> المنتج</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>سعر الكمية</th>
+                @for( item of sampleOrderData.books;track item.id){
+                    <tr>
+                        <td id="Item">
+                            <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png">
+                            {{item.title}}
+                        </td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.unitPrice}}</td><!--|customCurrencyPipe:'EGP'-->
+                        <td>{{item.quantity * item.unitPrice}}</td>
+                        
+                    </tr>
+                }
+        
+            </table>
+       </div>
 
-        </table>
+       <div id="moreDetails">
+            <div id="customer-adress">
+                <h6>عنوان الشحن</h6>
+                <span>السعودية</span>
+                <span>مكة</span>
+                <span>مكة</span>
+                <span>شارع مكة</span>
+            </div>
+
+            <div id="customer-data">
+                <h6>بيانات العميل</h6>
+                <span>خديجة</span>
+                <span>0104367115</span>
+                <span>khadija@gmail.com</span>
+            </div>
+
+            <div id="payment-way">
+                 <h6>وسيلة الدفع</h6>
+                 <span>فودافون كاش</span>
+            </div>
+
+            <div id="price-details">
+               <div class="price">
+                    <span>المجموع قبل الخصم</span>
+                    <span>100</span>
+               </div>
+
+               <div class="price">
+                    <span>المجموع</span>
+                    <span>800</span>
+               </div>
+
+               <div class="price">
+                    <span>ضريبة القيمة المضافة</span>
+                    <span>0</span>
+               </div>
+
+               <div class="price">
+                    <span>الشحن</span>
+                    <span>0</span>
+               </div>
+
+               <div class="price" id="TotalPrice">
+                    <span id="TotalPriceText">الاجمالي</span>
+                    <span id="TotalPriceValue">800</span>
+               </div>
+
+            </div>
+
+       </div>
+
 
     </div>
 
