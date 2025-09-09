@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgModule, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatMessage } from '../AI_Model/ChatMessage';
@@ -9,11 +9,12 @@ import { ChatService } from '../AI_Service/chat-service';
 import { ChatSource } from '../AI_Model/ChatSource';
 import { environment } from '../../../../../environments/environment';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ai-chatbot',
   standalone: true,
-  imports: [CommonModule, FormsModule , RouterLink],
+  imports: [CommonModule, FormsModule , RouterLink , TranslateModule],
   templateUrl: './ai-chatbot.html',
   styleUrls: ['./ai-chatbot.css']
 })
@@ -28,21 +29,32 @@ export class AICHATBOT {
   hasUnreadMessages = true;
   currentMessage = '';
 
-  constructor(private chatService: ChatService) {}
+  messages: ChatMessage[] = [];
 
-  messages: ChatMessage[] = [
-    {
-      answer: 'مرحباً! كيف يمكنني مساعدتك اليوم؟',
-      isUser: false,
-      time: this.getCurrentTime(),
+  constructor(private chatService: ChatService , private translate: TranslateService) {}
 
-    }
-  ];
+
 
   ngOnInit() {
     setTimeout(() => {
       this.showModal = true;
     }, 1000);
+
+    // Initialize with empty message first
+    const welcomeMessage: ChatMessage = {
+      answer: '',
+      isUser: false,
+      time: this.getCurrentTime()
+    };
+    
+    this.messages = [welcomeMessage];
+    
+    // Set the translated text after initialization
+    this.translate.get('AseerAlkotb.welcome').subscribe((value) => {
+      if (this.messages.length > 0) {
+        this.messages[0].answer = value;
+      }
+    });
   }
 
   toggleChat() {
@@ -63,6 +75,7 @@ export class AICHATBOT {
 
   minimizeChat() {
     this.showChat = false;
+    this.showThankYouModal = true;
   }
 
   selectOption(option: string) {
@@ -188,7 +201,7 @@ export class AICHATBOT {
 
       if (this.messages.filter(m => !m.isTyping).length >= 3) {
         setTimeout(() => {
-          this.showThankYouModal = true;
+          // this.showThankYouModal = true;
         }, 3000);
       }
     } catch (error: any) {

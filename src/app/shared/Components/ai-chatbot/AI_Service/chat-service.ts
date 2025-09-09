@@ -17,4 +17,6 @@ export class ChatService {
     return this.http.post<ChatMessageResponse>(`${this.baseUrl}/Rag/ask`, request).pipe(map((response: any) => response.data));
   }
 
+  
+
 }

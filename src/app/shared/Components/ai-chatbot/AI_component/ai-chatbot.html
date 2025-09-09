@@ -4,33 +4,33 @@
     <div class="modal-header">
       <div class="modal-title">
         <div class="help-icon">📖</div>
-        <span>مركز المساعدة</span>
+        <span>{{'AseerAlkotb.helpCenter' | translate}}</span>
       </div>
       <button class="close-btn" (click)="closeModal()">×</button>
-      <div class="subtitle">نحن هنا لمساعدتك</div>
+      <div class="subtitle">{{'AseerAlkotb.subtitle' | translate}}</div>
     </div>
 
     <div class="modal-content">
-      <h3>مرحباً كيف يمكننا خدمتك اليوم؟</h3>
-      <p>اختر أحد الخيارات أدناه أو ابدأ محادثة جديدة</p>
+      <h3>{{'AseerAlkotb.welcome' | translate}}</h3>
+      <p>{{'AseerAlkotb.options' | translate}}</p>
 
       <div class="options-list">
-        <div class="option-item" (click)="selectOption('طلب')">
-          <span>🏥 تتبع حالة طلبي</span>
+        <div class="option-item" (click)="selectOption('inquiry')">
+          <span>{{'AseerAlkotb.inquiry' | translate}}</span>
           <span class="arrow">→</span>
         </div>
-        <div class="option-item" (click)="selectOption('استبدال')">
-          <span>🔄 سياسة الاستبدال والاسترداد</span>
+        <div class="option-item" (click)="selectOption('return')">
+          <span>{{'AseerAlkotb.return' | translate}}</span>
           <span class="arrow">→</span>
         </div>
-        <div class="option-item" (click)="selectOption('دفع')">
-          <span>💳 مشاكل الدفع</span>
+        <div class="option-item" (click)="selectOption('payment')">
+          <span>{{'AseerAlkotb.payment' | translate}}</span>
           <span class="arrow">→</span>
         </div>
       </div>
 
       <button class="new-chat-btn" (click)="startNewChat()">
-        📖 ابدأ محادثة جديدة
+        {{'AseerAlkotb.newChat' | translate}}
       </button>
     </div>
   </div>
@@ -42,8 +42,8 @@
     <div class="chat-title">
       <div class="bot-avatar">🤖</div>
       <div class="title-text">
-        <h4>عصير الكتب</h4>
-        <span class="status">متاح الآن</span>
+        <h4>{{'AseerAlkotb.name' | translate}}</h4>
+        <span class="status">{{'AseerAlkotb.status' | translate}}</span>
       </div>
     </div>
     <button class="minimize-btn" (click)="minimizeChat()">−</button>
@@ -65,7 +65,7 @@
           <!-- Display sources if available -->
           @if (!message.isUser && !message.isTyping && message.sources && message.sources.length > 0) {
             <div class="sources">
-              <h6>المصادر:</h6>
+              <h6>{{'AseerAlkotb.sources' | translate}}</h6>
 
               @for (source of message.sources; track $index) {
 
@@ -81,7 +81,7 @@
                  </a>
                 </div>
               } @empty {
-                <p>لا يوجد مصادر</p>
+                <p>{{'AseerAlkotb.noSources' | translate}}</p>
               }
             </div>
           }
@@ -95,18 +95,18 @@
     <!-- Special inquiry notice -->
     <div class="inquiry-notice" *ngIf="showInquiryNotice">
       <div class="notice-content">
-        <span>💡 أطلب رقم الاستفسار عن حالة طلبي رقم #12345</span>
-        <div class="notice-time">10:31 صباحاً</div>
+        <span>{{'AseerAlkotb.inquiryNotice' | translate}}</span>
+        <div class="notice-time">{{getCurrentTime()}}</div>
       </div>
     </div>
 
-    <!-- Confirmation notice -->
+    <!-- Confirmation notice
     <div class="confirmation-notice" *ngIf="showConfirmationNotice">
       <div class="notice-content">
-        <span>✅ بالتأكيد! يمكننا مساعدتك للتحقق من حالة الطلب.</span>
+        <span>{{'AseerAlkotb.confirmationNotice' | translate}}</span>
         <div class="notice-time">10:31 صباحاً</div>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <div class="chat-input">
@@ -114,7 +114,7 @@
       type="text"
       [(ngModel)]="currentMessage"
       (keyup.enter)="sendMessage()"
-      placeholder="اكتب رسالتك هنا..."
+      placeholder="{{'AseerAlkotb.placeholder' | translate}}"
       class="message-input">
     <button (click)="sendMessage()" class="send-btn" [disabled]="!currentMessage.trim()">
       ➤
@@ -126,16 +126,16 @@
 <div class="modal-overlay" [class.show]="showThankYouModal" (click)="closeThankYouModal()">
   <div class="thank-you-modal" (click)="$event.stopPropagation()">
     <div class="thank-icon">✅</div>
-    <h3>شكراً لتواصلك معنا!</h3>
-    <p>نأمل أن نكون قد قدمنا المساعدة التي تحتاجها</p>
+    <h3>{{'AseerAlkotb.thankYou' | translate}}</h3>
+    <p>{{'AseerAlkotb.thankYouMessage' | translate}}</p>
 
     <div class="rating-section">
-      <span>يرجى تقييم المحادثة</span>
+      <span>{{'AseerAlkotb.rating' | translate}}</span>
     </div>
 
     <div class="modal-actions">
-      <button class="skip-btn" (click)="closeThankYouModal()">تخطي</button>
-      <button class="rate-btn" (click)="openRating()">إرسال التقييم</button>
+      <button class="skip-btn" (click)="closeThankYouModal()">{{'AseerAlkotb.skip' | translate}}</button>
+      <button class="rate-btn" (click)="openRating()">{{'AseerAlkotb.rate' | translate}}</button>
     </div>
   </div>
 </div>
