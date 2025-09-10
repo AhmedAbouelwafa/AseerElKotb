@@ -28,10 +28,17 @@ export class AICHATBOT {
   showConfirmationNotice = false;
   hasUnreadMessages = true;
   currentMessage = '';
+  useAudioResponse = false; // Flag to toggle audio responses
+  isAudioPlaying = false;
 
   messages: ChatMessage[] = [];
 
-  constructor(private chatService: ChatService , private translate: TranslateService) {}
+  constructor(private chatService: ChatService, private translate: TranslateService) {}
+
+  ngOnDestroy() {
+    // Stop any playing audio when component is destroyed
+    this.chatService.stopAudio();
+  }
 
 
 
@@ -111,6 +118,14 @@ export class AICHATBOT {
     setTimeout(() => this.scrollToBottom(), 100);
   }
 
+  toggleAudioResponse() {
+    this.useAudioResponse = !this.useAudioResponse;
+    if (!this.useAudioResponse) {
+      this.chatService.stopAudio();
+      this.isAudioPlaying = false;
+    }
+  }
+
   sendMessage() {
     if (!this.currentMessage.trim()) return;
 
@@ -157,21 +172,35 @@ export class AICHATBOT {
 
   async generateBotResponse(userMessage: string) {
     const request: ChatMessageRequest = {
-      Question: userMessage, // غيّرنا من question إلى Question
+      Question: userMessage,
       Language: 'ar',
       Category: 'general',
       Limit: 1,
     };
 
     try {
-      const response = await this.callChatAPI(request);
+      // Show typing indicator
+      this.addTypingMessage();
+      
+      // Get the response (this will also handle audio if enabled)
+      const response = await lastValueFrom(
+        this.chatService.getResponse(request, this.useAudioResponse)
+      ) as ChatMessageResponse;
+      
+      if (!response) {
+        throw new Error('No response received from the server');
+      }
+      
+      // Remove typing indicator
+      this.removeTypingMessage();
+      
       const botMessage = response.answer || 'شكراً لتواصلك معنا! سأساعدك بأفضل ما لدي.';
-      console.log('Response:', response);
-      // Normalize sources to expected camelCase keys if backend returns PascalCase
+      
+      // Normalize sources if they exist
       const apiBase = (environment as any).apiUrlHttps?.replace(/\/$/, '')
         || environment.apiUrl?.replace(/\/$/, '')
         || '';
-
+      
       const normalizedSources = (response.sources || []).map((s: any) => {
         const cover = s.coverImageUrl ?? s.CoverImageUrl;
         const isAbsolute = typeof cover === 'string' && /^(?:https?:)?\/\//.test(cover);
@@ -183,35 +212,37 @@ export class AICHATBOT {
           bookId: s.bookId ?? s.BookId,
           title: s.title ?? s.Title,
           snippet: s.snippet ?? s.Snippet,
-          coverImageUrl: resolvedCover,
+          coverImageUrl: resolvedCover
         } as ChatSource;
       });
-
+      
+      // Add the message to the chat with normalized sources
       this.addMessage(botMessage, false, normalizedSources);
-
-      if (response.sources && response.sources.length > 0) {
-        console.log('Sources:', response.sources);
-      }
-
+      
+      // Show confirmation notice if needed
       if (Math.random() > 0.5) {
         setTimeout(() => {
           this.showConfirmationNotice = true;
         }, 1000);
       }
-
+      
+      // Show thank you modal after 3 messages
       if (this.messages.filter(m => !m.isTyping).length >= 3) {
         setTimeout(() => {
-          // this.showThankYouModal = true;
-        }, 3000);
+          this.showThankYouModal = true;
+        }, 1000);
       }
     } catch (error: any) {
-      console.error('API Error:', error);
-      let errorMessage = 'عذراً، فيه مشكلة في الاتصال بالسيرفر. جرب تاني بعد شوية.';
+      console.error('Error generating bot response:', error);
+      this.removeTypingMessage();
+      
+      let errorMessage = 'عذراً، حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.';
       if (error.status === 0) {
         errorMessage = 'مش عارف أوصل للسيرفر. تأكد إن السيرفر شغال وإن الإنترنت مظبوط.';
       } else if (error.status === 404) {
         errorMessage = 'الـ API مش موجود. ممكن الرابط غلط.';
       }
+      
       this.addMessage(errorMessage, false);
     }
   }

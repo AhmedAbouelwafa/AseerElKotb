@@ -107,9 +107,17 @@
         <div class="notice-time">10:31 صباحاً</div>
       </div>
     </div> -->
+
   </div>
 
   <div class="chat-input">
+    <button
+      (click)="toggleAudioResponse()"
+      class="audio-toggle"
+      [class.active]="useAudioResponse"
+      [title]="useAudioResponse ? 'إيقاف الرد الصوتي' : 'تشغيل الرد الصوتي'">
+      {{ useAudioResponse ? '🔊' : '🔈' }}
+    </button>
     <input
       type="text"
       [(ngModel)]="currentMessage"
@@ -120,6 +128,8 @@
       ➤
     </button>
   </div>
+
+
 </div>
 
 <!-- Thank You Modal -->
