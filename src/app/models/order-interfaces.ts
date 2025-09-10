@@ -125,8 +125,6 @@ export interface GetUserOrderByTrackingNumberResponse {
   userName: string;
   paymentMethod: PaymentMethod; // Use enum
   paymentStatus: PaymentStatus; // Use enum
-  governorate: EgyptGovernorates; // Use enum
-  city: EgyptCities; // Use enum
   orderStatus: OrderStatus; // Use enum
   trackingNumber: string;
   finalAmount: number;
