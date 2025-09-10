@@ -188,7 +188,8 @@
       "accessories": "Accessories ❤️",
       "toys": "Toys 🎮",
       "register": "Register",
-      "login": "Login"
+      "login": "Login",
+      "aiChatbot": "AI Cover Generator"
     },
     "userMenu": {
       "profile": "Profile",
@@ -219,6 +220,20 @@
     "rating": "Rating",
     "submit": "Submit",
     "cancel": "Cancel"
+  },
+
+  "gen": {
+    "title": "Image Generation",
+    "description": "Generate images using AI",
+    "prompt": "Prompt",
+    "placeholder": "Nagib Mahfouz cover",
+    "quickExamples": "Quick Examples",
+    "generate": "Generate",
+    "generating": "Generating",
+    "history": "History",
+    "clearHistory": "Clear History",
+    "download": "Download",
+    "copy": "Copy"
   }
 
 }

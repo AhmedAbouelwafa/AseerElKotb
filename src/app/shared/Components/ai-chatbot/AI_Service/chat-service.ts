@@ -12,7 +12,8 @@ import { delay, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class ChatService {
   private baseUrl: string = environment.apiBaseUrl;
   private polly: string = `https://text.pollinations.ai`;
-  
+  private pollyImage: string = `https://image.pollinations.ai/prompt/`;
+
   // Audio control properties
   private audioPlayer: HTMLAudioElement | null = null;
   private currentAudioUrl: string | null = null;
@@ -24,6 +25,22 @@ export class ChatService {
 
   callChatAPI(request: ChatMessageRequest): Observable<ChatMessageResponse> {
     return this.http.post<ChatMessageResponse>(`${this.baseUrl}/Rag/ask`, request).pipe(map((response: any) => response.data));
+  }
+
+  // Image generation method
+  generateImage(prompt: string): string {
+    if (!prompt) return '';
+    return `${this.pollyImage}${encodeURIComponent(prompt)}`;
+  }
+
+  // Method to generate image with additional parameters
+  generateImageWithParams(prompt: string, width: number = 512, height: number = 512, seed?: number): string {
+    if (!prompt) return '';
+    let url = `${this.pollyImage}${encodeURIComponent(prompt)}?width=${width}&height=${height}`;
+    if (seed) {
+      url += `&seed=${seed}`;
+    }
+    return url;
   }
 
   getTtsUrl(text: string, voice: string = 'alloy'): string {
@@ -39,50 +56,50 @@ export class ChatService {
       const audioUrl = this.getTtsUrl(text, voice);
       this.currentAudioUrl = audioUrl;
       this.audioPlayer = new Audio(audioUrl);
-      
+
       // Set up event listeners
       this.audioPlayer.onplay = () => {
         this.audioStateSubject.next('playing');
       };
-      
+
       this.audioPlayer.onpause = () => {
         this.audioStateSubject.next('paused');
       };
-      
+
       this.audioPlayer.onended = () => {
         this.audioStateSubject.next('stopped');
         this.cleanupAudio();
         observer.next();
         observer.complete();
       };
-      
+
       this.audioPlayer.onerror = (error) => {
         this.audioStateSubject.next('stopped');
         this.cleanupAudio();
         observer.error(error);
       };
-      
+
       // Start playing
       this.audioPlayer.play().catch(error => {
         this.audioStateSubject.next('stopped');
         this.cleanupAudio();
         observer.error(error);
       });
-      
+
       // Cleanup function for when the observable is unsubscribed
       return () => {
         this.stopAudio();
       };
     });
   }
-  
+
   pauseAudio(): void {
     if (this.audioPlayer && !this.audioPlayer.paused) {
       this.audioPlayer.pause();
       this.audioStateSubject.next('paused');
     }
   }
-  
+
   resumeAudio(): void {
     if (this.audioPlayer && this.audioPlayer.paused) {
       this.audioPlayer.play().catch(error => {
@@ -92,7 +109,7 @@ export class ChatService {
       });
     }
   }
-  
+
   stopAudio(): void {
     if (this.audioPlayer) {
       this.audioPlayer.pause();
@@ -101,7 +118,7 @@ export class ChatService {
       this.audioStateSubject.next('stopped');
     }
   }
-  
+
   private cleanupAudio(): void {
     if (this.audioPlayer) {
       // Remove all event listeners
@@ -109,7 +126,7 @@ export class ChatService {
       this.audioPlayer.onpause = null;
       this.audioPlayer.onended = null;
       this.audioPlayer.onerror = null;
-      
+
       // Release resources
       this.audioPlayer.src = '';
       this.audioPlayer.load();
@@ -135,7 +152,7 @@ export class ChatService {
             observer.complete();
           });
         }
-        
+
         // If no audio, just return the response
         return of(response);
       })

@@ -27,6 +27,7 @@ import { Orders } from './features/orders/orders/orders/orders';
 
 
 import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
+import { ImageGeneration } from './features/image-generation/image-generation';
 
 
 
@@ -101,5 +102,9 @@ export const routes: Routes = [
   {
     path: 'OrderDetails/:trackingNumber' , component : OrderDetails,
   }
-  
+  ,
+  {
+    path: 'image-generation', component : ImageGeneration
+  }
+
 ];
