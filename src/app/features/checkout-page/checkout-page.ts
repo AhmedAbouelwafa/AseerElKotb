@@ -15,17 +15,13 @@ import {
   PaymentInitializationInfo
 } from '../../models/order-interfaces';
 import { 
-  EgyptGovernorates, 
-  GovernorateDisplayNames 
-} from '../../models/egypt-governorates.enum';
-import { 
-  EgyptCities, 
-  CityDisplayNames 
-} from '../../models/egypt-cities.enum';
-import { 
   PaymentMethod,
   PaymentMethodDisplayNames 
 } from '../../models/payment-method.enum';
+import { LocationService } from '../../services/location.service';
+import { Governorate } from '../../models/governorate.model';
+import { City } from '../../models/city.model';
+import { environment } from '../../core/configs/environment.config';
 
 
 
@@ -41,8 +37,8 @@ export class CheckoutPage implements OnInit {
     LastName: '',
     StreetAddress: '',
     PhoneNumber: '',
-    Governorate: EgyptGovernorates.AL_QAHIRAH,
-    City: EgyptCities.DOWNTOWN_CAIRO,
+    GovernorateId: 0,
+    CityId: 0,
     PaymentMethod: PaymentMethod.CashOnDelivery
   };
   
@@ -59,17 +55,12 @@ export class CheckoutPage implements OnInit {
   isLoadingCart = false;
   isSubmittingOrder = false;
   isRedirectingToPayment = false;
+  isLoadingGovernorates = false;
+  isLoadingCities = false;
   
   // Dropdown options
-  governorates = Object.entries(GovernorateDisplayNames).map(([key, value]) => ({
-    value: key as EgyptGovernorates,
-    label: value
-  }));
-  
-  cities = Object.entries(CityDisplayNames).map(([key, value]) => ({
-    value: key as EgyptCities,
-    label: value
-  }));
+  governorates: Governorate[] = [];
+  cities: City[] = [];
   
   paymentMethods = Object.entries(PaymentMethodDisplayNames).map(([key, value]) => ({
     value: Number(key) as PaymentMethod,
@@ -85,11 +76,17 @@ export class CheckoutPage implements OnInit {
     private cartService: CartServices,
     private auth: Auth,
     private orderService: OrderService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private locationService: LocationService
   ) {}
 
   ngOnInit(): void {
     console.log('Checkout page initialized');
+    
+    // Make component available for debugging
+    (window as any)['checkoutPageComponent'] = this;
+    
+    this.loadGovernorates();
     this.getUserCart();
     this.updateShippingCost();
     
@@ -126,6 +123,142 @@ export class CheckoutPage implements OnInit {
         this.getUserCart(); // Refresh cart state
       }
     }
+  }
+
+  /**
+   * Load all governorates from the API
+   */
+  loadGovernorates(): void {
+    console.log('Loading governorates...');
+    this.isLoadingGovernorates = true;
+    
+    this.locationService.getAllGovernorates().subscribe({
+      next: (governorates: Governorate[]) => {
+        console.log('Governorates loaded successfully:', governorates);
+        console.log('Number of governorates:', governorates.length);
+        
+        if (governorates && governorates.length > 0) {
+          this.governorates = governorates;
+          console.log('First governorate:', governorates[0]);
+        } else {
+          console.warn('No governorates received, trying test data...');
+          this.loadTestGovernorates();
+        }
+        
+        this.isLoadingGovernorates = false;
+      },
+      error: (error) => {
+        console.error('Error loading governorates:', error);
+        console.error('Error details:', {
+          status: error.status,
+          message: error.message,
+          url: error.url,
+          error: error.error
+        });
+        
+        // Try loading test data as fallback
+        console.warn('API failed, loading test data...');
+        this.loadTestGovernorates();
+        
+        this.toastService.showError('خطأ في تحميل البيانات', 'تم تحميل بيانات تجريبية');
+        this.isLoadingGovernorates = false;
+      }
+    });
+  }
+
+  /**
+   * Load test governorates as fallback
+   */
+  private loadTestGovernorates(): void {
+    console.log('Loading test governorates...');
+    this.locationService.getTestGovernorates().subscribe({
+      next: (testGovernorates) => {
+        console.log('Test governorates loaded:', testGovernorates);
+        this.governorates = testGovernorates;
+      },
+      error: (error) => {
+        console.error('Even test data failed:', error);
+        // Create minimal fallback data
+        this.governorates = [
+          { id: 1, name: 'القاهرة' },
+          { id: 2, name: 'الجيزة' }
+        ];
+        console.log('Using minimal fallback data:', this.governorates);
+      }
+    });
+  }
+
+  /**
+   * Load cities for a specific governorate
+   * @param governorateId The ID of the selected governorate
+   */
+  loadCitiesForGovernorate(governorateId: number): void {
+    if (!governorateId || governorateId === 0) {
+      console.log('No governorate selected, clearing cities');
+      this.cities = [];
+      this.checkoutData.CityId = 0;
+      return;
+    }
+    
+    console.log('Loading cities for governorate ID:', governorateId);
+    this.isLoadingCities = true;
+    
+    this.locationService.getCitiesByGovernorate(governorateId).subscribe({
+      next: (cities: City[]) => {
+        console.log('Cities loaded successfully:', cities);
+        console.log('Number of cities:', cities.length);
+        
+        if (cities && cities.length > 0) {
+          this.cities = cities;
+          console.log('First city:', cities[0]);
+        } else {
+          console.warn('No cities received, trying test data...');
+          this.loadTestCities(governorateId);
+        }
+        
+        // Reset city selection
+        this.checkoutData.CityId = 0;
+        this.isLoadingCities = false;
+      },
+      error: (error) => {
+        console.error('Error loading cities:', error);
+        console.error('Cities error details:', {
+          status: error.status,
+          message: error.message,
+          url: error.url,
+          error: error.error
+        });
+        
+        // Try loading test data as fallback
+        console.warn('Cities API failed, loading test data...');
+        this.loadTestCities(governorateId);
+        
+        this.toastService.showError('خطأ في تحميل البيانات', 'تم تحميل بيانات تجريبية');
+        this.checkoutData.CityId = 0;
+        this.isLoadingCities = false;
+      }
+    });
+  }
+
+  /**
+   * Load test cities as fallback
+   */
+  private loadTestCities(governorateId: number): void {
+    console.log('Loading test cities for governorate:', governorateId);
+    this.locationService.getTestCities(governorateId).subscribe({
+      next: (testCities) => {
+        console.log('Test cities loaded:', testCities);
+        this.cities = testCities;
+      },
+      error: (error) => {
+        console.error('Even test cities failed:', error);
+        // Create minimal fallback data
+        this.cities = [
+          { id: 1, name: 'مدينة تجريبية', governorateId: governorateId }
+        ];
+        console.log('Using minimal cities fallback data:', this.cities);
+      }
+    });
   }
 
   getUserCart(): void {
@@ -174,10 +307,13 @@ export class CheckoutPage implements OnInit {
   }
   
   onGovernorateChange(): void {
-    console.log('Governorate changed to:', this.checkoutData.Governorate);
+    console.log('Governorate changed to ID:', this.checkoutData.GovernorateId);
+    
+    // Load cities for the selected governorate
+    this.loadCitiesForGovernorate(this.checkoutData.GovernorateId);
+    
+    // Update shipping cost based on the selected governorate
     this.updateShippingCost();
-    // Reset city when governorate changes to first available city for that governorate
-    this.updateCitiesForGovernorate();
   }
 
   updateShippingCost(): void {
@@ -189,10 +325,11 @@ export class CheckoutPage implements OnInit {
       return;
     }
     
-    if (this.checkoutData.Governorate) {
-      console.log('Getting shipping cost for governorate:', this.checkoutData.Governorate);
+    if (this.checkoutData.GovernorateId && this.checkoutData.GovernorateId > 0) {
+      console.log('Getting shipping cost for governorate ID:', this.checkoutData.GovernorateId);
       
-      this.orderService.getShippingCost(this.checkoutData.Governorate).subscribe({
+      // Use the new method that accepts governorate ID directly
+      this.orderService.getShippingCostByGovernorateId(this.checkoutData.GovernorateId).subscribe({
         next: (cost) => {
           console.log('Shipping cost received:', cost);
           this.shippingCost = cost;
@@ -204,29 +341,100 @@ export class CheckoutPage implements OnInit {
           this.updateFinalTotal();
         }
       });
+    } else {
+      console.log('No governorate selected, setting shipping cost to 0');
+      this.shippingCost = 0;
+      this.updateFinalTotal();
     }
+  }
+
+  // Remove the temporary mapping method as it's no longer needed
+
+  /**
+   * Debug method to test API endpoints
+   * Call this from browser console: window['checkoutPageComponent'].debugAPIs()
+   */
+  debugAPIs(): void {
+    console.log('=== DEBUGGING API ENDPOINTS ===');
+    console.log('Current governorates:', this.governorates);
+    console.log('Is loading governorates:', this.isLoadingGovernorates);
+    console.log('Selected governorate ID:', this.checkoutData.GovernorateId);
+    console.log('Current cities:', this.cities);
+    console.log('Selected city ID:', this.checkoutData.CityId);
+    console.log('Environment API base URL:', environment.apiBaseUrl);
+    
+    // Test governorates endpoint
+    console.log('\n=== Testing governorates endpoint ===');
+    this.locationService.getAllGovernorates().subscribe({
+      next: (govs) => {
+        console.log('✅ Direct governorates test - SUCCESS');
+        console.log('Governorates count:', govs.length);
+        console.log('Governorates data:', govs);
+      },
+      error: (err) => {
+        console.log('❌ Direct governorates test - FAILED');
+        console.error('Error details:', err);
+        
+        // Test fallback data
+        console.log('\n=== Testing governorates fallback ===');
+        this.locationService.getTestGovernorates().subscribe({
+          next: (testGovs) => {
+            console.log('✅ Test governorates - SUCCESS');
+            console.log('Test governorates:', testGovs);
+          },
+          error: (testErr) => {
+            console.log('❌ Test governorates - FAILED');
+            console.error('Test error:', testErr);
+          }
+        });
+      }
+    });
+    
+    // Test cities endpoint if governorate is selected
+    if (this.checkoutData.GovernorateId > 0) {
+      console.log('\n=== Testing cities endpoint ===');
+      this.locationService.getCitiesByGovernorate(this.checkoutData.GovernorateId).subscribe({
+        next: (cities) => {
+          console.log('✅ Direct cities test - SUCCESS');
+          console.log('Cities count:', cities.length);
+          console.log('Cities data:', cities);
+        },
+        error: (err) => {
+          console.log('❌ Direct cities test - FAILED');
+          console.error('Cities error details:', err);
+        }
+      });
+      
+      // Test shipping cost
+      console.log('\n=== Testing shipping cost endpoint ===');
+      this.orderService.getShippingCostByGovernorateId(this.checkoutData.GovernorateId).subscribe({
+        next: (cost) => {
+          console.log('✅ Direct shipping cost test - SUCCESS');
+          console.log('Shipping cost result:', cost);
+        },
+        error: (err) => {
+          console.log('❌ Direct shipping cost test - FAILED');
+          console.error('Shipping cost error details:', err);
+        }
+      });
+    } else {
+      console.log('\n⚠️ No governorate selected - skipping cities and shipping tests');
+    }
+    
+    // Test manual reload
+    console.log('\n=== Manual reload test ===');
+    console.log('Calling loadGovernorates() manually...');
+    this.loadGovernorates();
   }
 
   updateFinalTotal(): void {
     this.finalTotal = this.cartDiscountedTotal + this.shippingCost;
   }
 
-  updateCitiesForGovernorate(): void {
-    // Filter cities based on selected governorate
-    const availableCities = this.cities.filter(city => {
-      // This is a simple mapping - you might want a more sophisticated approach
-      const cityKey = city.value as string;
-      const governorateKey = this.checkoutData.Governorate as string;
-      return cityKey.includes(governorateKey) || cityKey.endsWith('_CENTER');
-    });
-    
-    if (availableCities.length > 0) {
-      this.checkoutData.City = availableCities[0].value;
-    }
-  }
+  // Remove the old updateCitiesForGovernorate method as it's replaced by loadCitiesForGovernorate
 
   validateForm(): boolean {
-    const { FirstName, LastName, StreetAddress, PhoneNumber, Governorate, City } = this.checkoutData;
+    const { FirstName, LastName, StreetAddress, PhoneNumber, GovernorateId, CityId } = this.checkoutData;
     
     if (!FirstName.trim()) {
       this.toastService.showError('بيانات ناقصة', 'يرجى إدخال الاسم الأول');
@@ -248,12 +456,12 @@ export class CheckoutPage implements OnInit {
       return false;
     }
     
-    if (!Governorate) {
+    if (!GovernorateId || GovernorateId === 0) {
       this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المحافظة');
       return false;
     }
     
-    if (!City) {
+    if (!CityId || CityId === 0) {
       this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المدينة');
       return false;
     }
@@ -277,8 +485,8 @@ export class CheckoutPage implements OnInit {
       LastName: this.checkoutData.LastName.trim(),
       StreetAddress: this.checkoutData.StreetAddress.trim(),
       PhoneNumber: this.checkoutData.PhoneNumber.trim(),
-      Governorate: this.checkoutData.Governorate,
-      City: this.checkoutData.City,
+      GovernorateId: this.checkoutData.GovernorateId,
+      CityId: this.checkoutData.CityId,
       PaymentMethod: this.checkoutData.PaymentMethod
     };
     

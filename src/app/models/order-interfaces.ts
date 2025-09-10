@@ -1,5 +1,6 @@
-import { EgyptGovernorates } from './egypt-governorates.enum';
-import { EgyptCities } from './egypt-cities.enum';
+// Note: Now using ID-based system instead of enums
+// import { EgyptGovernorates } from './egypt-governorates.enum';
+// import { EgyptCities } from './egypt-cities.enum';
 import { PaymentMethod } from './payment-method.enum';
 
 // Base API Response Structure (reusing from cart interfaces pattern)
@@ -17,8 +18,8 @@ export interface AddOrderRequest {
   LastName: string;
   StreetAddress: string;
   PhoneNumber: string;
-  Governorate: EgyptGovernorates;
-  City: EgyptCities;
+  GovernorateId: number;
+  CityId: number;
   PaymentMethod: PaymentMethod;
 }
 
