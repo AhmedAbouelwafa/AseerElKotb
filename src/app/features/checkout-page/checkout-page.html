@@ -33,25 +33,41 @@
           </div>
           <div class="form-group">
             <label>اختر المحافظة</label>
-            <select [(ngModel)]="checkoutData.Governorate" 
+            <select [(ngModel)]="checkoutData.GovernorateId" 
                     (ngModelChange)="onGovernorateChange()"
-                    class="form-select">
-              <option value="">اختر المحافظة</option>
-              <option *ngFor="let gov of governorates" [value]="gov.value">
-                {{gov.label}}
+                    class="form-select"
+                    [disabled]="isLoadingGovernorates">
+              <option value="0">اختر المحافظة</option>
+              <option *ngFor="let gov of governorates" [value]="gov.id">
+                {{gov.name}}
               </option>
             </select>
+            <div *ngIf="isLoadingGovernorates" class="loading-text">
+              جاري تحميل المحافظات...
+            </div>
+            <!-- Debug info -->
+            <div *ngIf="!isLoadingGovernorates" class="help-text">
+              عدد المحافظات المحملة: {{governorates.length}}
+            </div>
           </div>
         </div>
 
         <div class="form-group">
           <label>المدينة</label>
-          <select [(ngModel)]="checkoutData.City" class="form-select">
-            <option value="">اختر المدينة</option>
-            <option *ngFor="let city of cities" [value]="city.value">
-              {{city.label}}
+          <select [(ngModel)]="checkoutData.CityId" 
+                  class="form-select"
+                  [disabled]="isLoadingCities || !checkoutData.GovernorateId">
+            <option value="0">اختر المدينة</option>
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{city.name}}
             </option>
           </select>
+          <div *ngIf="isLoadingCities" class="loading-text">
+            جاري تحميل المدن...
+          </div>
+          <div *ngIf="!checkoutData.GovernorateId && !isLoadingGovernorates" class="help-text">
+            يرجى اختيار المحافظة أولاً
+          </div>
         </div>
 
         <div class="form-row">
