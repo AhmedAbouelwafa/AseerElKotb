@@ -116,7 +116,7 @@ export interface OrderResponse {
 ///////////////////for GetUserOrderByTrackingNumber///////////////////////////////
 export interface BookDTO {
   title: string;
-  unitPrice: number;
+  price: number;
   quantity: number;
 }
 export interface GetUserOrderByTrackingNumberResponse {

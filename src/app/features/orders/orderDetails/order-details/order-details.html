@@ -11,8 +11,8 @@
             <div id="OrderHeaderData">
                 <p>
                     <span>رقم الطلب</span>
-                    <span>{{sampleOrderData.trackingNumber}}</span>
-                    <span>{{sampleOrderData.orderDate| date:'M/d/yy, h:mm a' }}</span>
+                    <span>{{order?.trackingNumber}}</span>
+                    <span>{{order?.orderDate| date:'M/d/yy, h:mm a' }}</span>
                 </p>
                 <span id="link">
                     <i class="fa-solid fa-link"></i>
@@ -61,15 +61,15 @@
                 <th>الكمية</th>
                 <th>السعر</th>
                 <th>سعر الكمية</th>
-                @for( item of sampleOrderData.books;track item.id){
+                @for( item of order?.books;track item.title){
                     <tr>
                         <td id="Item">
                             <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png"><!--need change with actual photo-->
                             {{item.title}}
                         </td>
                         <td>{{item.quantity}}</td>
-                        <td>{{item.unitPrice}}</td><!--|customCurrencyPipe:'EGP'-->
-                        <td>{{item.quantity * item.unitPrice}}</td>
+                        <td>{{item.price}}</td><!--|customCurrencyPipe:'EGP'-->
+                        <td>{{item.quantity * item.price}}</td>
                         
                     </tr>
                 }
@@ -95,7 +95,9 @@
 
             <div id="payment-way">
                  <h6>وسيلة الدفع</h6>
-                 <span>فودافون كاش</span>
+                 @if(order){
+                     <span>{{PaymentMethodDisplayNames[order.paymentMethod]}}</span>
+                 }
             </div>
 
             <div id="price-details">
