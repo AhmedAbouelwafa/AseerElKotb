@@ -1,4 +1,26 @@
 {
+
+  "AseerAlkotb": {
+    "name": "Aseer AlKotb",
+    "status": "Available",
+    "sources": "Sources",
+    "noSources": "No sources",
+    "inquiryNotice": "💡 Request inquiry number #12345",
+    "confirmationNotice": "✅ Confirm inquiry number #12345",
+    "placeholder": "Write your message here...",
+    "thankYou": "Thank you for your message!",
+    "thankYouMessage": "We hope we have provided the help you needed",
+    "rating": "Rate the conversation",
+    "skip": "Skip",
+    "rate": "Rate",
+    "newChat": "Start a new chat",
+    "inquiry": "Inquiry",
+    "return": "Return",
+    "payment": "Payment",
+    "helpCenter": "Help Center",
+    "subtitle": "We are here to help you",
+    "welcome": "Welcome! How can I help you today?"
+  },
   "hero": {
     "title": "Aseer AlKotb",
     "bookTypes": {
@@ -166,7 +188,8 @@
       "accessories": "Accessories ❤️",
       "toys": "Toys 🎮",
       "register": "Register",
-      "login": "Login"
+      "login": "Login",
+      "aiChatbot": "AI Cover Generator"
     },
     "userMenu": {
       "profile": "Profile",
@@ -187,6 +210,30 @@
       "arabic": "Arabic",
       "english": "English"
     }
+  },
+  "modal": {
+    "add": "Add",
+    "write": "Write",
+    "here": "Here",
+    "quote": "Quote",
+    "review": "Review",
+    "rating": "Rating",
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+
+  "gen": {
+    "title": "Image Generation",
+    "description": "Generate images using AI",
+    "prompt": "Prompt",
+    "placeholder": "Nagib Mahfouz cover",
+    "quickExamples": "Quick Examples",
+    "generate": "Generate",
+    "generating": "Generating",
+    "history": "History",
+    "clearHistory": "Clear History",
+    "download": "Download",
+    "copyLink": "Copy Link"
   }
 
 }

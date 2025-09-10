@@ -20,7 +20,14 @@ import { Publisher } from './features/Publisher/Publisher Componenet/publisher/p
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
 import { AuthGuard } from './guards/auth.guard';
+
+import { SimilarBooks } from './features/products/similar-books/similar-books';
 import { Orders } from './features/orders/orders/orders/orders';
+
+
+
+import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
+import { ImageGeneration } from './features/image-generation/image-generation';
 
 
 
@@ -60,7 +67,7 @@ export const routes: Routes = [
   {
     path: 'register', component: Register
   },
-  {  
+  {
       path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
   },
   {
@@ -88,4 +95,16 @@ export const routes: Routes = [
   {
     path: 'orders' , component : Orders, canActivate: [AuthGuard]
   }
+  ,
+  {
+    path: 'similar-books', component : SimilarBooks
+  },
+  {
+    path: 'OrderDetails/:trackingNumber' , component : OrderDetails,
+  }
+  ,
+  {
+    path: 'image-generation', component : ImageGeneration
+  }
+
 ];

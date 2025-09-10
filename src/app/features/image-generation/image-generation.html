@@ -1,0 +1,84 @@
+<div class="image-generation-container">
+  <!-- Header -->
+  <div class="header">
+    <h2>{{`gen.title` | translate}}</h2>
+    <p>{{`gen.description` | translate}}</p>
+  </div>
+
+  <!-- Main Content Wrapper -->
+  <div class="content-wrapper">
+    <!-- Generation Form -->
+    <div class="generation-form">
+      <div class="input-group">
+        <label for="prompt">{{`gen.prompt` | translate}}</label>
+        <textarea
+          id="prompt"
+          [(ngModel)]="prompt"
+          placeholder="{{`gen.placeholder` | translate}}"
+          rows="3">
+        </textarea>
+      </div>
+
+      <div class="prompt-examples">
+        <h4>{{`gen.quickExamples` | translate}}</h4>
+        <div class="examples-grid">
+          <button
+            *ngFor="let example of promptExamples"
+            class="example-btn"
+            (click)="usePromptExample(example)">
+            {{example}}
+          </button>
+        </div>
+      </div>
+
+      <button
+        class="generate-btn"
+        (click)="generateImage()"
+        [disabled]="isGenerating || !prompt.trim()">
+        <span *ngIf="!isGenerating">{{`gen.generate` | translate}}</span>
+        <span *ngIf="isGenerating">⏳ {{`gen.generating` | translate}}</span>
+      </button>
+    </div>
+
+    <!-- Generated Image Display -->
+    <div class="image-display" *ngIf="currentImageUrl">
+      <div class="image-container">
+        <img [src]="currentImageUrl" [alt]="prompt" class="generated-image">
+        <div class="image-actions">
+          <button (click)="downloadImage(currentImageUrl, prompt)" class="action-btn download">
+            📥 {{`gen.download` | translate}}
+          </button>
+          <button (click)="copyImageUrl(currentImageUrl)" class="action-btn copy">
+            📋 {{`gen.copyLink` | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image History -->
+    <div class="image-history" *ngIf="generatedImages.length > 0">
+      <div class="history-header">
+        <h3>{{`gen.history` | translate}} ({{generatedImages.length}})</h3>
+        <button class="clear-history-btn" (click)="clearHistory()">
+          🗑️ {{`gen.clearHistory` | translate}}
+        </button>
+      </div>
+      <div class="history-grid">
+        <div
+          *ngFor="let image of generatedImages"
+          class="history-item"
+          [class.active]="image.url === currentImageUrl"
+          (click)="selectImage(image)">
+          <img [src]="image.url" [alt]="image.prompt" class="history-thumbnail">
+          <div class="history-info">
+            <p class="history-prompt">{{image.prompt | slice:0:30}}{{image.prompt.length > 30 ? '...' : ''}}</p>
+            <div class="history-details">
+              <span>{{image.width}}×{{image.height}}</span>
+              <span>{{image.timestamp | date:'short'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

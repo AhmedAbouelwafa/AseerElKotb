@@ -1,0 +1,159 @@
+<!-- Help Center Modal -->
+<div class="modal-overlay" [class.show]="showModal" (click)="closeModal()">
+  <div class="help-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="help-icon">📖</div>
+        <span>{{'AseerAlkotb.helpCenter' | translate}}</span>
+      </div>
+      <button class="close-btn" (click)="closeModal()">×</button>
+      <div class="subtitle">{{'AseerAlkotb.subtitle' | translate}}</div>
+    </div>
+
+    <div class="modal-content">
+      <h3>{{'AseerAlkotb.welcome' | translate}}</h3>
+      <p>{{'AseerAlkotb.options' | translate}}</p>
+
+      <div class="options-list">
+        <div class="option-item" (click)="selectOption('inquiry')">
+          <span>{{'AseerAlkotb.inquiry' | translate}}</span>
+          <span class="arrow">→</span>
+        </div>
+        <div class="option-item" (click)="selectOption('return')">
+          <span>{{'AseerAlkotb.return' | translate}}</span>
+          <span class="arrow">→</span>
+        </div>
+        <div class="option-item" (click)="selectOption('payment')">
+          <span>{{'AseerAlkotb.payment' | translate}}</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <button class="new-chat-btn" (click)="startNewChat()">
+        {{'AseerAlkotb.newChat' | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Interface -->
+<div class="chat-container" [class.show]="showChat">
+  <div class="chat-header">
+    <div class="chat-title">
+      <div class="bot-avatar">🤖</div>
+      <div class="title-text">
+        <h4>{{'AseerAlkotb.name' | translate}}</h4>
+        <span class="status">{{'AseerAlkotb.status' | translate}}</span>
+      </div>
+    </div>
+    <button class="minimize-btn" (click)="minimizeChat()">−</button>
+  </div>
+
+  <div class="chat-messages" #chatMessages>
+    <div *ngFor="let message of messages"
+         class="message"
+         [class.user-message]="message.isUser"
+         [class.bot-message]="!message.isUser">
+      <div class="message-content">
+        <div class="message-bubble" [class.typing]="message.isTyping">
+          <span *ngIf="!message.isTyping">{{ message.isUser ? message.question : message.answer }}</span>
+          <div *ngIf="message.isTyping" class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <!-- Display sources if available -->
+          @if (!message.isUser && !message.isTyping && message.sources && message.sources.length > 0) {
+            <div class="sources">
+              <h6>{{'AseerAlkotb.sources' | translate}}</h6>
+
+              @for (source of message.sources; track $index) {
+
+                <div class="source-item">
+                  @if (source?.coverImageUrl) {
+                    <img [src]="source.coverImageUrl" alt="Cover" class="source-image">
+                  }
+                 <a [routerLink]="['/book-details/', source?.bookId]">
+                  <div class="source-details">
+                    <strong>{{ source?.title }}</strong>
+                    <p>{{ source?.snippet }}</p>
+                  </div>
+                 </a>
+                </div>
+              } @empty {
+                <p>{{'AseerAlkotb.noSources' | translate}}</p>
+              }
+            </div>
+          }
+
+
+        </div>
+        <div class="message-time">{{ message.time }}</div>
+      </div>
+    </div>
+
+    <!-- Special inquiry notice -->
+    <div class="inquiry-notice" *ngIf="showInquiryNotice">
+      <div class="notice-content">
+        <span>{{'AseerAlkotb.inquiryNotice' | translate}}</span>
+        <div class="notice-time">{{getCurrentTime()}}</div>
+      </div>
+    </div>
+
+    <!-- Confirmation notice
+    <div class="confirmation-notice" *ngIf="showConfirmationNotice">
+      <div class="notice-content">
+        <span>{{'AseerAlkotb.confirmationNotice' | translate}}</span>
+        <div class="notice-time">10:31 صباحاً</div>
+      </div>
+    </div> -->
+
+  </div>
+
+  <div class="chat-input">
+    <button
+      (click)="toggleAudioResponse()"
+      class="audio-toggle"
+      [class.active]="useAudioResponse"
+      [title]="useAudioResponse ? 'إيقاف الرد الصوتي' : 'تشغيل الرد الصوتي'">
+      {{ useAudioResponse ? '🔊' : '🔈' }}
+    </button>
+    <input
+      type="text"
+      [(ngModel)]="currentMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="{{'AseerAlkotb.placeholder' | translate}}"
+      class="message-input">
+    <button (click)="sendMessage()" class="send-btn" [disabled]="!currentMessage.trim()">
+      ➤
+    </button>
+  </div>
+
+
+</div>
+
+<!-- Thank You Modal -->
+<!-- <div class="modal-overlay" [class.show]="showThankYouModal" (click)="closeThankYouModal()">
+  <div class="thank-you-modal" (click)="$event.stopPropagation()">
+    <div class="thank-icon">✅</div>
+    <h3>{{'AseerAlkotb.thankYou' | translate}}</h3>
+    <p>{{'AseerAlkotb.thankYouMessage' | translate}}</p>
+
+    <div class="rating-section">
+      <span>{{'AseerAlkotb.rating' | translate}}</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="skip-btn" (click)="closeThankYouModal()">{{'AseerAlkotb.skip' | translate}}</button>
+      <button class="rate-btn" (click)="openRating()">{{'AseerAlkotb.rate' | translate}}</button>
+    </div>
+  </div>
+</div> -->
+
+
+
+<!-- Floating Chat Button -->
+<button class="floating-chat-btn" (click)="toggleChat()" *ngIf="!showChat && !showModal">
+  <div class="chat-icon">📖</div>
+  <div class="notification-dot" *ngIf="hasUnreadMessages"></div>
+</button>

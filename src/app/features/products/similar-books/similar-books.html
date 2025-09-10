@@ -1,0 +1,9 @@
+<div class="catBooks container">
+
+  @for(item of books; track item.id) {
+    <a [routerLink]="['/book-details', item.id]" class="text-decoration-none books pt-4 pb-4">
+      <app-book-card [book]="item"></app-book-card>
+    </a>
+  }
+
+</div>
