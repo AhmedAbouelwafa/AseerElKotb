@@ -1,3 +1,18 @@
 footer{
   position: static;
 }
+
+@media (max-width: 768px) {
+  footer .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  footer .row > [class^="col-"] {
+    text-align: center;
+  }
+
+  footer .d-flex.gap-2, footer .d-flex.gap-3 {
+    gap: 0.75rem !important;
+  }
+}

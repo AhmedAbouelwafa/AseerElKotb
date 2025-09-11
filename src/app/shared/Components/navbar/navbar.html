@@ -13,10 +13,17 @@
         </div>
       </div>
 
+      <!-- زرار القائمة للموبايل (يستثني البحث) -->
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="!isNavbarCollapsed" aria-controls="navbarContent" aria-label="Toggle navigation">
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+      </button>
+
       <div class="collapse navbar-collapse d-flex align-items-center" id="navbarContent" [class.show]="!isNavbarCollapsed">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0" (click)="closeNavbar()">
           <li class="nav-item books position-relative">
-            <a class="nav-link">{{ 'navbar.menu.books' | translate }}</a>
+            <a class="nav-link sss">{{ 'navbar.menu.books' | translate }}</a>
             <ul class="dropdown-menu-custom">
               <li><a routerLink="/books"><i class="fas fa-book-open"></i> {{ 'navbar.menu.allBooks' | translate }}</a></li>
               <li><a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> {{ 'navbar.menu.readableBooks' | translate }}</a></li>

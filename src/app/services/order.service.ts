@@ -15,7 +15,8 @@ import {
   GetUserOrderByTrackingNumberResponse
 } from '../models/order-interfaces';
 import { EgyptGovernorates } from '../models/egypt-governorates.enum';
-import { EgyptCities } from '../models/egypt-cities.enum';
+// Note: Keeping governorate enum import for shipping cost method only
+// The checkout now uses GovernorateId and CityId (numbers)
 import { PaymentMethod } from '../models/payment-method.enum';
 
 @Injectable({
@@ -42,8 +43,8 @@ export class OrderService {
       LastName: request.LastName,
       StreetAddress: request.StreetAddress,
       PhoneNumber: request.PhoneNumber,
-      Governorate: request.Governorate,
-      City: request.City,
+      GovernorateId: request.GovernorateId,
+      CityId: request.CityId,
       PaymentMethod: request.PaymentMethod
     };
     
@@ -136,7 +137,33 @@ getOrderByTrackingNumber(trackingNumber: string): Observable<any> {
   );
 }
   /**
-   * Get shipping cost for a specific governorate
+   * Get shipping cost for a specific governorate by ID
+   * @param governorateId The ID of the governorate to get shipping cost for
+   * @returns Observable of shipping cost
+   */
+  getShippingCostByGovernorateId(governorateId: number): Observable<number> {
+    console.log('OrderService: Getting shipping cost for governorate ID:', governorateId);
+    
+    // Try different parameter formats to match backend expectations
+    const params = new HttpParams()
+      .set('governorateId', governorateId.toString());
+    
+    const url = `${this.apiUrl}/GetShippingCost`;
+    console.log('OrderService: Shipping cost API URL:', url);
+    console.log('OrderService: Shipping cost API params:', params.toString());
+    
+    return this.http.get<number>(url, {
+      params: params
+    }).pipe(
+      map(cost => {
+        console.log('OrderService: Shipping cost response:', cost);
+        return cost || 0; // Ensure we return a number
+      })
+    );
+  }
+
+  /**
+   * Get shipping cost for a specific governorate (legacy method)
    * @param governorate The governorate to get shipping cost for
    * @returns Observable of shipping cost
    */

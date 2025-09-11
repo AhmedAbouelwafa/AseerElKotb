@@ -1,5 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:5234',
-    cartUrl: 'http://localhost:5234',//////?? ليه مش شغال
+    apiUrl: 'https://aseeralkotb.runasp.net'
 };
