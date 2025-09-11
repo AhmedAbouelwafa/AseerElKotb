@@ -12,18 +12,45 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>الاسم الأول</label>
-            <input type="text" [(ngModel)]="checkoutData.FirstName" class="form-input">
+            <label>الاسم الأول <span class="required-asterisk">*</span></label>
+            <input type="text" 
+                   [(ngModel)]="checkoutData.FirstName" 
+                   (blur)="validateField('FirstName')"
+                   (input)="validateField('FirstName')"
+                   [class]="'form-input ' + getValidationClass('FirstName')"
+                   placeholder="أدخل الاسم الأول">
+            <div *ngIf="formTouched.FirstName && validationErrors.FirstName" 
+                 class="validation-error">
+              {{validationErrors.FirstName}}
+            </div>
           </div>
           <div class="form-group">
-            <label>الاسم الأخير</label>
-            <input type="text" [(ngModel)]="checkoutData.LastName" class="form-input">
+            <label>الاسم الأخير <span class="required-asterisk">*</span></label>
+            <input type="text" 
+                   [(ngModel)]="checkoutData.LastName" 
+                   (blur)="validateField('LastName')"
+                   (input)="validateField('LastName')"
+                   [class]="'form-input ' + getValidationClass('LastName')"
+                   placeholder="أدخل الاسم الأخير">
+            <div *ngIf="formTouched.LastName && validationErrors.LastName" 
+                 class="validation-error">
+              {{validationErrors.LastName}}
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>العنوان</label>
-          <input type="text" [(ngModel)]="checkoutData.StreetAddress" class="form-input">
+          <label>العنوان بالتفصيل <span class="required-asterisk">*</span></label>
+          <input type="text" 
+                 [(ngModel)]="checkoutData.StreetAddress" 
+                 (blur)="validateField('StreetAddress')"
+                 (input)="validateField('StreetAddress')"
+                 [class]="'form-input ' + getValidationClass('StreetAddress')"
+                 placeholder="أدخل العنوان بالتفصيل (الشارع، المنطقة، معالم مميزة)">
+          <div *ngIf="formTouched.StreetAddress && validationErrors.StreetAddress" 
+               class="validation-error">
+            {{validationErrors.StreetAddress}}
+          </div>
         </div>
 
         <div class="form-row">
@@ -32,10 +59,11 @@
             <input type="text" value="مصر" class="form-input">
           </div>
           <div class="form-group">
-            <label>اختر المحافظة</label>
+            <label>اختر المحافظة <span class="required-asterisk">*</span></label>
             <select [(ngModel)]="checkoutData.GovernorateId" 
-                    (ngModelChange)="onGovernorateChange()"
-                    class="form-select"
+                    (ngModelChange)="onGovernorateChange(); validateField('GovernorateId')"
+                    (blur)="validateField('GovernorateId')"
+                    [class]="'form-select ' + getValidationClass('GovernorateId')"
                     [disabled]="isLoadingGovernorates">
               <option value="0">اختر المحافظة</option>
               <option *ngFor="let gov of governorates" [value]="gov.id">
@@ -45,6 +73,10 @@
             <div *ngIf="isLoadingGovernorates" class="loading-text">
               جاري تحميل المحافظات...
             </div>
+            <div *ngIf="formTouched.GovernorateId && validationErrors.GovernorateId" 
+                 class="validation-error">
+              {{validationErrors.GovernorateId}}
+            </div>
             <!-- Debug info -->
             <div *ngIf="!isLoadingGovernorates" class="help-text">
               عدد المحافظات المحملة: {{governorates.length}}
@@ -53,9 +85,11 @@
         </div>
 
         <div class="form-group">
-          <label>المدينة</label>
+          <label>المدينة <span class="required-asterisk">*</span></label>
           <select [(ngModel)]="checkoutData.CityId" 
-                  class="form-select"
+                  (ngModelChange)="validateField('CityId')"
+                  (blur)="validateField('CityId')"
+                  [class]="'form-select ' + getValidationClass('CityId')"
                   [disabled]="isLoadingCities || !checkoutData.GovernorateId">
             <option value="0">اختر المدينة</option>
             <option *ngFor="let city of cities" [value]="city.id">
@@ -65,6 +99,10 @@
           <div *ngIf="isLoadingCities" class="loading-text">
             جاري تحميل المدن...
           </div>
+          <div *ngIf="formTouched.CityId && validationErrors.CityId" 
+               class="validation-error">
+            {{validationErrors.CityId}}
+          </div>
           <div *ngIf="!checkoutData.GovernorateId && !isLoadingGovernorates" class="help-text">
             يرجى اختيار المحافظة أولاً
           </div>
@@ -72,8 +110,20 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label>رقم الهاتف</label>
-            <input type="tel" [(ngModel)]="checkoutData.PhoneNumber" class="form-input" placeholder="01234567890">
+            <label>رقم الهاتف <span class="required-asterisk">*</span></label>
+            <input type="tel" 
+                   [(ngModel)]="checkoutData.PhoneNumber" 
+                   (blur)="validateField('PhoneNumber')"
+                   (input)="validateField('PhoneNumber')"
+                   [class]="'form-input ' + getValidationClass('PhoneNumber')"
+                   placeholder="01234567890">
+            <div *ngIf="formTouched.PhoneNumber && validationErrors.PhoneNumber" 
+                 class="validation-error">
+              {{validationErrors.PhoneNumber}}
+            </div>
+            <div class="help-text">
+              مثال: 01012345678 أو 0212345678
+            </div>
           </div>
         </div>
       </div>
@@ -117,11 +167,14 @@
       <div class="submit-section">
         <button class="submit-btn" 
                 (click)="submitOrder()"
-                [disabled]="isSubmittingOrder || isLoadingCart || isRedirectingToPayment">
+                [disabled]="isSubmittingOrder || isLoadingCart || isRedirectingToPayment || !isFormValid()">
           <span *ngIf="!isSubmittingOrder && !isRedirectingToPayment">تأكيد الطلب</span>
           <span *ngIf="isSubmittingOrder && !isRedirectingToPayment">جاري إرسال الطلب...</span>
           <span *ngIf="isRedirectingToPayment">جاري التوجيه لبوابة الدفع...</span>
         </button>
+        <div *ngIf="!isFormValid()" class="form-validation-message">
+          يرجى ملء جميع الحقول المطلوبة بشكل صحيح
+        </div>
       </div>
     </div>
 

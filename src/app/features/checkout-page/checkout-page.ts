@@ -58,6 +58,26 @@ export class CheckoutPage implements OnInit {
   isLoadingGovernorates = false;
   isLoadingCities = false;
   
+  // Validation properties
+  validationErrors = {
+    FirstName: '',
+    LastName: '',
+    StreetAddress: '',
+    PhoneNumber: '',
+    GovernorateId: '',
+    CityId: ''
+  };
+  
+  // Form touched state
+  formTouched = {
+    FirstName: false,
+    LastName: false,
+    StreetAddress: false,
+    PhoneNumber: false,
+    GovernorateId: false,
+    CityId: false
+  };
+  
   // Dropdown options
   governorates: Governorate[] = [];
   cities: City[] = [];
@@ -309,6 +329,11 @@ export class CheckoutPage implements OnInit {
   onGovernorateChange(): void {
     console.log('Governorate changed to ID:', this.checkoutData.GovernorateId);
     
+    // Clear city selection and validation when governorate changes
+    this.checkoutData.CityId = 0;
+    this.validationErrors.CityId = '';
+    this.formTouched.CityId = false;
+    
     // Load cities for the selected governorate
     this.loadCitiesForGovernorate(this.checkoutData.GovernorateId);
     
@@ -433,36 +458,173 @@ export class CheckoutPage implements OnInit {
 
   // Remove the old updateCitiesForGovernorate method as it's replaced by loadCitiesForGovernorate
 
+  /**
+   * Validate individual form field
+   * @param fieldName The name of the field to validate
+   */
+  validateField(fieldName: keyof typeof this.checkoutData): void {
+    this.formTouched[fieldName as keyof typeof this.formTouched] = true;
+    this.validationErrors[fieldName as keyof typeof this.validationErrors] = '';
+    
+    const value = this.checkoutData[fieldName];
+    
+    switch (fieldName) {
+      case 'FirstName':
+        if (!value || (value as string).trim().length === 0) {
+          this.validationErrors.FirstName = 'الاسم الأول مطلوب';
+        } else if ((value as string).trim().length < 2) {
+          this.validationErrors.FirstName = 'الاسم الأول يجب أن يكون حرفين على الأقل';
+        }
+        break;
+        
+      case 'LastName':
+        if (!value || (value as string).trim().length === 0) {
+          this.validationErrors.LastName = 'الاسم الأخير مطلوب';
+        } else if ((value as string).trim().length < 2) {
+          this.validationErrors.LastName = 'الاسم الأخير يجب أن يكون حرفين على الأقل';
+        }
+        break;
+        
+      case 'StreetAddress':
+        if (!value || (value as string).trim().length === 0) {
+          this.validationErrors.StreetAddress = 'العنوان مطلوب';
+        } else if ((value as string).trim().length < 10) {
+          this.validationErrors.StreetAddress = 'العنوان يجب أن يكون مفصلاً (10 أحرف على الأقل)';
+        }
+        break;
+        
+      case 'PhoneNumber':
+        if (!value || (value as string).trim().length === 0) {
+          this.validationErrors.PhoneNumber = 'رقم الهاتف مطلوب';
+        } else if (!this.isValidPhoneNumber(value as string)) {
+          this.validationErrors.PhoneNumber = 'رقم الهاتف غير صحيح (يجب أن يتكون من أرقام فقط وأن يبدأ بـ 01)';
+        }
+        break;
+        
+      case 'GovernorateId':
+        if (!value || value === 0) {
+          this.validationErrors.GovernorateId = 'المحافظة مطلوبة';
+        }
+        break;
+        
+      case 'CityId':
+        if (!value || value === 0) {
+          this.validationErrors.CityId = 'المدينة مطلوبة';
+        }
+        break;
+    }
+  }
+
+  /**
+   * Validate Egyptian phone number
+   * @param phone The phone number to validate
+   * @returns true if valid, false otherwise
+   */
+  private isValidPhoneNumber(phone: string): boolean {
+    // Remove all spaces and special characters
+    const cleanPhone = phone.replace(/[\s\-\(\)\+]/g, '');
+    
+    // Check if it contains only digits
+    if (!/^\d+$/.test(cleanPhone)) {
+      return false;
+    }
+    
+    // Egyptian phone number patterns
+    // Mobile: 01XXXXXXXXX (11 digits starting with 01)
+    // Landline: 0XXXXXXXXX (9-10 digits starting with 0 but not 01)
+    
+    if (cleanPhone.startsWith('01')) {
+      // Mobile number: should be 11 digits
+      return cleanPhone.length === 11;
+    } else if (cleanPhone.startsWith('0')) {
+      // Landline: should be 9-10 digits
+      return cleanPhone.length >= 9 && cleanPhone.length <= 10;
+    } else if (cleanPhone.startsWith('201')) {
+      // International format mobile: +201XXXXXXXXX
+      return cleanPhone.length === 13;
+    } else if (cleanPhone.startsWith('2')) {
+      // International format landline
+      return cleanPhone.length >= 11 && cleanPhone.length <= 12;
+    }
+    
+    return false;
+  }
+
+  /**
+   * Validate all form fields
+   * @returns true if all fields are valid, false otherwise
+   */
+  validateAllFields(): boolean {
+    // Mark all fields as touched
+    Object.keys(this.formTouched).forEach(key => {
+      this.formTouched[key as keyof typeof this.formTouched] = true;
+    });
+    
+    // Validate each field
+    this.validateField('FirstName');
+    this.validateField('LastName');
+    this.validateField('StreetAddress');
+    this.validateField('PhoneNumber');
+    this.validateField('GovernorateId');
+    this.validateField('CityId');
+    
+    // Check if there are any errors
+    const hasErrors = Object.values(this.validationErrors).some(error => error.length > 0);
+    return !hasErrors;
+  }
+
+  /**
+   * Get validation class for a field
+   * @param fieldName The field name
+   * @returns CSS class string
+   */
+  getValidationClass(fieldName: keyof typeof this.validationErrors): string {
+    const isTouched = this.formTouched[fieldName as keyof typeof this.formTouched];
+    const hasError = this.validationErrors[fieldName].length > 0;
+    
+    if (!isTouched) return '';
+    return hasError ? 'is-invalid' : 'is-valid';
+  }
+
+  /**
+   * Check if form is valid for UI purposes
+   * @returns true if form is valid, false otherwise
+   */
+  isFormValid(): boolean {
+    // Check basic required fields are filled
+    const basicValidation = 
+      this.checkoutData.FirstName?.trim().length > 0 &&
+      this.checkoutData.LastName?.trim().length > 0 &&
+      this.checkoutData.StreetAddress?.trim().length > 0 &&
+      this.checkoutData.PhoneNumber?.trim().length > 0 &&
+      this.checkoutData.GovernorateId > 0 &&
+      this.checkoutData.CityId > 0;
+    
+    if (!basicValidation) {
+      return false;
+    }
+    
+    // Check if there are any validation errors
+    const hasErrors = Object.values(this.validationErrors).some(error => error.length > 0);
+    return !hasErrors;
+  }
+
   validateForm(): boolean {
-    const { FirstName, LastName, StreetAddress, PhoneNumber, GovernorateId, CityId } = this.checkoutData;
+    // Use the comprehensive validation
+    const isValid = this.validateAllFields();
     
-    if (!FirstName.trim()) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال الاسم الأول');
-      return false;
-    }
-    
-    if (!LastName.trim()) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال الاسم الأخير');
-      return false;
-    }
-    
-    if (!StreetAddress.trim()) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال العنوان بالتفصيل');
-      return false;
-    }
-    
-    if (!PhoneNumber.trim()) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى إدخال رقم هاتف صحيح');
-      return false;
-    }
-    
-    if (!GovernorateId || GovernorateId === 0) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المحافظة');
-      return false;
-    }
-    
-    if (!CityId || CityId === 0) {
-      this.toastService.showError('بيانات ناقصة', 'يرجى اختيار المدينة');
+    if (!isValid) {
+      // Find the first field with an error and focus on it
+      const firstErrorField = Object.keys(this.validationErrors).find(
+        key => this.validationErrors[key as keyof typeof this.validationErrors].length > 0
+      );
+      
+      if (firstErrorField) {
+        // Show error for the first invalid field
+        const errorMessage = this.validationErrors[firstErrorField as keyof typeof this.validationErrors];
+        this.toastService.showError('بيانات غير صحيحة', errorMessage);
+      }
+      
       return false;
     }
     
