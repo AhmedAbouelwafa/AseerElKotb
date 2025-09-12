@@ -189,7 +189,8 @@
       "toys": "Toys 🎮",
       "register": "Register",
       "login": "Login",
-      "aiChatbot": "AI Cover Generator"
+      "aiChatbot": "AI Cover Generator",
+      "settings": "Settings"
     },
     "userMenu": {
       "profile": "Profile",

@@ -16,7 +16,7 @@ import { ToastService } from '../../../shared/Components/toast-notification/toas
 })
 export class Cart implements OnInit {
   breadcrumbs: NavcrumbItem[] = [
-    { name: 'سلة التسوق', path: '/' },
+    { name: 'سلة التسوق', path: '#' },
   ];
 
   userId: number = 1;// This would typically come from an auth service
@@ -101,7 +101,16 @@ clearCart(): void {
     this.toastService.showConfirmClearCart(() => {
       this.cartService.clearCart().subscribe({
         next: (response) => {
-          this.loadCart();
+          // Reset local cart data immediately
+          this.cartData = {
+            id: 0,
+            userId: 0,
+            items: [],
+            totalItemsCount: 0,
+            sumTotalPrice: 0,
+            sumDiscountedPrice: 0
+          };
+          this.items = [];
           this.toastService.showSuccess('تم التفريغ', 'تم تفريغ سلة التسوق بنجاح!');
         },
         error: (err) => {

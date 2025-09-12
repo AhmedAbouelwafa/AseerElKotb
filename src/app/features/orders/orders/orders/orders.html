@@ -1,5 +1,13 @@
 <div id="mainContainer">
-    <div id="nav-crumb">
+
+    @if(orders.length===0){
+        <div class="noOrder">
+            <h2> لا توجد طلبات</h2>
+        </div>
+    }
+
+    @if(orders.length!==0){
+         <div id="nav-crumb">
          <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
     </div>
 
@@ -28,5 +36,8 @@
         }
        
     </table>
+
+    }
+   
    
 </div>

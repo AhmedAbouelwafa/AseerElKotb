@@ -135,6 +135,8 @@ export class CheckoutPage implements OnInit {
       sessionStorage.removeItem('pending_order');
       
       if (paymentStatus === 'success') {
+        // Notify cart service that cart has been cleared after successful payment
+        this.cartService.notifyCartChanged();
         this.toastService.showSuccess('تم الدفع بنجاح!', `رقم التتبع: ${finalTrackingNumber}`);
         this.router.navigate(['/orders'], { queryParams: { trackingNumber: finalTrackingNumber } });
       } else if (paymentStatus === 'failed' || paymentStatus === 'cancelled') {
@@ -697,6 +699,9 @@ export class CheckoutPage implements OnInit {
       redirectUrl: paymentInfo.redirectUrl
     });
     
+    // Notify cart service that cart has been cleared after successful order
+    this.cartService.notifyCartChanged();
+    
     // Show detailed payment information
     const paymentMessage = `رقم التتبع: ${orderResponse.trackingNumber}<br>مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}<br><br>سيتم توجيهك إلى بوابة الدفع...`;
     
@@ -725,6 +730,9 @@ export class CheckoutPage implements OnInit {
    */
   private handleDirectOrderCompletion(orderResponse: AddOrderResponse): void {
     console.log('Direct order completion - no payment redirect needed');
+    
+    // Notify cart service that cart has been cleared after successful order
+    this.cartService.notifyCartChanged();
     
     // Show success message for cash on delivery or completed payments
     this.toastService.showSuccess('تم تأكيد الطلب بنجاح!', `رقم التتبع: ${orderResponse.trackingNumber}`);

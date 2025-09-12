@@ -34,34 +34,30 @@ export class BookPage implements OnInit {
     private catService: CategoryServices
   ) {}
 
-  currentPage = 1;
-  pageSize = 2;
-  allCategories: any[] = []; // كل الكاتيجوريز (لكن مش معروضة مرة واحدة)
+  allCategories: any[] = [];
 
   ngOnInit(): void {
     this.catService.getPaginatedCategories().subscribe({
       next: (res) => {
-        console.log("Categories response:", res); // عشان تشوف شكل الريسبونس
-        this.allCategories = res?.data || []; // هنا بقت Array مظبوطة
-        this.loadMoreCategories();
+        console.log("Categories response:", res);
+        this.allCategories = res?.data || [];
+        this.loadAllCategoriesWithBooks();
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
         this.isLoading = false;
       }
     });
-
   }
 
-  // تحميل batch جديدة
-  loadMoreCategories(): void {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    const nextCategories = this.allCategories.slice(start, end);
+  // تحميل كل الكاتيجوريز بالكتب مرة واحدة
+  loadAllCategoriesWithBooks(): void {
+    if (this.allCategories.length === 0) {
+      this.isLoading = false;
+      return;
+    }
 
-    if (nextCategories.length === 0) return; // مفيش كاتيجوري جديدة
-
-    const bookRequests = nextCategories.map(category =>
+    const bookRequests = this.allCategories.map(category =>
       this.bookService.filterBooks({
         CategoryIds: [category.id],
         PageNumber: 1,
@@ -76,10 +72,9 @@ export class BookPage implements OnInit {
 
     forkJoin(bookRequests).subscribe({
       next: (results) => {
-        this.categoriesWithBooks.push(...results.filter(item =>
+        this.categoriesWithBooks = results.filter(item =>
           item.books && item.books.length > 0
-        ));
-        this.currentPage++;
+        );
         this.isLoading = false;
       },
       error: (error) => {
@@ -89,18 +84,10 @@ export class BookPage implements OnInit {
     });
   }
 
-  // يحصل لما توصل آخر الصفحة
-  onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
-      this.loadMoreCategories();
-    }
-  }
-
   ngAfterViewInit(): void {
     this.isRTL = this.translate.currentLang === 'ar';
     this.translate.onLangChange.subscribe(event => {
       this.isRTL = event.lang === 'ar';
     });
   }
-
 }

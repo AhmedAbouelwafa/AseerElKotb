@@ -15,6 +15,7 @@ a{
 
 .card-img-top {
   width: 100%;
+  height: max-content;
   object-fit: cover;
   border-radius: 8px 8px 0 0; /* تقليل border-radius لإظهار تفاصيل أكثر */
   transition: transform 0.3s ease; /* ← كده الصورة بس تتحرك */
@@ -88,6 +89,16 @@ a{
   cursor: pointer;
   left: -15px;
 }
+
+[dir="rtl"] .cart-ribbon {
+  left: auto;
+  right: -15px;
+}
+
+[dir="ltr"] .cart-ribbon {
+  left: -15px;
+}
+
 
 .cart-ribbon:hover {
   transform: scale(1.05);
