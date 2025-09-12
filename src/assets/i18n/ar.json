@@ -198,7 +198,8 @@
       "cart": "السلة",
       "wishlist": "قائمة الرغبات",
       "apiTokens": "API Tokens",
-      "logout": "تسجيل الخروج"
+      "logout": "تسجيل الخروج",
+      "orders": "الطلبات"
     },
     "icons": {
       "notifications": "إشعارات",

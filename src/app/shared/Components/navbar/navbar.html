@@ -52,9 +52,9 @@
 
             <ul class="dropdown-menu-custom">
               <li>
-                <a routerLink="/user-profile">
+                <a routerLink="/user-profile" class = "useraya">
                   <img src="/icons/user.png" width="28" class="rounded-circle">
-                  <i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}
+                 {{ 'navbar.userMenu.profile' | translate }}
                 </a>
               </li>
 
@@ -91,6 +91,7 @@
 
           <a routerLink="/wishlist" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
             <i class="fas fa-heart fs-6 opacity-50 text-danger"></i>
+            <span class="badge" *ngIf="isAuthenticated() && wishlistItemsCount() > 0">{{ wishlistItemsCount() }}</span>
           </a>
           <a routerLink="/Cart" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
             <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>

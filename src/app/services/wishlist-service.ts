@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../core/configs/environment.config';
-import { 
-  GetWishlistItemsRequest, 
-  GetWishlistItemsResponse, 
+import {
+  GetWishlistItemsRequest,
+  GetWishlistItemsResponse,
   ApiResponsePaginated,
   AddToCartRequest,
   RemoveFromWishlistRequest,
@@ -18,6 +18,10 @@ import { AddItemToCartRequest } from '../features/Cart/CartInterfaces/cart-inter
 })
 export class WishlistService {
   private readonly apiBaseUrl = environment.apiBaseUrl;
+  // Subject to emit wishlist changes
+  private wishlistChanged$ = new Subject<void>();
+  // Observable that components can subscribe to for wishlist updates
+  public readonly wishlistUpdated$ = this.wishlistChanged$.asObservable();
 
   constructor(private http: HttpClient, private cartService: CartServices) {}
 
@@ -50,8 +54,10 @@ export class WishlistService {
    * Add item to wishlist
    */
   addToWishlist(bookId: number): Observable<any> {
-    const params = new HttpParams().set('bookId', bookId.toString());
-    return this.http.post(`${this.apiBaseUrl}/Wishlist/Add`, null, { params });
+    const body = { bookId }; // JSON body
+    return this.http.post(`${this.apiBaseUrl}/Wishlist/Add`, body).pipe(
+      tap(() => this.notifyWishlistChanged())
+    );
   }
 
   /*
@@ -59,7 +65,9 @@ export class WishlistService {
    */
   removeFromWishlist(request: RemoveFromWishlistRequest): Observable<any> {
     const params = new HttpParams().set('bookId', request.bookId.toString());
-    return this.http.delete(`${this.apiBaseUrl}/Wishlist/Remove`, { params });
+    return this.http.delete(`${this.apiBaseUrl}/Wishlist/Remove`, { params }).pipe(
+      tap(() => this.notifyWishlistChanged())
+    );
   }
 
   /*
@@ -81,9 +89,23 @@ export class WishlistService {
     return imageUrl || '/images/default-book-cover.jpg';
   }
   clearWishlist() {
-    return this.http.delete<ApiResponse<any>>(`${environment.apiBaseUrl}/wishlist/Clear`);
+    return this.http.delete<ApiResponse<any>>(`${environment.apiBaseUrl}/Wishlist/Clear`);
   }
   getWislistCount(){
-    return this.http.get<ApiResponse<any>>(`${environment.apiBaseUrl}/wishlist/Count`);
+    return this.http.get<ApiResponse<any>>(`${environment.apiBaseUrl}/Wishlist/Count`);
+  }
+
+  /**
+   * Emit wishlist changed notification
+   */
+  notifyWishlistChanged(): void {
+    this.wishlistChanged$.next();
+  }
+
+  /**
+   * Convenience alias with corrected spelling
+   */
+  getWishlistCount() {
+    return this.getWislistCount();
   }
 }
