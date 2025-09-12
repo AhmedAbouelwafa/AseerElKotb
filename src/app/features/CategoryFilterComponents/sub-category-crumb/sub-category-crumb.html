@@ -1,6 +1,6 @@
 
 <div id="subCategories">
-           <a id="arrow" routerLink="#"  routerLinkActive="active" > <i class="fa-solid fa-arrow-right"></i> </a>
+           <a id="arrow" (click)="goBack()" routerLink="#"  routerLinkActive="active" > <i class="fa-solid fa-arrow-right"></i> </a>
             @for (subCat of subCategories;track subCat.id) {
 
                  <a class="subCategory" [routerLink]="['/MainFilterContainer', subCat.id]" routerLinkActive="active" >{{subCat.name}}</a>

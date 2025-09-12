@@ -11,8 +11,8 @@
             <div id="OrderHeaderData">
                 <p>
                     <span>رقم الطلب</span>
-                    <span>{{order?.trackingNumber}}</span>
-                    <span>{{order?.orderDate| date:'M/d/yy, h:mm a' }}</span>
+                    <span>{{order?.TrackingNumber}}</span>
+                    <span>{{order?.OrderDate| date:'M/d/yy, h:mm a' }}</span>
                 </p>
                 <span id="link">
                     <i class="fa-solid fa-link"></i>
@@ -61,15 +61,16 @@
                 <th>الكمية</th>
                 <th>السعر</th>
                 <th>سعر الكمية</th>
-                @for( item of order?.books;track item.title){
+                @for( item of order?.Books;track item.Id){
                     <tr>
                         <td id="Item">
-                            <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png"><!--need change with actual photo-->
-                            {{item.title}}
+                            <!-- <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png">need change with actual photo -->
+                            <img id="BookCover" [src]="getCoverImageUrl(item)" alt="BookImage">
+                            {{item.Title}}
                         </td>
-                        <td>{{item.quantity}}</td>
-                        <td>{{item.price}}</td><!--|customCurrencyPipe:'EGP'-->
-                        <td>{{item.quantity * item.price}}</td>
+                        <td>{{item.Quantity}}</td>
+                        <td>{{item.Price}}</td><!--|customCurrencyPipe:'EGP'-->
+                        <td>{{item.Quantity* item.Price}}</td>
                         
                     </tr>
                 }
@@ -80,50 +81,46 @@
        <div id="moreDetails">
             <div id="customer-adress">
                 <h6>عنوان الشحن</h6>
-                <span>السعودية</span>
-                <span>مكة</span>
-                <span>مكة</span>
-                <span>شارع مكة</span>
+                <span>{{order?.GovernorateName}}</span>
+                <span>{{order?.CityName}}</span>
+                <span>{{order?.StreetAddress}}</span>
             </div>
 
             <div id="customer-data">
                 <h6>بيانات العميل</h6>
-                <span>خديجة</span>
-                <span>0104367115</span>
-                <span>khadija@gmail.com</span>
+                <span>{{`${order?.FirstName} ${order?.LastName}`}}</span>
+                <span>{{order?.PhoneNumber}}</span>
+                <span>khadija@gmail.com</span><!--need change with actual email -->
             </div>
 
             <div id="payment-way">
                  <h6>وسيلة الدفع</h6>
                  @if(order){
-                     <span>{{PaymentMethodDisplayNames[order.paymentMethod]}}</span>
+                     <span>{{PaymentMethodDisplayNames[order.PaymentMethod]}}</span>
                  }
             </div>
 
             <div id="price-details">
                <div class="price">
                     <span>المجموع قبل الخصم</span>
-                    <span>100</span>
+                    <span>{{order?.TotalAmount}}</span>
                </div>
 
                <div class="price">
                     <span>المجموع</span>
-                    <span>800</span>
-               </div>
-
-               <div class="price">
-                    <span>ضريبة القيمة المضافة</span>
-                    <span>0</span>
+                    @if(order){
+                        <span>{{ order.TotalAmount - order.TotalAmount * order.DiscountAmount}}</span>
+                    }
                </div>
 
                <div class="price">
                     <span>الشحن</span>
-                    <span>0</span>
+                    <span>{{order?.ShippingCost}}</span>
                </div>
 
                <div class="price" id="TotalPrice">
                     <span id="TotalPriceText">الاجمالي</span>
-                    <span id="TotalPriceValue">800</span>
+                    <span id="TotalPriceValue">{{order?.FinalAmount}}</span>
                </div>
 
             </div>

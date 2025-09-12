@@ -3,9 +3,10 @@ import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/
 import { OrderService } from '../../../../services/order.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { GetUserOrderByTrackingNumberResponse, OrderStatus } from '../../../../models/order-interfaces';
+import { BookDTO, GetUserOrderByTrackingNumberResponse, OrderStatus } from '../../../../models/order-interfaces';
 import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 import { PaymentMethod } from '../../../../models/payment-method.enum';
+import { environment } from '../../../../core/configs/environment.config';
 
 @Component({
   selector: 'app-order-details',
@@ -23,7 +24,8 @@ export class OrderDetails implements OnInit {
   ];
   order?:GetUserOrderByTrackingNumberResponse;
   trackingNumber:any;
-  currentStatus: OrderStatus = OrderStatus.Pending;///////change with actual
+  currentStatus: OrderStatus = OrderStatus.Pending;
+
 
   constructor(private route: ActivatedRoute,private orderService:OrderService)
   {}
@@ -42,6 +44,8 @@ export class OrderDetails implements OnInit {
        this.orderService.getOrderByTrackingNumber(this.trackingNumber).subscribe({
           next: (response) => {
             this.order = response;
+            this.currentStatus = response.orderStatus;
+
             // this.currentStatus=response.OrderStatus
              this.breadcrumbs = [
             { name: 'الملف الشخصي', path: '/user-profile' },
@@ -55,6 +59,15 @@ export class OrderDetails implements OnInit {
           }
         });
     } 
+
+  private baseUrl = environment.apiBaseUrl
+    
+       getCoverImageUrl(item:BookDTO): string {
+        if (item.ImageUrl.startsWith('/uploads')) {
+              return this.baseUrl + item.ImageUrl;
+            }
+          return item.ImageUrl;
+      }
 /////////////////////////////////////////////Static Data//////////////////////////////////////////////////////////////
   // Sample order data
   // sampleOrderData = {

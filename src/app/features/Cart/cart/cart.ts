@@ -16,7 +16,7 @@ import { ToastService } from '../../../shared/Components/toast-notification/toas
 })
 export class Cart implements OnInit {
   breadcrumbs: NavcrumbItem[] = [
-    { name: 'سلة التسوق', path: '/' },
+    { name: 'سلة التسوق', path: '#' },
   ];
 
   userId: number = 1;// This would typically come from an auth service

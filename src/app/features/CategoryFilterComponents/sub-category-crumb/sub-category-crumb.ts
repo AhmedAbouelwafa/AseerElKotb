@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Icategory } from '../../categories/category-model/Icategory';
 import { CategoryServices } from '../../categories/category-service/category-services';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Location } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -16,7 +17,7 @@ export class SubCategoryCrumb implements OnInit,OnChanges {
    @Input()parentCategoryId:Number=1;
    isLoading: boolean = true;
 
-  constructor(private categoryServices:CategoryServices) {
+  constructor(private categoryServices:CategoryServices,private location: Location) {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['parentCategoryId'] && !changes['parentCategoryId'].firstChange) {
@@ -44,6 +45,10 @@ export class SubCategoryCrumb implements OnInit,OnChanges {
 
   GetSubCategories(): Icategory[] {
     return this.subCategories;
+  }
+ 
+  goBack(): void {
+    this.location.back();
   }
 
 }
