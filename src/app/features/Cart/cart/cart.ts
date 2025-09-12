@@ -101,7 +101,16 @@ clearCart(): void {
     this.toastService.showConfirmClearCart(() => {
       this.cartService.clearCart().subscribe({
         next: (response) => {
-          this.loadCart();
+          // Reset local cart data immediately
+          this.cartData = {
+            id: 0,
+            userId: 0,
+            items: [],
+            totalItemsCount: 0,
+            sumTotalPrice: 0,
+            sumDiscountedPrice: 0
+          };
+          this.items = [];
           this.toastService.showSuccess('تم التفريغ', 'تم تفريغ سلة التسوق بنجاح!');
         },
         error: (err) => {
