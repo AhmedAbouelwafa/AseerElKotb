@@ -395,7 +395,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
   /**
    * معالجة خطأ تحميل الصور
    */
-  onImageError(event: any, fallbackSrc: string = 'assets/images/default-avatar.jpg'): void {
+  onImageError(event: any, fallbackSrc: string = 'https://cdn.aseeralkotb.com/images/default-avatar.jpg'): void {
     if (event.target.src !== fallbackSrc) {
       event.target.src = fallbackSrc;
     }
