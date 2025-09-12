@@ -116,21 +116,37 @@ export interface OrderResponse {
 }
 ///////////////////for GetUserOrderByTrackingNumber///////////////////////////////
 export interface BookDTO {
-  title: string;
-  price: number;
-  quantity: number;
+  Id: number;
+  ImageUrl: string;
+  Title:string,
+  Price: number,
+  Quantity: number,
 }
 export interface GetUserOrderByTrackingNumberResponse {
-  id: number;
-  userName: string;
-  paymentMethod: PaymentMethod; // Use enum
-  paymentStatus: PaymentStatus; // Use enum
-  orderStatus: OrderStatus; // Use enum
-  trackingNumber: string;
-  finalAmount: number;
-  orderDate: Date; // Use Date for consistency
-  books: BookDTO[];
+  Id: number;
+  UserName: string;
+  PaymentMethod: PaymentMethod; // Use enum
+  PaymentStatus: PaymentStatus; // Use enum
+  OrderStatus: OrderStatus; // Use enum
+  TrackingNumber: string;
+  FinalAmount: number;
+  OrderDate: Date; // Use Date for consistency
+  Books: BookDTO[];
+  GovernorateId: number;
+  GovernorateName: string;
+  CityId: number;
+  CityName: string;
+
+  StreetAddress:string,
+  PhoneNumber:string
+  FirstName: string,
+  LastName: string,
+  TotalAmount: number,
+  ShippingCost: number,
+  DiscountAmount: number,  
+  
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 export interface PaginatedOrderResponse {
