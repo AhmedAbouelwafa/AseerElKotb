@@ -26,7 +26,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
   isFollowing = false;
   avatarUrl = 'https://cdn.aseeralkotb.com/images/default-avatar.jpg';
   isAddingToCart: { [bookId: number]: boolean } = {};
-  
+
   quote = {
     id: 19736,
     text: 'ما دمنا نعاني بكل الأحوال، فلنجعل لمعاناتنا معنى',
@@ -160,7 +160,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private authorService: AuthorApiService,
     private router: Router,
     private location: Location,
@@ -180,7 +180,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
 
   private loadAuthorData(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    
+
     if (!id || isNaN(id)) {
       this.error = 'معرف الكاتب غير صحيح';
       this.loading = false;
@@ -253,12 +253,12 @@ export class AuthorDetails implements OnInit, OnDestroy {
     if (!this.author?.books || this.author.books.length === 0) {
       return 0;
     }
-    
+
     const validRatings = this.author.books.filter(book => book.rating && book.rating > 0);
     if (validRatings.length === 0) {
       return 0;
     }
-    
+
     const totalRating = validRatings.reduce((sum, book) => sum + book.rating, 0);
     return Number((totalRating / validRatings.length).toFixed(1));
   }
@@ -304,7 +304,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
       event.preventDefault();
       event.stopPropagation();
     }
-    
+
     // Check if user is authenticated
     if (!this.auth.user()) {
       this.router.navigate(['/login']);
@@ -317,7 +317,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
     }
 
     this.isAddingToCart[book.id] = true;
-    
+
     const request: AddItemToCartRequest = {
       bookId: book.id
     };
@@ -333,7 +333,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('خطأ في إضافة الكتاب إلى السلة:', error);
-        
+
         // Handle authentication errors
         if (error.status === 401) {
           this.router.navigate(['/login']);
@@ -342,7 +342,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
         } else {
           this.toastService.showError('خطأ', 'حدث خطأ أثناء إضافة الكتاب إلى السلة. يرجى المحاولة مرة أخرى.');
         }
-        
+
         this.isAddingToCart[book.id] = false;
       }
     });
@@ -355,10 +355,10 @@ export class AuthorDetails implements OnInit, OnDestroy {
     if (!this.author) return;
 
     this.isFollowing = !this.isFollowing;
-    
+
     // يمكنك إضافة منطق متابعة الكاتب هنا
     // this.authorService.followAuthor(this.author.id).subscribe(...)
-    
+
     console.log(`${this.isFollowing ? 'Following' : 'Unfollowing'} author:`, this.author.name);
   }
 
@@ -387,8 +387,8 @@ export class AuthorDetails implements OnInit, OnDestroy {
    * التحقق من وجود خصم على الكتاب
    */
   hasDiscount(book: any): boolean {
-    return book.discountedPrice && 
-           book.discountedPrice < book.price && 
+    return book.discountedPrice &&
+           book.discountedPrice < book.price &&
            this.getDiscountPercentage(book.price, book.discountedPrice) > 0;
   }
 
