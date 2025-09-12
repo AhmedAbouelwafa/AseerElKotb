@@ -13,16 +13,18 @@
         </div>
       </div>
 
+      <!-- زرار القائمة للموبايل (يستثني البحث) -->
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="!isNavbarCollapsed" aria-controls="navbarContent" aria-label="Toggle navigation">
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+        <span class="toggler-line"></span>
+      </button>
+
       <div class="collapse navbar-collapse d-flex align-items-center" id="navbarContent" [class.show]="!isNavbarCollapsed">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0" (click)="closeNavbar()">
           <li class="nav-item books position-relative">
-            <a class="nav-link">{{ 'navbar.menu.books' | translate }}</a>
-            <ul class="dropdown-menu-custom">
-              <li><a routerLink="/books"><i class="fas fa-book-open"></i> {{ 'navbar.menu.allBooks' | translate }}</a></li>
-              <li><a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> {{ 'navbar.menu.readableBooks' | translate }}</a></li>
-              <li><a routerLink="/books/purchasable"><i class="fas fa-child"></i> {{ 'navbar.menu.purchasableBooks' | translate }}</a></li>
-              <li><a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a></li>
-            </ul>
+            <a class="nav-link" routerLink="/MainFilterContainer">{{ 'navbar.menu.books' | translate }}</a>
+
           </li>
 
 
@@ -50,74 +52,49 @@
 
             <ul class="dropdown-menu-custom">
               <li>
-                <a routerLink="/profile">
+                <a routerLink="/user-profile">
                   <img src="/icons/user.png" width="28" class="rounded-circle">
                   <i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}
                 </a>
               </li>
+
               <li>
-                <a routerLink="/notifications">
-                  <i class="fas fa-bell"></i> {{ 'navbar.userMenu.notifications' | translate }}
-                  <span class="badge bg-danger"></span>
+                <a routerLink="/settings"><i class="fas fa-gear"></i> {{ 'navbar.menu.settings' | translate }}</a>
+              </li>
+
+              <li>
+                <a routerLink="/wishlist">
+                  <i class="fas fa-heart"></i> {{ 'navbar.userMenu.wishlist' | translate }}
                 </a>
               </li>
-              <li>
-                <a routerLink="/messages">
-                  <i class="fas fa-envelope"></i> {{ 'navbar.userMenu.messages' | translate }}
-                  <span class="badge bg-danger"></span>
-                </a>
-              </li>
-              <li>
-                <a routerLink="/books"><i class="fas fa-book-open"></i> {{ 'navbar.menu.allBooks' | translate }}</a>
-              </li>
-              <li>
-                <a routerLink="/books/readable"><i class="fas fa-feather-alt"></i> {{ 'navbar.menu.readableBooks' | translate }}</a>
-              </li>
-              <li>
-                <a routerLink="/books/purchasable"><i class="fas fa-child"></i> {{ 'navbar.menu.purchasableBooks' | translate }}</a>
-              </li>
-              <li>
-                <a routerLink="/books/audio"><i class="fas fa-headphones-alt"></i> {{ 'navbar.menu.audioBooks' | translate }}</a>
-              </li>
+
+
               <li>
                 <a routerLink="/Cart">
                   <i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }}
                   <span class="badge bg-success" *ngIf="cartItemsCount() > 0">{{ cartItemsCount() }}</span>
                 </a>
               </li>
-              <li>
-                <a routerLink="/wishlist">
-                  <i class="fas fa-heart"></i> {{ 'navbar.userMenu.wishlist' | translate }}
-                </a>
-              </li>
+
               <li>
                 <a routerLink="/orders">
                   <i class="fas fa-box"></i> {{ 'navbar.userMenu.orders' | translate }}
                 </a>
               </li>
-              <li>
-                <a routerLink="/api-tokens"><i class="fas fa-key"></i> {{ 'navbar.userMenu.apiTokens' | translate }}</a>
-              </li>
+
               <li>
                 <a (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a>
               </li>
             </ul>
           </button>
 
-          <button class="btn btn-nav p-0 position-relative">
-            <i class="fa-regular fa-bell fs-5 opacity-50"></i>
-            <!-- <span class="badge">1</span> -->
-          </button>
-          <a routerLink="/wishlist" *ngIf="isAuthenticated()">
-            <button class="btn btn-nav p-0 position-relative">
-              <i class="fas fa-heart fs-6 opacity-50 text-danger"></i>
-            </button>
+
+          <a routerLink="/wishlist" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
+            <i class="fas fa-heart fs-6 opacity-50 text-danger"></i>
           </a>
-          <a routerLink="/Cart">
-            <button class="btn btn-nav p-0 position-relative">
-              <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
-              <span class="badge" *ngIf="isAuthenticated() && cartItemsCount() > 0">{{ cartItemsCount() }}</span>
-            </button>
+          <a routerLink="/Cart" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
+            <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
+            <span class="badge" *ngIf="isAuthenticated() && cartItemsCount() > 0">{{ cartItemsCount() }}</span>
           </a>
 
           <button class="btn btn-nav p-0 position-relative">

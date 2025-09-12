@@ -211,14 +211,14 @@ export class BookDetails implements OnInit , AfterViewInit {
   toggleHeart() {
 
     this.isLiked = !this.isLiked;
-    this.wishlistService.addToCart({bookId : this.bookId , quantity : 1}).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    // this.wishlistService.addToWishlist(this.bookId).subscribe({
+    //   next: (data) => {
+    //     console.log(data);
+    //   },
+    //   error: (error) => {
+    //     console.error(error);
+    //   }
+    // });
 
     console.log('Heart clicked! Current isLiked state:', this.isLiked);
 
