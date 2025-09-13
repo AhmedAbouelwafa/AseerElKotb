@@ -1,10 +1,13 @@
 <div id="mainContainer">
-     <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
-     <div id="CategoriesContainer">
-         @for(cat of parentCategories ;track cat.Id){
-        <div class="CategoryName">
-            <a  [routerLink]="['/MainFilterContainer', cat.Id]" routerLinkActive="active" > {{cat.Name}}</a>
-        </div>
-         }
-     </div>
+  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+  <div id="CategoriesContainer">
+    @for (cat of parentCategories; track cat.Id) {
+      <div class="CategoryName p-3 mb-2 bg-light border rounded cursor-pointer"
+      [routerLink]="['/MainFilterContainer', cat.Id]"
+      routerLinkActive="active">
+   {{cat.Name}}
+ </div>
+
+    }
+  </div>
 </div>
