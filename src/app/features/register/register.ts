@@ -308,7 +308,9 @@ export class Register implements OnInit {
         } else {
           // HTTP 400 or other error status codes - show backend translated errors
           console.log('Registration failed - HTTP', result.statusCode);
-          console.log('Error message to display:', result.message);
+          console.log('Raw message from backend:', result.message);
+          
+          // Use the translated message directly from the auth service
           this.errorMessage.set(result.message);
           this.successMessage.set(''); // Clear any success messages
           this.handleRegistrationErrors(result.message);
@@ -339,32 +341,56 @@ export class Register implements OnInit {
   }
 
   private handleRegistrationErrors(errorMessage: string): void {
+    console.log('=== HANDLE REGISTRATION ERRORS ===');
+    console.log('Error message received:', errorMessage);
+    
     // Reset validation messages
     const messages: {[key: string]: string} = {};
     
     // Check for specific error types and highlight relevant fields
-    if (errorMessage.includes('اسم المستخدم')) {
+    // Check for Arabic translations first
+    if (errorMessage.includes('اسم المستخدم مُستخدم بالفعل') || errorMessage.includes('اسم المستخدم')) {
       messages['userName'] = 'اسم المستخدم موجود بالفعل';
       this.registerForm.get('userName')?.setErrors({usernameTaken: true});
+      console.log('Set username validation error');
     }
     
-    if (errorMessage.includes('البريد الإلكتروني')) {
+    if (errorMessage.includes('البريد الإلكتروني مُسجل بالفعل') || errorMessage.includes('البريد الإلكتروني')) {
       messages['email'] = 'البريد الإلكتروني مُستخدم بالفعل';
       this.registerForm.get('email')?.setErrors({emailTaken: true});
       this.emailAvailable.set(false);
+      console.log('Set email validation error');
+    }
+    
+    // Also check for English error messages (fallback)
+    if (errorMessage.includes('Username is already taken')) {
+      messages['userName'] = 'اسم المستخدم موجود بالفعل';
+      this.registerForm.get('userName')?.setErrors({usernameTaken: true});
+      console.log('Set username validation error from English text');
+    }
+    
+    if (errorMessage.includes('Email is already registered')) {
+      messages['email'] = 'البريد الإلكتروني مُستخدم بالفعل';
+      this.registerForm.get('email')?.setErrors({emailTaken: true});
+      this.emailAvailable.set(false);
+      console.log('Set email validation error from English text');
     }
     
     if (errorMessage.includes('كلمة المرور')) {
       messages['password'] = 'كلمة المرور لا تفي بالمتطلبات المطلوبة';
       this.registerForm.get('password')?.setErrors({weakPassword: true});
+      console.log('Set password validation error');
     }
     
+    console.log('Validation messages set:', messages);
     this.validationMessages.set(messages);
     
     // Mark affected fields as touched to show errors
     Object.keys(messages).forEach(field => {
       this.registerForm.get(field)?.markAsTouched();
     });
+    
+    console.log('=== END HANDLE REGISTRATION ERRORS ===');
   }
 
   // Effect to handle registration success

@@ -17,7 +17,22 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         fullError: error
       });
       
-      // Provide user-friendly error messages
+      // Check if this is an authentication/registration endpoint
+      const isAuthEndpoint = req.url.includes('/Account/') || 
+                            req.url.includes('/api/Account/') ||
+                            req.url.includes('Login') ||
+                            req.url.includes('Register');
+      
+      console.log('Is auth endpoint:', isAuthEndpoint, 'for URL:', req.url);
+      
+      // For authentication endpoints, preserve the original error to allow custom handling
+      if (isAuthEndpoint) {
+        console.log('Preserving original error for auth endpoint');
+        // Return the original error unchanged for auth endpoints
+        return throwError(() => error);
+      }
+      
+      // For non-auth endpoints, provide user-friendly error messages
       let userFriendlyMessage = 'حدث خطأ غير متوقع';
       
       if (error.error instanceof ErrorEvent) {
@@ -42,7 +57,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         userFriendlyMessage = 'الخادم غير متاح حالياً';
       }
       
-      // Return error with user-friendly message for the UI
+      // Return error with user-friendly message for non-auth endpoints
       return throwError(() => ({
         message: userFriendlyMessage,
         status: error.status,

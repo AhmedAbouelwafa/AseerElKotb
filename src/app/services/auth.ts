@@ -137,11 +137,18 @@ export class Auth {
           const response = httpResponse.body;
           const statusCode = httpResponse.status;
           
+          console.log('=== REGISTRATION MAP FUNCTION ===');
           console.log('Registration HTTP Status:', statusCode);
-          console.log('Registration Response:', response);
+          console.log('Registration Response Body:', response);
+          console.log('Response structure check:');
+          console.log('  response?.data:', response?.data);
+          console.log('  response?.message:', response?.message);
+          console.log('  response?.errors:', response?.errors);
+          console.log('=== END REGISTRATION MAP FUNCTION ===');
           
           if (statusCode === 200) {
             // HTTP 200 - Success
+            console.log('Processing HTTP 200 success path');
             const user: User = {
               id: response?.data?.userId,
               firstName: userData.firstName,
@@ -160,7 +167,11 @@ export class Auth {
             };
           } else {
             // Other status codes - treat as error
+            console.log('Processing non-200 status code in map function:', statusCode);
+            console.log('This should NOT happen for HTTP 400 errors - they should go to catchError');
             const errorMessage = response?.message || response?.errors?.join(', ') || 'فشل في إنشاء الحساب';
+            console.log('Fallback error message used:', errorMessage);
+            
             return { 
               success: false, 
               message: errorMessage,
@@ -170,47 +181,64 @@ export class Auth {
         }),
         catchError(error => {
           const statusCode = error.status;
-          console.log('=== REGISTRATION ERROR DETAILS ===');
+          console.log('=== REGISTRATION CATCHERROR FUNCTION ===');
           console.log('Registration Error Status:', statusCode);
           console.log('Full Error Object:', error);
           console.log('Error Body:', error.error);
           console.log('Error Message:', error.message);
+          console.log('This is the correct path for HTTP 400 errors');
           
           let errorMessage = 'حدث خطأ أثناء إنشاء الحساب';
           
           if (statusCode === 400) {
-            // HTTP 400 - Use backend message directly, try to translate if possible
+            // HTTP 400 - Extract message directly from backend body
             let backendMessage = 'Registration failed';
             
-            // Try to extract message from different possible error structures
-            if (error.error?.message) {
+            console.log('Full error object structure:', error);
+            console.log('error.error structure:', error.error);
+            
+            // PRIORITY 1: Check error.error.message (this is where your backend puts the message)
+            if (error.error && error.error.message) {
               backendMessage = error.error.message;
-              console.log('Backend message from error.error.message:', backendMessage);
-            } else if (error.error?.errors && Array.isArray(error.error.errors)) {
+              console.log('✓ Found message in error.error.message:', backendMessage);
+            }
+            // PRIORITY 2: Check if error.error is directly the message string
+            else if (typeof error.error === 'string') {
+              backendMessage = error.error;
+              console.log('✓ Found message in error.error (string):', backendMessage);
+            }
+            // PRIORITY 3: Check error.error.errors array
+            else if (error.error?.errors && Array.isArray(error.error.errors)) {
               backendMessage = error.error.errors.join(', ');
-              console.log('Backend message from error.error.errors (array):', backendMessage);
-            } else if (error.error?.errors && typeof error.error.errors === 'object') {
-              // Handle validation errors object like { "Email": ["Email already exists"] }
+              console.log('✓ Found message in error.error.errors (array):', backendMessage);
+            }
+            // PRIORITY 4: Check error.error.errors object
+            else if (error.error?.errors && typeof error.error.errors === 'object') {
               const errorMessages = Object.values(error.error.errors).flat();
               backendMessage = errorMessages.join(', ');
-              console.log('Backend message from error.error.errors (object):', backendMessage);
-              console.log('Individual error messages:', errorMessages);
-            } else if (typeof error.error === 'string') {
-              backendMessage = error.error;
-              console.log('Backend message from error.error (string):', backendMessage);
+              console.log('✓ Found message in error.error.errors (object):', backendMessage);
+            }
+            // PRIORITY 5: Check error.message
+            else if (error.message) {
+              backendMessage = error.message;
+              console.log('✓ Found message in error.message:', backendMessage);
+            }
+            else {
+              console.log('❌ No message found in any expected location, using fallback');
             }
             
             console.log('Raw backend message before translation:', backendMessage);
             
-            // Try to translate common English backend messages to Arabic
+            // Translate the backend message to Arabic
             errorMessage = this.translateBackendMessage(backendMessage);
             console.log('Translated message:', errorMessage);
           } else {
             errorMessage = this.getErrorMessage(error);
+            console.log('Using getErrorMessage for non-400 error:', errorMessage);
           }
           
           console.log('Final error message to display:', errorMessage);
-          console.log('=== END REGISTRATION ERROR DETAILS ===');
+          console.log('=== END REGISTRATION CATCHERROR FUNCTION ===');
           
           this.error.set(errorMessage);
           return [{ 
@@ -224,6 +252,9 @@ export class Auth {
   }
 
   private translateBackendMessage(backendMessage: string): string {
+    console.log('=== TRANSLATION PROCESS ===');
+    console.log('Input message to translate:', backendMessage);
+    
     // Backend validation message translations to Arabic - matching your RegisterRequestValidator exactly
     const translations: { [key: string]: string } = {
       // First Name validations (exact matches from RegisterRequestValidator)
@@ -272,6 +303,8 @@ export class Auth {
     
     // Check for exact match first (case-sensitive for precision)
     if (translations[backendMessage]) {
+      console.log('Found exact translation for:', backendMessage, '→', translations[backendMessage]);
+      console.log('=== END TRANSLATION PROCESS ===');
       return translations[backendMessage];
     }
     
@@ -280,15 +313,23 @@ export class Auth {
       key.toLowerCase() === backendMessage.toLowerCase()
     );
     if (exactMatch) {
+      console.log('Found case-insensitive translation for:', backendMessage, '→', translations[exactMatch]);
+      console.log('=== END TRANSLATION PROCESS ===');
       return translations[exactMatch];
     }
     
     // Handle composite messages (multiple errors separated by comma)
     if (backendMessage.includes(',')) {
+      console.log('Processing composite message');
       const messageParts = backendMessage.split(',').map(part => part.trim());
-      const translatedParts = messageParts.map(part => {
+      console.log('Message parts:', messageParts);
+      
+      const translatedParts = messageParts.map((part, index) => {
+        console.log(`Processing part ${index + 1}:`, part);
+        
         // Check for exact translation of this part
         if (translations[part]) {
+          console.log('Found exact translation for part:', part, '→', translations[part]);
           return translations[part];
         }
         
@@ -297,6 +338,7 @@ export class Auth {
           key.toLowerCase() === part.toLowerCase()
         );
         if (partExactMatch) {
+          console.log('Found case-insensitive translation for part:', part, '→', translations[partExactMatch]);
           return translations[partExactMatch];
         }
         
@@ -304,16 +346,23 @@ export class Auth {
         const lowerPart = part.toLowerCase();
         for (const [english, arabic] of Object.entries(translations)) {
           if (lowerPart.includes(english.toLowerCase())) {
+            console.log('Found partial match for part:', part, 'matches', english, '→', arabic);
             return arabic;
           }
         }
         
         // Return original part if no translation found
+        console.log('No translation found for part:', part, 'using as-is');
         return part;
       });
       
+      console.log('Translated parts:', translatedParts);
+      
       // Join translated parts with Arabic comma separator
-      return translatedParts.join('، ');
+      const finalResult = translatedParts.join('، ');
+      console.log('Final composite translation:', finalResult);
+      console.log('=== END TRANSLATION PROCESS ===');
+      return finalResult;
     }
     
     // Check for partial matches (case insensitive) for single messages
@@ -325,7 +374,8 @@ export class Auth {
     }
     
     // If no translation found, return the backend message as is (might already be in Arabic)
-    console.log('No translation found for backend message:', backendMessage);
+    console.log('No translation found for backend message:', backendMessage, 'using as-is');
+    console.log('=== END TRANSLATION PROCESS ===');
     return backendMessage;
   }
 
