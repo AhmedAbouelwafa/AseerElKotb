@@ -71,6 +71,9 @@ export const routes: Routes = [
       path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
   },
   {
+      path: 'MainFilterContainer' , component : MainFilterContainer,
+  },
+  {
     path: 'allAuthors' , component : AllAuthors,
   }
   ,

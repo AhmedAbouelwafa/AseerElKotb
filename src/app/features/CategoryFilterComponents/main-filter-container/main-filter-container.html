@@ -5,7 +5,7 @@
      <div id="crumb">
     <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
 
-     <app-sub-category-crumb [parentCategoryId]="CategoryId"></app-sub-category-crumb>
+     <app-sub-category-crumb *ngIf="CategoryId !== null" [parentCategoryId]="CategoryId!"></app-sub-category-crumb>
 
       <hr>
     </div>
@@ -21,8 +21,7 @@
         </div>
 
         <div id="books">
-            <!-- <app-categoey-books class="books" [CategoryId]="CategoryId"[filterParams]="currentFilterParams"></app-categoey-books> -->
-             <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
+            <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
         </div>
 
 
