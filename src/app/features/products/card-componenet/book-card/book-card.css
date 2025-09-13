@@ -15,6 +15,7 @@ a{
 
 .card-img-top {
   width: 100%;
+  height: max-content;
   object-fit: cover;
   border-radius: 8px 8px 0 0; /* تقليل border-radius لإظهار تفاصيل أكثر */
   transition: transform 0.3s ease; /* ← كده الصورة بس تتحرك */
@@ -89,6 +90,16 @@ a{
   left: -15px;
 }
 
+[dir="rtl"] .cart-ribbon {
+  left: auto;
+  right: -15px;
+}
+
+[dir="ltr"] .cart-ribbon {
+  left: -15px;
+}
+
+
 .cart-ribbon:hover {
   transform: scale(1.05);
   background: linear-gradient(90deg, #00d1ba, #00e7cd);
@@ -114,8 +125,15 @@ app-book-card {
 
 
 
-.card-title{
+.card-title {
   font-size: 16px;
   font-weight: 400;
   color: #505F75;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* عدد الأسطر = 2 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.4em;       /* ارتفاع يعادل تقريبًا سطرين */
+  line-height: 1.2em;      /* ارتفاع السطر */
 }

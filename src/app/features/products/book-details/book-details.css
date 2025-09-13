@@ -240,6 +240,20 @@
   gap: 10px;
 }
 
+[dir="rtl"] .before,
+[dir="rtl"] .after,
+[dir="rtl"] .discount{
+  justify-content: flex-end;
+}
+
+
+[dir="ltr"] .before,
+[dir="ltr"] .after,
+[dir="ltr"] .discount{
+  justify-content: flex-start;
+}
+
+
 .discount span{
   font-weight: bold;
   color: #455871;

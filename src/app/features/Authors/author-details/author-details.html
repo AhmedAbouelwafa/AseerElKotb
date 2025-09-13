@@ -281,12 +281,9 @@
               <div class="card" (click)="viewBookDetails(book.id)">
                 <div class="position-relative">
                   <img
-                    [src]="baseUrl + book.coverImageUrl"
+                    [src]="book.coverImageUrl"
                     class="card-img-top"
                     [alt]="book.title"
-                    (error)="
-                      onImageError($event, 'assets/images/default-book.jpg')
-                    "
                   />
                   <span
                     *ngIf="hasDiscount(book)"
@@ -333,7 +330,7 @@
                         [disabled]="isAddingToCart[book.id]"
                         title="إضافة للسلة"
                       >
-                        <i class="fa-solid" 
+                        <i class="fa-solid"
                            [class.fa-cart-shopping]="!isAddingToCart[book.id]"
                            [class.fa-spinner]="isAddingToCart[book.id]"
                            [class.fa-spin]="isAddingToCart[book.id]"></i>
