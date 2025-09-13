@@ -115,36 +115,71 @@ export interface OrderResponse {
 
 }
 ///////////////////for GetUserOrderByTrackingNumber///////////////////////////////
-export interface BookDTO {
-  Id: number;
-  ImageUrl: string;
-  Title:string,
-  Price: number,
-  Quantity: number,
-}
-export interface GetUserOrderByTrackingNumberResponse {
-  Id: number;
-  UserName: string;
-  PaymentMethod: PaymentMethod; // Use enum
-  PaymentStatus: PaymentStatus; // Use enum
-  OrderStatus: OrderStatus; // Use enum
-  TrackingNumber: string;
-  FinalAmount: number;
-  OrderDate: Date; // Use Date for consistency
-  Books: BookDTO[];
-  GovernorateId: number;
-  GovernorateName: string;
-  CityId: number;
-  CityName: string;
+// export interface BookDTO {
+//   Id: number;
+//   ImageUrl: string;
+//   Title:string,
+//   Price: number,
+//   Quantity: number,
+// }
+// export interface GetUserOrderByTrackingNumberResponse {
+//   Id: number;
+//   UserId: number;
+//   UserName: string;
+//   PaymentMethod: PaymentMethod; // Use enum
+//   PaymentStatus: PaymentStatus; // Use enum
+//   OrderStatus: OrderStatus; // Use enum
+//   TrackingNumber: string;
+//   FinalAmount: number;
+//   OrderDate: Date; // Use Date for consistency
+//   Books: BookDTO[];
+//   GovernorateId: number;
+//   governorateName: string;
+//   CityId: number;
+//   CityName: string;
 
-  StreetAddress:string,
-  PhoneNumber:string
-  FirstName: string,
-  LastName: string,
-  TotalAmount: number,
-  ShippingCost: number,
-  DiscountAmount: number,  
+//   StreetAddress:string,
+//   PhoneNumber:string
+//   FirstName: string,
+//   LastName: string,
+//   TotalAmount: number,
+//   ShippingCost: number,
+//   DiscountAmount: number,  
   
+// }
+export interface BookDTO {
+  id: number;
+  imageUrl: string;
+  title: string;
+  price: number;
+  quantity: number;
+  discountPercentage: number;
+  discountedPrice: number;
+}
+
+export interface GetUserOrderByTrackingNumberResponse {
+  id: number;
+  userName: string;
+  userId: number;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  orderStatus: OrderStatus;
+  trackingNumber: string;
+  finalAmount: number;
+  orderDate: Date;
+  books: BookDTO[];
+  governorateId: number;
+  governorateName: string;
+  cityId: number;
+  cityName: string;
+  streetAddress: string; 
+  phoneNumber: string;
+  firstName: string; 
+  lastName: string; 
+  totalAmount: number;
+  shippingCost: number;
+  discountedAmount: number;
+  email?: string; // Optional
 }
 
 

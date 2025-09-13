@@ -115,27 +115,24 @@ export class OrderService {
    * @param trackingNumber The tracking number to search for
    * @returns Observable of order details
    */
-  // getOrderByTrackingNumber(trackingNumber: string): Observable<OrderResponse> {
-  //   const request: GetUserOrderByTrackingNumberRequest = { trackingNumber };
-  //   return this.http.get<ApiResponse<OrderResponse>>(`${this.apiUrl}/User/GetByTrackingNumber`, {
-  //     params: this.buildHttpParams(request)
-  //   }).pipe(
-  //     map(response => {
-  //       console.log('OrderService: Order by tracking number response:', response);
-  //       return response.data;
-  //     })
-  //   );
-  // }
-getOrderByTrackingNumber(trackingNumber: string): Observable<any> {
-  const params = new HttpParams().set('TrackingNumber', trackingNumber); // lowercase 't'
-  
-  return this.http.get<any>(
+
+  getOrderByTrackingNumber(trackingNumber: string): Observable<ApiResponse<GetUserOrderByTrackingNumberResponse>> {
+  const params = new HttpParams().set('trackingNumber', trackingNumber);
+  return this.http.get<ApiResponse<GetUserOrderByTrackingNumberResponse>>(
     `${this.apiUrl}/User/GetByTrackingNumber`,
     { params }
-  ).pipe(
-    map(response => response.data)
   );
 }
+// getOrderByTrackingNumber(trackingNumber: string): Observable<any> {
+//   const params = new HttpParams().set('TrackingNumber', trackingNumber); // lowercase 't'
+  
+//   return this.http.get<any>(
+//     `${this.apiUrl}/User/GetByTrackingNumber`,
+//     { params }
+//   ).pipe(
+//     map(response => response.data)
+//   );
+// }
   /**
    * Get shipping cost for a specific governorate by ID
    * @param governorateId The ID of the governorate to get shipping cost for

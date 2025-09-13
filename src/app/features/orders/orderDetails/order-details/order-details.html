@@ -11,8 +11,8 @@
             <div id="OrderHeaderData">
                 <p>
                     <span>رقم الطلب</span>
-                    <span>{{order?.TrackingNumber}}</span>
-                    <span>{{order?.OrderDate| date:'M/d/yy, h:mm a' }}</span>
+                    <span>{{order?.trackingNumber}}</span>
+                    <span>{{order?.orderDate| date:'M/d/yy, h:mm a' }}</span>
                 </p>
                 <span id="link">
                     <i class="fa-solid fa-link"></i>
@@ -26,14 +26,14 @@
         <div id="OrderProcess">
 
         </div>
-    <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     @if(currentStatus===CancelledOrderStatus)
     {
          <div class="status-btns">
                     <span
                         class=" cancelledBtn"
                         [ngClass]="{'active': currentStatus ===CancelledOrderStatus }">
-                        {{ orderStatusDisplayNames[CancelledOrderStatus] }}
+                        {{ OrderStatusDisplayNames[CancelledOrderStatus] }}
                     </span>
             </div>
     }   
@@ -45,7 +45,7 @@
                     <span
                         class="status-btn"
                         [ngClass]="{'active': currentStatus === status}">
-                        {{ orderStatusDisplayNames[status] }}
+                        {{ OrderStatusDisplayNames[status] }}
                     </span>
                 }
             </div>
@@ -58,19 +58,19 @@
              <table id="table">
         
                 <th> المنتج</th>
-                <th>الكمية</th>
-                <th>السعر</th>
-                <th>سعر الكمية</th>
-                @for( item of order?.Books;track item.Id){
+                <th> السعر قبل الخصم</th>
+                <th>سعر بعد الخصم</th>
+                <th> الكمية</th>
+                @for( item of order?.books;track item.id){
                     <tr>
                         <td id="Item">
-                            <!-- <img id="BookCover" src="https://i.pinimg.com/originals/9a/a4/dc/9aa4dc527c8adbcad5fa790f3ac59a44.png">need change with actual photo -->
                             <img id="BookCover" [src]="getCoverImageUrl(item)" alt="BookImage">
-                            {{item.Title}}
+                            {{item.title}}
                         </td>
-                        <td>{{item.Quantity}}</td>
-                        <td>{{item.Price}}</td><!--|customCurrencyPipe:'EGP'-->
-                        <td>{{item.Quantity* item.Price}}</td>
+                        <td>{{item.price*item.quantity}}</td><!--|customCurrencyPipe:'EGP'-->
+                        <td>{{item.discountedPrice*item.quantity}}</td>
+                        <td>{{item.quantity}}</td>
+                        
                         
                     </tr>
                 }
@@ -81,46 +81,46 @@
        <div id="moreDetails">
             <div id="customer-adress">
                 <h6>عنوان الشحن</h6>
-                <span>{{order?.GovernorateName}}</span>
-                <span>{{order?.CityName}}</span>
-                <span>{{order?.StreetAddress}}</span>
+                <span>{{order?.governorateName}}</span>
+                <span>{{order?.cityName}}</span>
+                <span>{{order?.streetAddress}}</span>
             </div>
 
             <div id="customer-data">
                 <h6>بيانات العميل</h6>
-                <span>{{`${order?.FirstName} ${order?.LastName}`}}</span>
-                <span>{{order?.PhoneNumber}}</span>
-                <span>khadija@gmail.com</span><!--need change with actual email -->
+                <span>{{`${order?.firstName} ${order?.lastName}`}}</span>
+                <span>{{order?.phoneNumber}}</span>
+                <span>{{order?.email}}</span><!--need change with actual email -->
             </div>
 
             <div id="payment-way">
                  <h6>وسيلة الدفع</h6>
                  @if(order){
-                     <span>{{PaymentMethodDisplayNames[order.PaymentMethod]}}</span>
+                     <span>{{PaymentMethodDisplayNames[order.paymentMethod]}}</span>
                  }
             </div>
 
             <div id="price-details">
                <div class="price">
                     <span>المجموع قبل الخصم</span>
-                    <span>{{order?.TotalAmount}}</span>
+                    <span>{{order?.totalAmount}}</span>
                </div>
 
                <div class="price">
-                    <span>المجموع</span>
+                    <span>الخصم</span>
                     @if(order){
-                        <span>{{ order.TotalAmount - order.TotalAmount * order.DiscountAmount}}</span>
+                        <span>{{order.discountedAmount}}</span>
                     }
                </div>
 
                <div class="price">
                     <span>الشحن</span>
-                    <span>{{order?.ShippingCost}}</span>
+                    <span>{{order?.shippingCost}}</span>
                </div>
 
                <div class="price" id="TotalPrice">
                     <span id="TotalPriceText">الاجمالي</span>
-                    <span id="TotalPriceValue">{{order?.FinalAmount}}</span>
+                    <span id="TotalPriceValue">{{order?.finalAmount}}</span>
                </div>
 
             </div>
