@@ -10,14 +10,17 @@ import { CartServices } from '../../Cart/CartServices/cart-services';
 import { AddItemToCartRequest } from '../../Cart/CartInterfaces/cart-interfaces';
 import { Auth } from '../../../services/auth';
 import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
+import { BookCard } from '../../products/card-componenet/book-card/book-card';
+
 @Component({
   selector: 'app-author-details',
-  imports: [CommonModule,RouterLink],
+  imports: [BookCard,CommonModule, RouterLink], 
   templateUrl: './author-details.html',
   styleUrl: './author-details.css'
 })
 export class AuthorDetails implements OnInit, OnDestroy {
   author: IAuthor | null = null;
+  Books: any[] = [];
   baseUrl = environment.apiUrl;
   stars = Array(5).fill(0);
   activeTab: string = 'books';
@@ -198,6 +201,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
       .subscribe({
         next: (author) => {
           this.author = author;
+          this.Books = author.books || [];///////////////////////////////////////added
           // Set page title
           if (typeof document !== 'undefined') {
             document.title = `${author.name} - عصير الكتب`;

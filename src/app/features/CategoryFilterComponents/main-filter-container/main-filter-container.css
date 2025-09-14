@@ -20,6 +20,20 @@ app-category-title {
   margin-bottom: 20px;
 }
 
+.noBooks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    color: red;
+    height: 40vh;
+}
+.noBooks h2{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 /* Body section (filters + books) */
 #body {
   display: flex;
@@ -104,23 +118,3 @@ app-category-title {
   width: 100%;
 }
 
-/* Alternative: Sticky Footer Solution */
-/*
-html, body {
-  height: 100%;
-}
-
-.app-container {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  flex: 1 0 auto;
-}
-
-.footer {
-  flex-shrink: 0;
-}
-*/

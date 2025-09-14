@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input,Output, OnChanges, SimpleChanges } from '@angular/core';
 import { BookService } from '../../products/book-service/book-service';
 import { Pagination } from '../../../shared/Components/pagination/pagination';
 import { BookCard } from '../../products/card-componenet/book-card/book-card';
@@ -14,14 +14,16 @@ import { FilterBooksRequest } from '../../products/book-model/Ibook';
 export class CategoeyBooks implements OnChanges {
   Books: any[] = [];
   currentPage = 1;
-  pageSize = 2;///may be change
+  pageSize = 10;///may be change
   totalPages = 1;
   totalCount = 0;
 
   @Input() CategoryId: number = 1;
   @Input() filterParams?: FilterBooksRequest;
+  @Output() totalCountChange = new EventEmitter<number>(); 
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     // If either CategoryId or filterParams change, reload books
@@ -52,14 +54,20 @@ export class CategoeyBooks implements OnChanges {
           this.Books = response.data;
           this.totalCount = response.totalCount;
           this.totalPages = response.totalPages;
+          this.totalCountChange.emit(this.totalCount);
+          console.log('Total Books Count:', this.totalCount);
         } else {
           console.error('API returned error:', response.message);
           this.Books = [];
+          this.totalCountChange.emit(0); // Emit 0 on error
         }
       },
       error: (error) => {
         console.error('Error fetching books:', error);
         this.Books = [];
+        this.totalCountChange.emit(0); // Emit 0 on error
+
+        
       }
     });
   }
