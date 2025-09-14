@@ -75,6 +75,9 @@ export const routes: Routes = [
       path: 'CategoeyBooks' , component : CategoeyBooks,
   },
   {
+      path: 'MainFilterContainer' , component : MainFilterContainer,
+  },
+  {
     path: 'allAuthors' , component : AllAuthors,
   }
   ,

@@ -5,7 +5,7 @@
      <div id="crumb">
     <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
 
-     <app-sub-category-crumb [parentCategoryId]="CategoryId"></app-sub-category-crumb>
+     <app-sub-category-crumb *ngIf="CategoryId !== null" [parentCategoryId]="CategoryId!"></app-sub-category-crumb>
 
       <hr>
     </div>
@@ -36,6 +36,8 @@
     @if(totalBooksCount==0) {
         <div class="noBooks">
             <h2>لا توجد كتب فى هذا القسم</h2>
+        <div id="books">
+            <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
         </div>
     }
        

@@ -14,11 +14,12 @@ import { FilterBooksRequest } from '../../products/book-model/Ibook';
 export class CategoeyBooks implements OnChanges {
   Books: any[] = [];
   currentPage = 1;
+  pageSize = 15; // 15 books per page
   pageSize = 10;///may be change
   totalPages = 1;
   totalCount = 0;
 
-  @Input() CategoryId: number = 1;
+  @Input() CategoryId: number | null = null;
   @Input() filterParams?: FilterBooksRequest;
   @Output() totalCountChange = new EventEmitter<number>(); 
 
@@ -39,7 +40,7 @@ export class CategoeyBooks implements OnChanges {
 
   getBooksByCategoryId(): void {
     const filterRequest: FilterBooksRequest = {
-      CategoryIds: [this.CategoryId],
+      CategoryIds: this.CategoryId ? [this.CategoryId] : [], // Empty array when no category
       PageNumber: this.currentPage,
       PageSize: this.pageSize,
       SearchTerm: this.filterParams?.SearchTerm || '',

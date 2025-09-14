@@ -26,12 +26,12 @@ export class MainFilterContainer implements OnInit, OnDestroy {
 
   categoryName: string = '';
   categoryDescription: string = '';
-  CategoryId: number = 1;
+  CategoryId: number | null = null;
   Category: any;
   currentFilterParams?: FilterBooksRequest;
   breadcrumbs: NavcrumbItem[] = [
     { name: 'الأقسام', path: '/AllCategories' },
-    { name: '  ', path: '/' },
+    { name: 'جميع الكتب', path: '/MainFilterContainer' },
   ];
 
   private routeSub!: Subscription;
@@ -42,6 +42,9 @@ export class MainFilterContainer implements OnInit, OnDestroy {
       const categoryId = params.get('Id');
       if (categoryId) {
         this.loadCategoryData(+categoryId);
+      } else {
+        // No category ID provided - show all books
+        this.setupForAllBooks();
       }
     });
   }
@@ -65,6 +68,9 @@ export class MainFilterContainer implements OnInit, OnDestroy {
             { name: 'الأقسام', path: '/AllCategories' },
             { name: this.Category.name, path: `/MainFilterContainer/${categoryId}` }
           ];
+          
+          // Set initial filter parameters for the category
+          this.setupInitialCategoryFilter();
         } else {
           console.error('Category not found');
         }
@@ -76,11 +82,50 @@ export class MainFilterContainer implements OnInit, OnDestroy {
     });
   }
 
+  setupForAllBooks(): void {
+    this.categoryName = 'جميع الكتب';
+    this.categoryDescription = 'تصفح جميع الكتب المتاحة';
+    this.CategoryId = null;
+    this.Category = null;
+    
+    this.breadcrumbs = [
+      { name: 'الأقسام', path: '/AllCategories' },
+      { name: 'جميع الكتب', path: '/MainFilterContainer' }
+    ];
+    
+    // Set initial filter parameters for all books
+    this.setupInitialAllBooksFilter();
+  }
+
+  setupInitialCategoryFilter(): void {
+    this.currentFilterParams = {
+      CategoryIds: this.CategoryId ? [this.CategoryId] : [],
+      PageNumber: 1,
+      PageSize: 15,
+      Language: null,
+      SortBy: 0,
+      PublisherIds: [],
+      SearchTerm: ''
+    };
+  }
+
+  setupInitialAllBooksFilter(): void {
+    this.currentFilterParams = {
+      CategoryIds: [],
+      PageNumber: 1,
+      PageSize: 15,
+      Language: null,
+      SortBy: 0,
+      PublisherIds: [],
+      SearchTerm: ''
+    };
+  }
+
   onFilterChanged(filterParams: FilterParams) {
     this.currentFilterParams = {
-      CategoryIds: [this.CategoryId],
+      CategoryIds: this.CategoryId ? [this.CategoryId] : [], // Empty array if no category selected
       PageNumber: 1,
-      PageSize: 10,
+      PageSize: 15,
       Language: filterParams.language,
       SortBy: filterParams.sortBy,
       PublisherIds: filterParams.publisherIds,

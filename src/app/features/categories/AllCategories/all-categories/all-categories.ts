@@ -26,12 +26,12 @@ export class AllCategories implements OnInit {
   loadParentCategories(): void {
     this.categoryService.getAllParentCategoriesWithSubCounts().subscribe({
       next: (response) => {
-        this.parentCategories = response.data 
+        this.parentCategories = response.data
           .filter((category: any) => !category.parentCategoryId || category.parentCategoryId === 0)
           .map((category: any) => ({
             Id: category.id,
             Name: category.name,
-            IsActive: category.isActive, 
+            IsActive: category.isActive,
             SubCategoriesCount:0
           })
         );
@@ -40,10 +40,10 @@ export class AllCategories implements OnInit {
           // this.categoryService.getAllSubCategories(parentCategory.Id).subscribe({
           //   next: (subResponse) => {
           //     parentCategory.SubCategoriesCount = subResponse.data.length;
-              
+
           //   }})
           // });
-          
+
       },
       error: (err) => {
         console.error('Error loading parent categories:', err);

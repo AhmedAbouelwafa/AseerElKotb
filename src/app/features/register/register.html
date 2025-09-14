@@ -193,9 +193,32 @@
         }
       </button>
 
-      <!-- Error Message -->
-      @if (auth.loginError()) {
+      <!-- Debug Info (remove in production) -->
+      <!-- Success Signal: {{ successMessage() }} -->
+      <!-- Error Signal: {{ errorMessage() }} -->
+      <!-- Auth Error Signal: {{ auth.loginError() }} -->
+      <!-- Status: Success={{ !!successMessage() }}, Error={{ !!errorMessage() }} -->
+
+      <!-- Success Message (HTTP 200) -->
+      @if (successMessage()) {
+        <div class="alert alert-success mt-3" role="alert" style="background: #d4edda !important; color: #155724 !important; border: 1px solid #c3e6cb !important;">
+          <i class="bi bi-check-circle me-2" style="color: #28a745 !important;"></i>
+          {{ successMessage() }}
+        </div>
+      }
+
+      <!-- Error Message (HTTP 400 or other errors) -->
+      @if (errorMessage() && !successMessage()) {
+        <div class="alert alert-danger mt-3" role="alert" style="background: #f8d7da !important; color: #721c24 !important; border: 1px solid #f5c6cb !important;">
+          <i class="bi bi-exclamation-triangle me-2" style="color: #dc3545 !important;"></i>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Backend Error Message (fallback) -->
+      @if (auth.loginError() && !errorMessage() && !successMessage()) {
         <div class="alert alert-danger mt-3" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
           {{ auth.loginError() }}
         </div>
       }
