@@ -11,14 +11,13 @@
     </div>
    
 
-    @if(totalBooksCount>0){
+    <!-- @if(totalBooksCount>0){ -->
 
         <div id="body">
 
             <div id="filteration" >
                 <div id="filteration">
-                        <app-filtering (filterChanged)="onFilterChanged($event)"></app-filtering>
-
+                    <app-filtering (filterChanged)="onFilterChanged($event)"></app-filtering>
                 </div>
             </div>
 
@@ -32,14 +31,12 @@
             </div>
 
         </div>
-    }
+    <!-- }
     @if(totalBooksCount==0) {
         <div class="noBooks">
             <h2>لا توجد كتب فى هذا القسم</h2>
-        <div id="books">
-            <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
         </div>
-    }
+    } -->
        
  
 

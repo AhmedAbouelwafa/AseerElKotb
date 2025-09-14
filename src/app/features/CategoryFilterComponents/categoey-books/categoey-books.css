@@ -2,7 +2,7 @@
 .books {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 5 columns on large screens */
-  gap: 20px;
+  gap: 15px;
   background-color: #f8f9fa;
   width: 100%;
   padding: 20px;

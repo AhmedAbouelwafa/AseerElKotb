@@ -15,7 +15,6 @@ export class CategoeyBooks implements OnChanges {
   Books: any[] = [];
   currentPage = 1;
   pageSize = 15; // 15 books per page
-  pageSize = 10;///may be change
   totalPages = 1;
   totalCount = 0;
 
