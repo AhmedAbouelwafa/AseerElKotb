@@ -1,0 +1,128 @@
+<!-- <div class="pt-2 mt-5 mb-4" dir="rtl">
+  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+</div> -->
+
+<!-- Loading State -->
+<div class="text-center py-5" *ngIf="loading">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">جاري التحميل...</span>
+  </div>
+</div>
+
+<!-- Profile Content -->
+<div class="user-profile-container" *ngIf="!loading && user" dir="rtl">
+  <!-- Header Section -->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <img [src]="userAvatar" [alt]="userName" class="img-fluid rounded-circle" />
+    </div>
+
+    <div class="profile-info">
+      <h1 class="user-name">{{ userName }}</h1>
+      <div class="user-status">
+        <span class="member-duration">عضو منذ {{ memberSince }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-container">
+    <div
+      class="stat-item"
+      *ngFor="let stat of stats"
+      [class.active]="stat.isActive"
+      (click)="onStatClick(stat)"
+      role="button"
+      tabindex="0"
+      (keyup.enter)="onStatClick(stat)"
+
+    >
+      <div class="d-flex gap-2 align-items-center">
+        <i>{{ stat.icon }}</i>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-underline" [class.show]="stat.isActive"></div>
+    </div>
+  </div>
+
+  <!-- Dynamic Content Section -->
+  <div class="content-section">
+    <!-- Reviews Content -->
+    <!-- <div class="section-content" *ngIf="activeStatType === 'reviews'">
+      <h3>المراجعات ({{ activeStatData.length }})</h3>
+      <div class="row" *ngIf="activeStatData.length > 0; else noReviews">
+        <div class="col-md-6 mb-3" *ngFor="let review of activeStatData">
+          <div class="card" *ngIf="isReviewDto(review)">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-primary">{{ getReviewTypeLabel(review.ReviewFor) }}</span>
+                <small class="text-muted">#{{ review.Id }}</small>
+              </div>
+              <p class="card-text mt-2">مراجعة {{ getReviewTypeLabel(review.ReviewFor) }}</p>
+              <button class="btn btn-sm btn-outline-primary">عرض التفاصيل</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noReviews>
+        <div class="text-center py-4">
+          <p class="text-muted">لا توجد مراجعات حتى الآن</p>
+        </div>
+      </ng-template>
+    </div> -->
+
+    <!-- Quotes Content -->
+    <!-- <div class="section-content" *ngIf="activeStatType === 'quotes'">
+      <h3>الاقتباسات ({{ activeStatData.length }})</h3>
+      <div class="row" *ngIf="activeStatData.length > 0; else noQuotes">
+        <div class="col-md-6 mb-3" *ngFor="let quote of activeStatData">
+          <div class="card" *ngIf="isQuoteDto(quote)">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-success">{{ getQuoteTypeLabel(quote.QuoteFor) }}</span>
+                <small class="text-muted">#{{ quote.Id }}</small>
+              </div>
+              <p class="card-text mt-2">اقتباس من {{ getQuoteTypeLabel(quote.QuoteFor) }}</p>
+              <button class="btn btn-sm btn-outline-success">عرض الاقتباس</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noQuotes>
+        <div class="text-center py-4">
+          <p class="text-muted">لا توجد اقتباسات حتى الآن</p>
+        </div>
+      </ng-template>
+    </div> -->
+
+    <!-- Following Content -->
+    <!-- <div class="section-content" *ngIf="activeStatType === 'following'">
+      <h3>المتابعات ({{ activeStatData.length }})</h3>
+      <div class="row" *ngIf="activeStatData.length > 0; else noFollowing">
+        <div class="col-md-4 mb-3" *ngFor="let follow of activeStatData">
+          <div class="card" *ngIf="isUserFollowDto(follow)">
+            <div class="card-body text-center">
+              <div class="mb-2">
+                <span class="badge bg-info">{{ getFollowTypeLabel(follow.FollowType) }}</span>
+              </div>
+              <h6 class="card-title">{{ getFollowTypeLabel(follow.FollowType) }} #{{ follow.Id }}</h6>
+              <button class="btn btn-sm btn-outline-info">عرض التفاصيل</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noFollowing>
+        <div class="text-center py-4">
+          <p class="text-muted">لا توجد متابعات حتى الآن</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div> -->
+
+<!-- Error State
+<div class="text-center py-5" *ngIf="!loading && !user" dir="rtl">
+  <h4>عذراً، لا يمكن العثور على الملف الشخصي</h4>
+  <p class="text-muted">تأكد من صحة الرابط أو حاول مرة أخرى لاحقاً</p>
+</div> -->

@@ -68,10 +68,10 @@ export class ModalService {
       Comment,
       Rating
     };
-    
+
     console.log('Sending review data:', reviewData);
     console.log('API URL:', `${this._apiBaseUrl}/Reviews/`);
-    
+
     return this.http.post(`${this._apiBaseUrl}/Reviews/`, reviewData);
   }
 

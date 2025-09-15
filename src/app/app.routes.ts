@@ -15,7 +15,7 @@ import { ResetPasswordSuccess } from './features/pages/ResetPasswordPages/reset-
 import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-password-failed/reset-password-failed';
 import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-password/forgot-password';
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
-import { UserProfile } from './features/user-profile/user-profile';
+import { UserProfileComponent } from './features/user-profile/UserComponent/user-profile';
 import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
@@ -81,7 +81,7 @@ export const routes: Routes = [
     path: 'AllCategories' , component : AllCategories,
   },
   {
-    path: 'user-profile' , component : UserProfile,
+    path: 'user-profile/:id' , component : UserProfileComponent,
   },
   {
     path: 'checkout' , component : CheckoutPage

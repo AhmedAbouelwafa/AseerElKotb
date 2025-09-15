@@ -135,7 +135,7 @@
                 <tr><th>{{'bookDetails.pages' | translate}}</th><td>{{book?.pageCount}}</td></tr>
                 <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate | date:'dd/MM/yyyy' }}</td></tr>
                 <tr><th>{{'bookDetails.format' | translate}}</th><td>{{book?.format}}</td></tr>
-                <tr><th>{{'bookDetails.publisher' | translate}}</th><td>{{book?.publisherId}}</td></tr>
+                <tr><th>{{'bookDetails.publisher' | translate}}</th><td><a routerLink = "/Publisher/{{book?.publisherId}}" class="text-decoration-none">{{book?.publisherName}}</a></td></tr>
                 <tr><th>{{'bookDetails.categories' | translate}}</th><td>{{book?.categoryIds}}</td></tr>
                 <tr><th>ISBN</th><td>{{book?.isbn}}</td></tr>
                 <tr><th>{{'bookDetails.shortLink' | translate}}</th><td><a routerLink="/book-details/{{book?.id}}" class="text-decoration-none">{{book?.title}} <i class="fa-solid fa-link"></i></a></td></tr>
