@@ -24,6 +24,11 @@
   transform: scale(1.7);
   padding-top: 30px;
   padding-bottom: 30px;
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 /* أنواع الكتب */
@@ -276,4 +281,14 @@
     font-size: 0.85rem;
     min-height: 44px; /* للمسة أفضل على الموبايل */
   }
+}
+
+
+app-search
+{
+  z-index: 999999;
+}
+
+.categories{
+  z-index: 1;
 }

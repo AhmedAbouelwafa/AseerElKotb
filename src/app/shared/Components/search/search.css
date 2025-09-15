@@ -41,7 +41,7 @@
 
 
 .dropsaerch {
-  width: calc(100% - 55px);
+  width: calc(100% - 60px);
   max-height: 300px;   /* أو أي قيمة مناسبة */
   background-color: #fff;
   position: absolute;
@@ -49,6 +49,9 @@
   right: 0;
   border-radius: 5px;
   overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 
@@ -83,9 +86,16 @@
 
 .searchLink{
   text-decoration: none;
+  font-size: 13px;
 
 }
+
 .searchLink:hover{
   background-color: rgb(238, 238, 238);
   color: white;
+}
+
+::-webkit-scrollbar {
+  width: 15px;    /* عرض السكروول عمودي */
+  height: 15px;   /* ارتفاع السكروول أفقي */
 }
