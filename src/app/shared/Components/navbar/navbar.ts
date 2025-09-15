@@ -187,4 +187,9 @@ export class Navbar implements OnInit, OnDestroy {
     this.showDropdown = false;
     window.location.reload();
   }
+
+
+  getCoverImageSearch(search: string){
+    
+  }
 }

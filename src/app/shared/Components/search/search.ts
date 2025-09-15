@@ -57,10 +57,12 @@ export class Search {
       next: (response) => {
         this.books = response.data.map((book: any) => ({
           name: book.title,
-          cover: `${this.baseUrl}${book.coverImageUrl}`,
+          cover: `${book.coverImageUrl}`,
           id: book.id,
         }));
+        console.log("books", this.books);
       },
+
       error: (error) => console.log(error)
     });
   }
