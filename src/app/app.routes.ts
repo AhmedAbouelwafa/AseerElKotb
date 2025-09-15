@@ -28,6 +28,7 @@ import { Orders } from './features/orders/orders/orders/orders';
 
 import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
 import { ImageGeneration } from './features/image-generation/image-generation';
+import { CategoeyBooks } from './features/CategoryFilterComponents/categoey-books/categoey-books';
 
 
 
@@ -69,6 +70,12 @@ export const routes: Routes = [
   },
   {
       path: 'MainFilterContainer/:Id' , component : MainFilterContainer,
+  },
+   {
+      path: 'CategoeyBooks' , component : CategoeyBooks,
+  },
+  {
+      path: 'MainFilterContainer' , component : MainFilterContainer,
   },
   {
     path: 'allAuthors' , component : AllAuthors,

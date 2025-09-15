@@ -7,7 +7,9 @@
        @if (cartData.items.length === 0) {
             <div class="empty-cart">
                 <h2>سلة المشتريات فارغة</h2>
-                <p>يمكنك التسوق الان</p>
+                <a routerLink="/MainFilterContainer" routerLinkActive="active">
+                   <button>يمكنك التسوق الان</button>
+                </a>
             </div>
         }  
         @else{
