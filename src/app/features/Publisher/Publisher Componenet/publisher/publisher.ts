@@ -7,6 +7,7 @@ import { FilterBooksRequest } from '../../../products/book-model/Ibook';
 import { BookService } from '../../../products/book-service/book-service';
 import { BookCard } from '../../../products/card-componenet/book-card/book-card';
 import { Pagination } from '../../../../shared/Components/pagination/pagination';
+import { environment } from '../../../../core/configs/environment.config';
 
 @Component({
   selector: 'app-publisher',
@@ -181,7 +182,7 @@ GetNewPageAuthor(page: number): void {
 }
 
 
-private baseUrl = 'https://localhost:7207'////////chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange
+private baseUrl = environment.apiBaseUrl
         
   getCoverImageUrl(logoUrl: string | null): string | null {
     if (!logoUrl) return null;
