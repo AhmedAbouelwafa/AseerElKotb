@@ -16,6 +16,17 @@
     font-size: 2rem;
     font-weight: bold;
 }
+a{
+    text-decoration: none;
+}
+a button{
+    color: white;
+    background-color: red;
+    border:none;
+    border-radius: 10px;
+    padding: .5rem;
+    font-weight: bold;
+}
 .empty-cart p{
     font-size: 1.2rem;
     font-weight: bold;

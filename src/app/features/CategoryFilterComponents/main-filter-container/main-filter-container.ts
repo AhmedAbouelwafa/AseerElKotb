@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
@@ -20,8 +20,9 @@ export class MainFilterContainer implements OnInit, OnDestroy {
    
   constructor(
     private route: ActivatedRoute,
-    private categoryService: CategoryServices
+    private categoryService: CategoryServices,
   ) {}
+ 
 
   categoryName: string = '';
   categoryDescription: string = '';
@@ -74,6 +75,7 @@ export class MainFilterContainer implements OnInit, OnDestroy {
           console.error('Category not found');
         }
       },
+      
       error: (error) => {
         console.error('Error fetching category:', error);
       }
@@ -81,14 +83,13 @@ export class MainFilterContainer implements OnInit, OnDestroy {
   }
 
   setupForAllBooks(): void {
-    this.categoryName = 'جميع الكتب';
+    this.categoryName = ' الكتب';
     this.categoryDescription = 'تصفح جميع الكتب المتاحة';
     this.CategoryId = null;
     this.Category = null;
     
     this.breadcrumbs = [
-      { name: 'الأقسام', path: '/AllCategories' },
-      { name: 'جميع الكتب', path: '/MainFilterContainer' }
+      { name: ' الكتب', path: '/MainFilterContainer' }
     ];
     
     // Set initial filter parameters for all books
@@ -130,4 +131,8 @@ export class MainFilterContainer implements OnInit, OnDestroy {
       SearchTerm: filterParams.searchTerm
     };
   }
+  totalBooksCount:number=-1;
+   handleTotalCountChange(count: number): void {
+         this.totalBooksCount = count;
+     }
 }

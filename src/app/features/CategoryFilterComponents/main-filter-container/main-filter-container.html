@@ -9,24 +9,37 @@
 
       <hr>
     </div>
+   
 
+    <!-- @if(totalBooksCount>0){ -->
 
-    <div id="body">
+        <div id="body">
 
-        <div id="filteration" >
-            <div id="filteration">
+            <div id="filteration" >
+                <div id="filteration">
                     <app-filtering (filterChanged)="onFilterChanged($event)"></app-filtering>
-
+                </div>
             </div>
+
+            <div id="books">
+                <!-- <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams" ></app-categoey-books> -->
+            <app-categoey-books 
+                [CategoryId]="CategoryId" 
+                [filterParams]="currentFilterParams"
+                (totalCountChange)="handleTotalCountChange($event)">
+            </app-categoey-books>
+            </div>
+
         </div>
-
-        <div id="books">
-            <app-categoey-books class="books" [CategoryId]="CategoryId" [filterParams]="currentFilterParams"></app-categoey-books>
+    <!-- }
+    @if(totalBooksCount==0) {
+        <div class="noBooks">
+            <h2>لا توجد كتب فى هذا القسم</h2>
         </div>
+    } -->
+       
+ 
 
-
-    </div>
-
-
-
+        
+     
 </div>

@@ -274,72 +274,12 @@
       <div class="tab-pane" [class.active]="activeTab === 'books'">
         <div class="books-grid" *ngIf="author.books && author.books.length > 0">
           <div class="row">
-            <div
-              class="col-md-2 p-0 m-0"
-              *ngFor="let book of author.books; trackBy: trackByBookId"
-            >
-              <div class="card" (click)="viewBookDetails(book.id)">
-                <div class="position-relative">
-                  <img
-                    [src]="book.coverImageUrl"
-                    class="card-img-top"
-                    [alt]="book.title"
-                  />
-                  <span
-                    *ngIf="hasDiscount(book)"
-                    class="badge bg-danger position-absolute start-50 translate-middle-x"
-                    style="bottom: -12px"
-                  >
-                    خصم
-                    {{
-                      getDiscountPercentage(book.price, book.discountedPrice)
-                    }}%
-                  </span>
+              <div class="books">
 
-                  <div class="card-body text-center">
-                    <div class="book-rating mb-2">
-                      <ng-container *ngFor="let star of stars; let i = index">
-                        <i
-                          class="fa-star"
-                          [ngClass]="{
-                            'fas text-warning': i < (book.rating || 0),
-                            'far text-secondary': i >= (book.rating || 0)
-                          }"
-                        ></i>
-                      </ng-container>
-                    </div>
-
-                    <h5 class="card-title fw-bold">{{ book.title }}</h5>
-                    <p class="card-text text-muted">
-                      بواسطة: {{ author.name }}
-                    </p>
-                    <div class="underBook">
-                      <span
-                        *ngIf="hasDiscount(book)"
-                        class="told text-danger text-decoration-line-through"
-                      >
-                        ج.م {{ book.price | number }}
-                      </span>
-                      <span class="tnew text-dark">
-                        ج.م {{ book.discountedPrice || book.price | number }}
-                      </span>
-
-                      <button
-                        class="cart-ribbon"
-                        (click)="addToCart(book, $event)"
-                        [disabled]="isAddingToCart[book.id]"
-                        title="إضافة للسلة"
-                      >
-                        <i class="fa-solid"
-                           [class.fa-cart-shopping]="!isAddingToCart[book.id]"
-                           [class.fa-spinner]="isAddingToCart[book.id]"
-                           [class.fa-spin]="isAddingToCart[book.id]"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                @for (Book of Books ; track Book.id){
+                  <app-book-card  [book]="Book"></app-book-card>
+                }
               </div>
-            </div>
           </div>
         </div>
 
