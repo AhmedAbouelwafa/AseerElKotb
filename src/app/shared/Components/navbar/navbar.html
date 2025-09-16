@@ -52,9 +52,9 @@
 
             <ul class="dropdown-menu-custom">
               <li>
-                <a routerLink="/user-profile" class = "useraya">
+                <a class="nav-link useraya" [routerLink]="['/user-profile', userId]" (click)="closeNavbar()">
                   <img src="/icons/user.png" width="28" class="rounded-circle">
-                 {{ 'navbar.userMenu.profile' | translate }}
+                  {{ 'navbar.userMenu.profile' | translate }}
                 </a>
               </li>
 

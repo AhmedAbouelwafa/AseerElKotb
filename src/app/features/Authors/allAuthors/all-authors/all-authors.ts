@@ -5,6 +5,7 @@ import { IAuthor, PaginatedIAuthor } from '../../Author-Model/iauthor';
 import { CommonModule } from '@angular/common';
 import { AuthorApiService } from '../../../../core/services/Author/author-api-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { environment } from '../../../../core/configs/environment.config';
 
 @Component({
   selector: 'app-all-authors',
@@ -70,7 +71,7 @@ constructor(private authorService: AuthorApiService) {}
     this.currentPage = page;
     this.loadAuthors();
   }
-  private baseUrl = 'https://localhost:7207'////////chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange
+  private baseUrl = environment.apiBaseUrl;
   
      getCoverImageUrl(item:PaginatedIAuthor): string {
       if (item.imageUrl.startsWith('/uploads')) {
