@@ -34,7 +34,7 @@
     }
   },
   "search": {
-    "placeholder": "عنوان الكتاب، المؤلف، دار النشر أو ISBN ...",
+    "placeholder": "اسم الكتاب ...",
     "title": "بحث",
     "noResults": "لا توجد نتائج",
     "results": "نتائج البحث"

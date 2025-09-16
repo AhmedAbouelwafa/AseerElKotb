@@ -36,7 +36,7 @@
     }
   },
   "search": {
-    "placeholder": "Book title, author, publisher or ISBN...",
+    "placeholder": "Book title ...",
     "title": "Search",
     "noResults": "No results found",
     "results": "Search Results"

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { UserService } from '../../../features/user-profile/UserServices/user-service';
 
 @Component({
   selector: 'app-user-reply',
@@ -13,6 +14,14 @@ export class UserReply {
 
   @Input() quote = '';
 
+
+  /**
+   *
+   */
+  constructor(private userService : UserService) {
+
+
+  }
   onDelete() {
     this.delete.emit();
   }
