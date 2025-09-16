@@ -16,6 +16,7 @@ import { ResetPasswordFailed } from './features/pages/ResetPasswordPages/reset-p
 import { ForgotPassword } from './features/pages/ResetPasswordPages/forgot-password/forgot-password';
 import { AllCategories } from './features/categories/AllCategories/all-categories/all-categories';
 import { UserProfile } from './features/user-profile/user-profile';
+import { AccountSettings } from './features/account-settings/account-settings';
 import { Publisher } from './features/Publisher/Publisher Componenet/publisher/publisher';
 import { CheckoutPage } from './features/checkout-page/checkout-page';
 import { Wishlist } from './features/wishlist/wishlist/wishlist';
@@ -89,6 +90,9 @@ export const routes: Routes = [
   },
   {
     path: 'user-profile' , component : UserProfile,
+  },
+  {
+    path: 'account-settings' , component : AccountSettings, canActivate: [AuthGuard]
   },
   {
     path: 'checkout' , component : CheckoutPage

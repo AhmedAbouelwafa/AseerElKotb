@@ -6,6 +6,7 @@ import { map, catchError, tap, finalize } from 'rxjs/operators';
 import { User } from '../models/user';
 import { LoginRequest } from '../models/login-request';
 import { RegisterRequest, RegisterResponse } from '../models/register-request';
+import { UpdateProfileRequest, UpdateProfileResponse, GetProfileResponse, ApiResponse, Gender } from '../models/profile-interfaces';
 import { environment } from '../core/configs/environment.config';
 
 @Injectable({
@@ -443,18 +444,227 @@ export class Auth {
     localStorage.removeItem('auth_token');
   }
 
+  // Check if token is valid and not expired
+  isTokenValid(): boolean {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.log('No token found');
+      return false;
+    }
+
+    try {
+      const tokenParts = token.split('.');
+      if (tokenParts.length !== 3) {
+        console.log('Invalid token format');
+        return false;
+      }
+
+      const payload = JSON.parse(atob(tokenParts[1]));
+      const expiration = payload.exp;
+      
+      if (!expiration) {
+        console.log('No expiration found in token');
+        return true; // If no expiration, assume valid
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      const isValid = expiration > currentTime;
+      
+      console.log('Token expiration check:', {
+        expiration,
+        currentTime,
+        isValid,
+        expiresIn: expiration - currentTime
+      });
+      
+      return isValid;
+    } catch (error) {
+      console.error('Error validating token:', error);
+      return false;
+    }
+  }
+
   // Initialize user from localStorage on app startup
   private initializeUserFromStorage(): void {
     const token = localStorage.getItem('auth_token');
     if (token) {
-      // For now, just set a minimal user - you could validate token with backend here
-      const user: User = {
-        id: 0, // Will be updated when user info is needed
-        email: '', // Will be updated when user info is needed
-        token: token
-      };
-      this.currentUser.set(user);
+      console.log('Token found in localStorage, initializing user...');
+      // Parse token to get user information if available
+      try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1]));
+          console.log('Token payload:', payload);
+          const user: User = {
+            id: payload.userId || payload.sub || payload.id, // Extract user ID from token
+            email: payload.email || '',
+            userName: payload.userName || payload.unique_name || '',
+            firstName: payload.firstName || payload.given_name || '',
+            lastName: payload.lastName || payload.family_name || '',
+            token: token
+          };
+          console.log('User initialized from token:', user);
+          this.currentUser.set(user);
+        } else {
+          // Fallback if token parsing fails - will be updated on next login
+          const user: User = {
+            id: 0, // Will be updated when user logs in
+            email: '',
+            token: token
+          };
+          console.log('Fallback user created:', user);
+          this.currentUser.set(user);
+        }
+      } catch (error) {
+        console.error('Error parsing token:', error);
+        // Fallback user object - will be updated on next login
+        const user: User = {
+          id: 0, // Will be updated when user logs in
+          email: '',
+          token: token
+        };
+        console.log('Error fallback user created:', user);
+        this.currentUser.set(user);
+      }
+    } else {
+      console.log('No token found in localStorage');
     }
+  }
+
+  // Profile Management Methods
+  getProfile(): Observable<{success: boolean, data?: GetProfileResponse, message: string}> {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+      console.error('No auth token found');
+      throw new Error('User not authenticated');
+    }
+
+    console.log('Making GetProfile request with token:', token.substring(0, 20) + '...');
+    console.log('API URL:', `${this.apiUrl}/Account/GetProfile`);
+
+    return this.http.get<ApiResponse<GetProfileResponse>>(`${this.apiUrl}/Account/GetProfile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).pipe(
+      tap(response => {
+        console.log('Raw GetProfile response:', response);
+      }),
+      map(response => {
+        if (response.succeeded) {
+          console.log('GetProfile success, data:', response.data);
+          return {
+            success: true,
+            data: response.data,
+            message: response.message
+          };
+        } else {
+          console.error('GetProfile failed:', response.message, response.errors);
+          return {
+            success: false,
+            message: response.message || 'Failed to get profile'
+          };
+        }
+      }),
+      catchError(error => {
+        console.error('GetProfile HTTP error:', error);
+        console.error('Error status:', error.status);
+        console.error('Error body:', error.error);
+        const errorMessage = this.getErrorMessage(error);
+        return [{success: false, message: errorMessage}];
+      })
+    );
+  }
+
+  updateProfile(updateData: UpdateProfileRequest): Observable<{success: boolean, data?: UpdateProfileResponse, message: string}> {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+      throw new Error('User not authenticated');
+    }
+
+    console.log('Update data received:', updateData);
+    
+    // Create FormData for [FromForm] backend binding
+    const formData = new FormData();
+    
+    // Add fields to FormData with exact property names that match your backend model
+    if (updateData.firstName && updateData.firstName.trim()) {
+      formData.append('FirstName', updateData.firstName.trim());
+    }
+    if (updateData.lastName && updateData.lastName.trim()) {
+      formData.append('LastName', updateData.lastName.trim());
+    }
+    if (updateData.bio && updateData.bio.trim()) {
+      formData.append('Bio', updateData.bio.trim());
+    }
+    if (updateData.nationality && updateData.nationality.trim()) {
+      formData.append('Nationality', updateData.nationality.trim());
+    }
+    if (updateData.dateOfBirth) {
+      formData.append('DateOfBirth', updateData.dateOfBirth.toISOString());
+    }
+    if (updateData.gender !== null && updateData.gender !== undefined) {
+      formData.append('Gender', updateData.gender.toString());
+    }
+    // ProfilePictureUrl will be added when file upload is implemented
+    
+    // Log FormData contents for debugging
+    console.log('FormData contents:');
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+
+    return this.http.put<ApiResponse<UpdateProfileResponse>>(`${this.apiUrl}/Account/UpdateProfile`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+        // Don't set Content-Type for FormData - browser will set it with boundary
+      }
+    }).pipe(
+      tap(response => {
+        console.log('Raw update profile response:', response);
+      }),
+      map(response => {
+        console.log('Update profile response:', response);
+        if (response.succeeded) {
+          // Update current user data
+          const currentUser = this.currentUser();
+          if (currentUser && response.data) {
+            const updatedUser: User = {
+              ...currentUser,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              bio: response.data.bio,
+              nationality: response.data.nationality,
+              dateOfBirth: response.data.dateOfBirth.toString(),
+              gender: response.data.gender === Gender.Male ? 'male' : 'female',
+              profilePictureUrl: response.data.profilePictureUrl
+            };
+            this.currentUser.set(updatedUser);
+          }
+          
+          return {
+            success: true,
+            data: response.data,
+            message: response.message || 'تم تحديث الملف الشخصي بنجاح'
+          };
+        } else {
+          console.error('Update profile failed:', response.message, response.errors);
+          return {
+            success: false,
+            message: this.translateBackendMessage(response.message || 'Failed to update profile')
+          };
+        }
+      }),
+      catchError(error => {
+        console.error('Update profile HTTP error:', error);
+        console.error('Error status:', error.status);
+        console.error('Error body:', error.error);
+        const errorMessage = this.translateBackendMessage(this.getErrorMessage(error));
+        return [{success: false, message: errorMessage}];
+      })
+    );
   }
 
 

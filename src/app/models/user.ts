@@ -12,5 +12,8 @@ export interface User {
   dateOfBirth?: string;
   gender?: 'male' | 'female';
   avatar?: string;
+  bio?: string;
+  nationality?: string;
+  profilePictureUrl?: string;
   createdAt?: string;
 }
