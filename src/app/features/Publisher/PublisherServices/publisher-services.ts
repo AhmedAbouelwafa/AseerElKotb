@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPublisher, PublishersResponse } from '../Publisher Interfaces/publisher-interfaces';
+import { environment } from '../../../core/configs/environment.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublisherServices {
  
-  private apiUrl = 'https://localhost:7207/api/Publishers';
+  private apiUrl = environment.apiBaseUrl + '/Publishers';
 
   constructor(private http: HttpClient) { }
 

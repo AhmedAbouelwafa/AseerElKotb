@@ -48,6 +48,7 @@
                         {{ OrderStatusDisplayNames[status] }}
                     </span>
                 }
+                 <hr>
             </div>
         </div>
         
@@ -59,7 +60,7 @@
         
                 <th> المنتج</th>
                 <th> السعر قبل الخصم</th>
-                <th>سعر بعد الخصم</th>
+                <th>السعر بعد الخصم</th>
                 <th> الكمية</th>
                 @for( item of order?.books;track item.id){
                     <tr>
@@ -67,8 +68,8 @@
                             <img id="BookCover" [src]="getCoverImageUrl(item)" alt="BookImage">
                             {{item.title}}
                         </td>
-                        <td>{{item.price*item.quantity}}</td><!--|customCurrencyPipe:'EGP'-->
-                        <td>{{item.discountedPrice*item.quantity}}</td>
+                        <td>{{item.price*item.quantity|customCurrencyPipe:'EGP'}}</td><!--|customCurrencyPipe:'EGP'-->
+                        <td>{{item.discountedPrice*item.quantity|customCurrencyPipe:'EGP'}}</td>
                         <td>{{item.quantity}}</td>
                         
                         
@@ -103,24 +104,24 @@
             <div id="price-details">
                <div class="price">
                     <span>المجموع قبل الخصم</span>
-                    <span>{{order?.totalAmount}}</span>
+                    <span>{{order?.totalAmount|customCurrencyPipe:'EGP'}}</span>
                </div>
 
                <div class="price">
                     <span>الخصم</span>
                     @if(order){
-                        <span>{{order.discountedAmount}}</span>
+                        <span>{{order.discountedAmount|customCurrencyPipe:'EGP'}}</span>
                     }
                </div>
 
                <div class="price">
                     <span>الشحن</span>
-                    <span>{{order?.shippingCost}}</span>
+                    <span>{{order?.shippingCost|customCurrencyPipe:'EGP'}}</span>
                </div>
 
                <div class="price" id="TotalPrice">
                     <span id="TotalPriceText">الاجمالي</span>
-                    <span id="TotalPriceValue">{{order?.finalAmount}}</span>
+                    <span id="TotalPriceValue">{{order?.finalAmount|customCurrencyPipe:'EGP'}}</span>
                </div>
 
             </div>

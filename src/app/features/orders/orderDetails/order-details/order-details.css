@@ -35,17 +35,21 @@
     align-items: center;
 }
 #table{
-    /* width:75%; */
     width:100%;
     margin-block: 4rem;
-    /* margin-bottom: 4rem; */
 }
 th,td{
   padding: .7rem;
   padding-inline: 1rem;
+  /* text-align: center; */
 }
-th{
-/* background-color: rgb(251, 253, 254); */
+th:not(:first-child),
+td:not(:first-child) {
+    text-align: center;
+}
+
+th:first-child{
+padding-inline: 4rem;
 }
 td{
  background-color: white;
@@ -72,10 +76,12 @@ tr{
 }
 #moreDetails h6{
     font-weight: bold;
+    font-size: 1.1rem;
 }
 #customer-adress span,#customer-data span ,#payment-way span{
     display: flex;
     flex-direction: column;
+    /* font-size: .9rem; */
 }
 
 #price-details{
@@ -87,9 +93,12 @@ justify-content: space-between;
 align-items: center;
 padding: .5rem;
 border-bottom: 1px solid lightgray;
+font-weight: bold;
+color: lightslategray;
 }
 #TotalPrice{
 border-bottom: none;
+color: black;
 }
 #TotalPrice #TotalPriceText{
     font-weight: bold;
@@ -99,6 +108,21 @@ border-bottom: none;
     color: red;
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+@media (max-width: 1124px) {
+    #moreDetails h6{
+    font-size: 1rem;
+    }
+    #moreDetails{
+    display: flex;
+    gap:1rem;
+    flex-wrap: wrap;
+
+    }
+    #price-details{
+    width: 100%;
+    }
+    
+}
 @media (max-width: 950px) {
     #mainContainer{
     margin: 0;
@@ -123,10 +147,13 @@ border-bottom: none;
     }
 }
  
+@media (max-width: 610px) {
+     th,td{
+        font-size: .8rem;
+        font-weight: bold;
+     }
+}
 @media (max-width: 560px) {
-    /* #item{
-        font-size: .7rem;
-    } */
      th,td{
         font-size: .7rem;
         font-weight: bold;
@@ -173,11 +200,17 @@ border-bottom: none;
   color: white;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   
-  .demo-buttons {
-    justify-content: center;
+  .status-btns {
+    justify-content:flex-start;
   }
+}
+@media (max-width: 530px) {
+ .status-btn {
+  padding: 0.5rem .7rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
 }
 

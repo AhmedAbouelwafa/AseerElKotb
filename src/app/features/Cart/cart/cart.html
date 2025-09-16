@@ -35,8 +35,8 @@
                             <div class="PriceAndQuantity">
 
                                 <div class="priceDetails">
-                                    <span class="PriceBeforeDiscount">{{item.totalPrice | currency:'EGP' }}</span>
-                                    <span class="PriceAfterDiscount">{{item.totalDiscountedPrice | currency:'EGP' }}</span>
+                                    <span class="PriceBeforeDiscount">{{item.totalPrice |customCurrencyPipe:'EGP' }}</span>
+                                    <span class="PriceAfterDiscount">{{item.totalDiscountedPrice|customCurrencyPipe:'EGP' }}</span>
                                     <span class="DiscountPercentage">
                                         <span class="DiscountText">بعد خصم</span>
                                         <span class="DiscountValue">{{item.discountPercentage}}%</span>
@@ -63,12 +63,12 @@
                     <div id="priceSummary">
                         <div class="price" id="BeforeDiscount">
                             <span class="priceTitle">المجموع قبل الخصم</span>
-                            <span class="priceValue">{{cartData.sumTotalPrice | currency:'EGP' }}</span><!-- change this -->
+                            <span class="priceValue">{{cartData.sumTotalPrice |customCurrencyPipe:'EGP' }}</span><!-- change this -->
                         </div>
 
                         <div class="price">
                             <span class="priceTitle">المجموع بعد الخصم</span>
-                            <span class="priceValue">{{cartData.sumDiscountedPrice| currency:'EGP' }}</span><!-- change this -->
+                            <span class="priceValue">{{cartData.sumDiscountedPrice|customCurrencyPipe:'EGP' }}</span><!-- change this -->
                         </div>
 
                         <!-- Free Shipping Message -->
@@ -81,7 +81,7 @@
                             } @else {
                                 <div class="free-shipping-message not-qualified">
                                     <i class="fa-solid fa-truck"></i>
-                                    <span>أضف {{600 - cartData.sumDiscountedPrice | currency:'EGP'}} أخرى للحصول على شحن مجاني</span>
+                                    <span>أضف {{600 - cartData.sumDiscountedPrice |customCurrencyPipe:'EGP'}} أخرى للحصول على شحن مجاني</span>
                                 </div>
                             }
                         </div>
