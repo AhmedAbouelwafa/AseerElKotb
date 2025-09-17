@@ -65,6 +65,8 @@ export class Auth {
             
             this.currentUser.set(user);
             localStorage.setItem('auth_token', response.data.token);
+            localStorage.setItem('user_id', response.data.id.toString());
+            localStorage.setItem('user_email', credentials.email);
             
             return { 
               success: true, 
@@ -158,6 +160,12 @@ export class Auth {
               name: `${userData.firstName} ${userData.lastName}`,
               isEmailVerified: false
             };
+            
+            // Store user data in localStorage for session persistence
+            if (user.id) {
+              localStorage.setItem('user_id', user.id.toString());
+              localStorage.setItem('user_email', user.email);
+            }
             
             return { 
               success: true, 
@@ -441,19 +449,28 @@ export class Auth {
   logout(): void {
     this.currentUser.set(null);
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_email');
   }
 
   // Initialize user from localStorage on app startup
   private initializeUserFromStorage(): void {
     const token = localStorage.getItem('auth_token');
-    if (token) {
-      // For now, just set a minimal user - you could validate token with backend here
+    const userId = localStorage.getItem('user_id');
+    const userEmail = localStorage.getItem('user_email');
+    
+    console.log('🔄 Initializing user from storage:', { token: !!token, userId, userEmail });
+    
+    if (token && userId && userEmail) {
       const user: User = {
-        id: 0, // Will be updated when user info is needed
-        email: '', // Will be updated when user info is needed
+        id: parseInt(userId, 10),
+        email: userEmail,
         token: token
       };
+      console.log('✅ User initialized from storage:', user);
       this.currentUser.set(user);
+    } else {
+      console.log('❌ Missing data in storage, user not initialized');
     }
   }
 

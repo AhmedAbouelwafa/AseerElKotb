@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, catchError } from 'rxjs';
 import { environment } from '../../../../core/configs/environment.config';
 import { IAddQuote } from '../modal model/IAddQuote';
-import { IGetAllQuota } from '../modal model/IGetAllQuota';
-import { IAddReview, IGetAllReviews } from '../modal model/IAddReview';
+import { IGetAllQuota, IGetAllReviews } from '../../../../features/user-profile/UserModels/UserModels';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,35 +17,32 @@ export class ModalService {
   // Book Details Page
 
 
-  addQuote(Comment: string, BookId?: number | null, AuthorId?: number | null, UserId: number = 1)  {
-    return this.http.post(`${this._apiBaseUrl}/Quotes/AddQuote`, {
-      AuthorId,
-      BookId,
-      UserId,
-      Comment
-    });
+  addQuote(quoteData: IAddQuote) {
+    return this.http.post(`${this._apiBaseUrl}/Quotes/AddQuote`, quoteData).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
+
 
 
 
   getAllQuotes(params: IGetAllQuota): Observable<any[]> {
+    // Per Swagger, only BookId is required for basic fetch
     let queryParams = new HttpParams();
-    if (params.AuthorId) {
-      queryParams = queryParams.set('AuthorId', params.AuthorId.toString());
-    }
     if (params.BookId) {
       queryParams = queryParams.set('BookId', params.BookId.toString());
     }
-    queryParams = queryParams.set('SearchTerm', params.SearchTerm);
-    queryParams = queryParams.set('PageNumber', params.PageNumber.toString());
-    queryParams = queryParams.set('PageSize', params.PageSize.toString());
+    if (params.AuthorId) {
+      queryParams = queryParams.set('AuthorId', params.AuthorId.toString());
+    }
 
     return this.http.get<any[]>(`${this._apiBaseUrl}/Quotes/GetAllQuotes`, {
       params: queryParams
     }).pipe(
-      map((response: any) => response.data)
+      map((response: any) => response.data || response)
     );
   }
+
 
   getQuoteById(id: number): Observable<any> {
     return this.http.get<any>(`${this._apiBaseUrl}/Quotes/${id}`);
@@ -60,7 +57,7 @@ export class ModalService {
   }
 
   // Reviews Methods
-  addReview(Comment: string, Rating: number, BookId?: number | null, AuthorId?: number | null, UserId: number = 1) {
+  addReview(Comment: string, Rating: number, UserId: number, BookId?: number | null, AuthorId?: number | null) {
     const reviewData = {
       AuthorId,
       BookId,
@@ -70,11 +67,26 @@ export class ModalService {
     };
 
     console.log('Sending review data:', reviewData);
-    console.log('API URL:', `${this._apiBaseUrl}/Reviews/`);
+    console.log('API URL:', `${this._apiBaseUrl}/Reviews`);
 
-    return this.http.post(`${this._apiBaseUrl}/Reviews/`, reviewData);
+    // Try the standard POST endpoint pattern like other APIs
+    return this.http.post(`${this._apiBaseUrl}/Reviews`, reviewData).pipe(
+      map((response: any) => {
+        console.log('Add review response:', response);
+        return response?.data || response;
+      }),
+      catchError((error: any) => {
+        console.error('Error adding review with /Reviews, trying alternative endpoint:', error);
+        // If the first endpoint fails, try with the /AddReview suffix
+        return this.http.post(`${this._apiBaseUrl}/Reviews/AddReview`, reviewData).pipe(
+          map((response: any) => {
+            console.log('Add review response (alternative):', response);
+            return response?.data || response;
+          })
+        );
+      })
+    );
   }
-
   getAllReviews(params: IGetAllReviews): Observable<any[]> {
     let queryParams = new HttpParams();
     if (params.AuthorId) {
@@ -83,7 +95,7 @@ export class ModalService {
     if (params.BookId) {
       queryParams = queryParams.set('BookId', params.BookId.toString());
     }
-    queryParams = queryParams.set('SearchTerm', params.SearchTerm);
+    queryParams = queryParams.set('Search', params.Search);
     queryParams = queryParams.set('PageNumber', params.PageNumber.toString());
     queryParams = queryParams.set('PageSize', params.PageSize.toString());
 
@@ -93,7 +105,6 @@ export class ModalService {
       map((response: any) => response.data || response)
     );
   }
-
   getReviewById(id: number): Observable<any> {
     return this.http.get<any>(`${this._apiBaseUrl}/Reviews/${id}`);
   }
@@ -102,9 +113,12 @@ export class ModalService {
     return this.http.put<any>(`${this._apiBaseUrl}/Reviews`, { id, review, rating });
   }
 
-  deleteReview(id: number): Observable<any> {
-    return this.http.delete<any>(`${this._apiBaseUrl}/Reviews`, {
-      body: { id: id }
+  deleteReview(Id: number): Observable<any> {
+    console.log('Deleting review with ID:', Id);
+    console.log('Delete API URL:', `${this._apiBaseUrl}/Reviews`);
+
+    return this.http.request<any>('delete', `${this._apiBaseUrl}/Reviews`, {
+      body: { id: Id }   // هنا بنبعت الـ Body
     });
   }
 

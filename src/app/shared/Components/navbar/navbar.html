@@ -47,7 +47,7 @@
 
         <!-- أيقونات المستخدم والقائمة المنسدلة -->
         <div class="d-flex align-items-center gap-3">
-          <button class="btn p-0" *ngIf="isAuthenticated()">
+          <button class="btn p-0" *ngIf="isAuthenticated()" (click)="goToProfile()">
             <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
 
             <ul class="dropdown-menu-custom">

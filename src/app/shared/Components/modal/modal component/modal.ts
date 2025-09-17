@@ -1,9 +1,10 @@
 // modal.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../modal service/modal-service';
 import { TranslateModule , TranslateService } from '@ngx-translate/core';
+import { Auth } from '../../../../services/auth';
 
 
 
@@ -15,13 +16,15 @@ declare var bootstrap: any;
   templateUrl: './modal.html',
   styleUrl: './modal.css'
 })
-export class Modal {
+export class Modal implements OnInit {
   @ViewChild('quoteModal') quoteModalRef!: ElementRef;
 
   quoteText: string = '';
   reviewText: string = '';
   rating: number = 5;
   errorMsg = '';
+
+  userId!: number;
 
   @Input() title: string = '';
   @Input() bookId: number = 0;
@@ -32,15 +35,34 @@ export class Modal {
 
   modalInstance: any;
 
-  constructor(private modalService: ModalService , private translate: TranslateService)
+  constructor(
+    private modalService: ModalService,
+    private translate: TranslateService,
+    private auth: Auth
+  )
   {
     this.translate.get(['modal.quote', 'modal.here']).subscribe(translations => {
       console.log("translations",translations);
     });
   }
 
+  ngOnInit() {
+    // Initialize current user ID if available
+    const currentUser = this.auth.user();
+    if (currentUser && currentUser.id) {
+      this.userId = currentUser.id;
+      console.log('Using current user ID:', this.userId);
+    } else {
+      console.warn('No current user ID found');
+      this.userId = 0;
+    }
+  }
+
   openModal() {
     this.modalInstance = new bootstrap.Modal(this.quoteModalRef.nativeElement);
+    // Refresh current user on each open
+    const currentUser = this.auth.user();
+    this.userId = currentUser?.id || 0;
     this.modalInstance.show();
   }
 
@@ -49,12 +71,15 @@ export class Modal {
   }
 
   saveQuote() {
-    console.log('saveQuote called with title:', this.title);
-    console.log('quoteText:', this.quoteText);
-    console.log('bookId:', this.bookId);
-
+    // Ensure user is authenticated
+    const currentUser = this.auth.user();
+    this.userId = currentUser?.id || 0;
+    if (!this.userId) {
+      this.errorMsg = 'يجب تسجيل الدخول لإضافة اقتباس';
+      return;
+    }
     if (!this.quoteText.trim()) {
-      this.errorMsg = `مطلوب كتابة ال${this.title}`;
+      this.errorMsg = 'الرجاء إدخال نص الاقتباس';
       return;
     }
 
@@ -65,14 +90,20 @@ export class Modal {
 
     this.errorMsg = '';
 
-    this.modalService.addQuote(
-      this.quoteText.trim(),
-      this.bookId,
-      this.authorId,
-      1
-    ).subscribe({
-      next: (response) => {
+    const quoteData = {
+      Comment: this.quoteText.trim(),
+      BookId: this.bookId || null,
+      AuthorId: this.authorId || null,
+      UserId: this.userId
+    };
+
+    this.modalService.addQuote(quoteData).subscribe({
+      next: (response: any) => {
         console.log('Quote added successfully:', response);
+        // Update the user ID from the response if available
+        if (response && response.userId) {
+          this.userId = response.userId;
+        }
         this.quoteAdded.emit(response);
         this.quoteText = '';
         this.closeModal();
@@ -82,7 +113,7 @@ export class Modal {
         if (error.error && error.error.errors) {
           console.log('Validation errors:', error.error.errors);
         }
-        this.errorMsg = 'فيه مشكلة في إضافة الاقتباس، جرب تاني!';
+        this.errorMsg = 'مينفعش تضيف اكتر من ريفيو واحد';
       }
     });
   }
@@ -92,6 +123,14 @@ export class Modal {
     console.log('reviewText:', this.reviewText);
     console.log('rating:', this.rating);
     console.log('bookId:', this.bookId);
+
+    // Ensure user is authenticated
+    const currentUser = this.auth.user();
+    this.userId = currentUser?.id || 0;
+    if (!this.userId) {
+      this.errorMsg = 'يجب تسجيل الدخول لإضافة مراجعة';
+      return;
+    }
 
     if (!this.reviewText.trim()) {
       this.errorMsg = `مطلوب كتابة ال${this.title}`;
@@ -113,12 +152,16 @@ export class Modal {
     this.modalService.addReview(
       this.reviewText.trim(),
       this.rating,
+      this.userId,
       this.bookId,
-      this.authorId,
-      1
+      this.authorId
     ).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('Review added successfully:', response);
+        // Update the user ID from the response if available
+        if (response && response.userId) {
+          this.userId = response.userId;
+        }
         this.reviewAdded.emit(response);
         this.reviewText = '';
         this.rating = 5;
@@ -137,10 +180,14 @@ export class Modal {
         if (error.error && error.error.message) {
           this.errorMsg = error.error.message;
         } else {
-          this.errorMsg = 'فيه مشكلة في إضافة التقييم، جرب تاني!';
+          this.errorMsg = 'مينفعش تضيف اكتر من ريفيو واحد!';
         }
       }
     });
+
+
+
+
   }
 
   setRating(rating: number) {

@@ -19,20 +19,19 @@
         [class.active]="activeTab === 'reviews'"
         (click)="selectTab('reviews')">
         <span> <i class="fa-solid fa-book-bookmark text-primary"></i> {{ 'reviewWithComments.reviews' | translate}}</span>
-        <span>5</span>
+        <span>{{reviews.length}}</span>
       </button>
 
       <button
         [class.active]="activeTab === 'quotes'"
         (click)="selectTab('quotes')">
         <span> <i class="fas fa-quote-right text-success"></i> {{ 'reviewWithComments.quotes' | translate}}</span>
-        <span>5</span>
+        <span>{{quotes.length}}</span>
       </button>
-
-
     </div>
 
     <div class="tab-content">
+      <!-- Reviews -->
       <div *ngIf="activeTab === 'reviews'">
         <div class="reviews-container">
 
@@ -72,7 +71,14 @@
           <div class="reviews-list">
             @if(reviews && reviews.length > 0){
               @for (review of reviews; track $index) {
-                <app-review-reply [review]="review.comment" [rating]="review.rating" (delete)="deleteReview(review.id || $index)"></app-review-reply>
+                <app-review-reply
+                  [review]="review.comment"
+                  [rating]="review.rating"
+                  [userName]="review.userName"
+                  [userId]="review.userId"
+                  [preferInputUserName]="isCurrentUser(review.userId)"
+                  (delete)="deleteReview(review.id || $index)">
+                </app-review-reply>
               }
             }
             @else {
@@ -81,15 +87,21 @@
               </div>
             }
           </div>
-
         </div>
       </div>
 
+      <!-- Quotes -->
       <div *ngIf="activeTab === 'quotes'" class="quotes-container">
         @if(book && book.id){
           <app-modal title="{{ 'reviewWithComments.quote' | translate}}" #addQuoteBtn [bookId]="book.id" (quoteAdded)="onQuoteAdded($event)"></app-modal>
           @for (quote of quotes; track quote.id) {
-            <app-user-reply [quote]="quote.comment" (delete)="deleteQuote(quote.id)"></app-user-reply>
+            <app-user-reply
+              [quote]="quote.text || quote.comment"
+              [userName]="quote.userName"
+              [userId]="quote.userId"
+              [preferInputUserName]="isCurrentUser(quote.userId)"
+              (delete)="deleteQuote(quote.id)">
+            </app-user-reply>
           }
         }
         @else {
@@ -97,6 +109,7 @@
         }
       </div>
 
+      <!-- Readers -->
       <div *ngIf="activeTab === 'readers'" class="pt-2 d-flex justify-content-center align-items-center">
         <div class="alert">
           {{ 'reviewWithComments.noReaders' | translate}}
@@ -104,5 +117,4 @@
       </div>
     </div>
   </div>
-
 </div>
