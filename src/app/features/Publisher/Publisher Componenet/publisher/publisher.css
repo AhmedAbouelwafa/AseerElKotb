@@ -32,16 +32,11 @@ box-sizing: border-box;
     font-weight: bold;
     color:black;
     background-color: #b2bdc8;
-    padding-inline: 3.5rem;
+    padding-inline: 1rem;
     border-radius:7px;
     border:none;
 }
-/*why not work*/
-#followBtn.followed {
-  background-color: #28a745;
-  color: white;
-  border-color: #28a745;
-}
+
 #followBtn span{
     display: block;
 }
@@ -49,6 +44,16 @@ box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+/*why not work*/
+#followBtn.followed {
+  background-color: #28a745 !important;
+  color: white !important;
+  border-color: #28a745 !important;
+}
+#followBtn.followed i {
+  color: rgb(209, 207, 207) !important;
+  font-size: large;
 }
 #Fcontainer button:hover{
     background-color: #76808b;

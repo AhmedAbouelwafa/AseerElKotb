@@ -13,7 +13,7 @@ import { CustomCurrencyPipePipe } from '../../../Pipe/CurrencyPipe/custom-curren
   selector: 'app-cart',
   standalone:true,
   imports: [NavCrumb,RouterLink,RouterLinkActive,CustomCurrencyPipePipe,FormsModule],
-   providers: [CurrencyPipe],
+  providers: [CurrencyPipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css'
 })

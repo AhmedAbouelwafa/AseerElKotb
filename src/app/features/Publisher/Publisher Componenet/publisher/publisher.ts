@@ -84,11 +84,48 @@ GetPublisher(id:number){
 
 
 
+// isFollow(){
+//   this.publisherServices.isFollowPublisher(this.publisherId).subscribe({
+//     next:(response)=>{
+//       this.isFollowing=response.data.isFollow
+//       console.log(response.data.isFollow)
+//     },
+//     error:(err)=>{
+//      console.error('API error:', err);
+//      console.log("error to fetch data")
+//     }
+//   })
+// }
+
+// toggleFollow(): void {
+//   if (this.isFollowing) {
+//     this.publisherServices.unfollowPublisher(this.publisherId).subscribe({
+//       next: (response) => {
+//         this.isFollowing = false;
+//         this.PublisherFollowerCount--;  
+//       },
+//       error: (err) => {
+//         console.error('Failed to unfollow', err);
+//       }
+//     });
+//   } else {
+//     this.publisherServices.followPublisher(this.publisherId).subscribe({
+//       next: (response) => {
+//         this.isFollowing = true;
+//         this.PublisherFollowerCount++;
+//       },
+//       error: (err) => {
+//         console.error('Failed to follow', err);
+//       }
+//     });
+//   }
+// }
+
 isFollow(){
-  this.publisherServices.isFollowPublisher(this.userId,this.publisherId).subscribe({
+  this.publisherServices.isFollowPublisher(this.publisherId).subscribe({
     next:(response)=>{
       this.isFollowing=response.data.isFollow
-      console.log(response.data.isFollow)
+      console.log('console.log(this.isFollow())',response.data.isFollow)
     },
     error:(err)=>{
      console.error('API error:', err);
@@ -99,28 +136,34 @@ isFollow(){
 
 toggleFollow(): void {
   if (this.isFollowing) {
-    this.publisherServices.unfollowPublisher(this.userId, this.publisherId).subscribe({
+    this.publisherServices.unfollowPublisher(this.publisherId).subscribe({
       next: (response) => {
         this.isFollowing = false;
         this.PublisherFollowerCount--;  
       },
       error: (err) => {
         console.error('Failed to unfollow', err);
+        // Refresh the follow status to ensure UI is in sync
+        this.isFollow();
       }
     });
   } else {
-    this.publisherServices.followPublisher(this.userId, this.publisherId).subscribe({
+    this.publisherServices.followPublisher(this.publisherId).subscribe({
       next: (response) => {
         this.isFollowing = true;
         this.PublisherFollowerCount++;
       },
       error: (err) => {
         console.error('Failed to follow', err);
+        // If already following, sync the UI state
+        if (err.status === 400 && err.error?.message?.includes('already following')) {
+          this.isFollowing = true;
+          this.isFollow(); // Refresh to get actual count
+        }
       }
     });
   }
 }
-
 
 getBooksPublisherId(): void {
   const filterRequest: FilterBooksRequest = {

@@ -10,13 +10,15 @@
             <h3>{{publisher?.name}}</h3>
             <p>{{ publisher?.description }}</p>
 
-             <button id="followBtn" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
+            <button id="followBtn" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
                 <span>{{ isFollowing ? 'إلغاء المتابعة' : 'متابعة' }}</span>
-                @if (!isFollowing) {
-                <span><i class="fa-solid fa-plus"></i></span>
-                } @else {
-                <span><i class="fa-solid fa-check"></i></span>
-                }
+                <i
+                    [class]="
+                        isFollowing
+                        ? 'fa-solid fa-check-circle'
+                        : 'fa-solid fa-circle-plus'
+                    ">
+                </i>
             </button>
         </div>
     </div>
