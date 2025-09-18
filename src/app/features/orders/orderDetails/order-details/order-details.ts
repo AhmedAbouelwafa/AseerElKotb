@@ -2,16 +2,17 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/nav-crumb';
 import { OrderService } from '../../../../services/order.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import {  CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { BookDTO, GetUserOrderByTrackingNumberResponse, OrderStatus } from '../../../../models/order-interfaces';
-import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 import { PaymentMethod } from '../../../../models/payment-method.enum';
 import { environment } from '../../../../core/configs/environment.config';
+import { CustomCurrencyPipePipe } from '../../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 
 @Component({
   selector: 'app-order-details',
   standalone:true,
-  imports: [[NavCrumb, RouterModule, DatePipe, CommonModule]],
+  imports: [NavCrumb, RouterModule, DatePipe,CommonModule,CustomCurrencyPipePipe],
+  providers: [CurrencyPipe],
   templateUrl: './order-details.html',
   styleUrl: './order-details.css'
 })
@@ -39,24 +40,7 @@ export class OrderDetails implements OnInit {
         this.loadData();
       }
  }
-  //   loadData(){
-  //   this.orderService.getOrderByTrackingNumber(this.trackingNumber).subscribe({
-  //     next: (response) => {
-  //       this.order = response.data;
-  //       this.currentStatus = response.orderStatus as OrderStatus;
-        
-  //       this.breadcrumbs = [
-  //         { name: 'الملف الشخصي', path: '/user-profile' },
-  //         { name: ' الطلبات ', path: '/Orders' },
-  //         { name: response.trackingNumber , path: `#` }
-  //       ];
-  //       console.log('order response', response);
-  //     },
-  //     error: (error) => {
-  //       console.error('Error loading orders:', error);
-  //     }
-  //   });
-  // }
+
   loadData() {
     this.orderService.getOrderByTrackingNumber(this.trackingNumber).subscribe({
       next: (response) => {

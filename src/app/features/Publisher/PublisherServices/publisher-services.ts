@@ -1,8 +1,9 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPublisher, PublishersResponse } from '../Publisher Interfaces/publisher-interfaces';
 import { environment } from '../../../core/configs/environment.config';
+import { Auth } from '../../../services/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class PublisherServices {
  
   private apiUrl = environment.apiBaseUrl + '/Publishers';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private authService: Auth) { }
 
   getPublishers(pageNumber: number = 1, pageSize: number = 150, search: string = ''): Observable<PublishersResponse> {
     let params = new HttpParams()
@@ -37,23 +38,49 @@ export class PublisherServices {
     .get<{ followerCount: any}>(`${this.apiUrl}/GetPublisherFollowerCount`, { params: { PublisherId: PublisherId.toString() } })
   }
 
-followPublisher(userId: number, publisherId: number): Observable<any> {
-  const body = { UserId: userId, PublisherId: publisherId };
-  return this.http.post<any>(`${this.apiUrl}/FollowPublisher`, body);
-}
- unfollowPublisher(userId: number, publisherId: number): Observable<any> {
-    const body= { userId, publisherId };
+followPublisher(publisherId: number): Observable<any> {
+    const body = { publisherId: publisherId };
+    return this.http.post<any>(`${this.apiUrl}/FollowPublisher`, body);
+  }
+
+  unfollowPublisher(publisherId: number): Observable<any> {
+    const body = { PublisherId: publisherId };
     return this.http.delete<any>(`${this.apiUrl}/UnFollowPublisher`, { body });
   }
 
 
-  isFollowPublisher(userId: number, publisherId: number): Observable<any> {
+  isFollowPublisher(publisherId: number): Observable<any> {
   const params = new HttpParams()
-    .set('UserId', userId.toString())
     .set('PublisherId', publisherId.toString());
   
   return this.http.get<any>(`${this.apiUrl}/IsFollowing`, { params });
 }
+
+// followPublisher(publisherId: number): Observable<any> {
+//     const body = { publisherId: publisherId }; // Use lowercase
+//     const headers = new HttpHeaders({
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${this.authService.user()?.token}`
+//     });
+//     return this.http.post<any>(`${this.apiUrl}/FollowPublisher`, body, { headers });
+//   }
+
+//   unfollowPublisher(publisherId: number): Observable<any> {
+//     const body = { publisherId: publisherId }; // Use lowercase
+//     const headers = new HttpHeaders({
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${this.authService.user()?.token}`
+//     });
+//     return this.http.delete<any>(`${this.apiUrl}/UnFollowPublisher`, { headers, body });
+//   }
+
+//   isFollowPublisher(publisherId: number): Observable<any> {
+//     const params = new HttpParams().set('publisherId', publisherId.toString()); // Use lowercase
+//     const headers = new HttpHeaders({
+//       'Authorization': `Bearer ${this.authService.user()?.token}`
+//     });
+//     return this.http.get<any>(`${this.apiUrl}/IsFollowing`, { headers, params });
+//   }
 
 // getAuthorRelatedToPublisher(publisherId: number): Observable<any> {
 //     const params = new HttpParams().set('publisherId', publisherId.toString());

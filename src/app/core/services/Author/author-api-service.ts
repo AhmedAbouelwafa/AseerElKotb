@@ -34,5 +34,23 @@ export class AuthorApiService {
     return this.http.get<{ data: GetAutherFollowerCountResponse }>(`${this.baseUrl}/Authors/GetAutherFollowerCount`, { params })
       .pipe(map(response => response.data));
   }
+//////////////////////////////////////////////////////////////////////
+  followAuthor(authorId: number): Observable<any> {
+      const body = { authorId: authorId };
+      return this.http.post<any>(`${this.baseUrl}/Authors/FollowAuthor`, body);
+  }
+
+    unfollowAuthor(authorId: number): Observable<any> {
+      const body = { authorId: authorId };
+      return this.http.delete<any>(`${this.baseUrl}/Authors/UnFollowAuthor`, { body });
+    }
+
+
+    isFollowAuthor(authorId: number): Observable<any> {
+    const params = new HttpParams()
+      .set('authorId', authorId.toString());
+    
+    return this.http.get<any>(`${this.baseUrl}/Authors/IsFollowing`, { params });
+  }
 }
 

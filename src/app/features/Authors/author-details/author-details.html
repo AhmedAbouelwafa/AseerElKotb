@@ -22,6 +22,7 @@
   class="author-page"
   *ngIf="author && !loading && !error"
 >
+<app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
   <div class="author-content">
     <div class="author-info">
       <div class="author-image-container">
@@ -71,9 +72,9 @@
           </div>
 
           <div class="stat-item">
-            <button class="custom-button" (click)="toggleFollow()">
+            <button class="custom-button" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
               <span class="text">{{ isFollowing ? "متابع" : "متابعة" }}</span>
-              <span class="count">({{ followersCount }})</span>
+              <span class="count">({{ AuthorFollowerCount }})</span>
               <span class="icon">
                 <i
                   [class]="
@@ -264,7 +265,7 @@
           </svg>
           يتابعونني
         </span>
-        <span class="tab-count">{{ followersCount }}</span>
+        <span class="tab-count">{{ AuthorFollowerCount }}</span>
       </button>
     </div>
 

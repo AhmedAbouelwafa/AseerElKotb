@@ -7,10 +7,13 @@ import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../core/configs/environment.config';
 import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
+import { CustomCurrencyPipePipe } from '../../../Pipe/CurrencyPipe/custom-currency-pipe-pipe';
 
 @Component({
   selector: 'app-cart',
-  imports: [NavCrumb,RouterLink,RouterLinkActive,CurrencyPipe,FormsModule],
+  standalone:true,
+  imports: [NavCrumb,RouterLink,RouterLinkActive,CustomCurrencyPipePipe,FormsModule],
+  providers: [CurrencyPipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css'
 })

@@ -11,14 +11,23 @@ import { AddItemToCartRequest } from '../../Cart/CartInterfaces/cart-interfaces'
 import { Auth } from '../../../services/auth';
 import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 import { BookCard } from '../../products/card-componenet/book-card/book-card';
+import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 
 @Component({
   selector: 'app-author-details',
-  imports: [BookCard,CommonModule, RouterLink], 
+  imports: [BookCard,CommonModule, RouterLink,NavCrumb], 
   templateUrl: './author-details.html',
   styleUrl: './author-details.css'
 })
 export class AuthorDetails implements OnInit, OnDestroy {
+
+breadcrumbs: NavcrumbItem[] = [
+    { name: 'المؤلفون', path: '/allAuthors' },
+    { name: '', path: '#' },
+  ];
+
+  AuthorFollowerCount:number=0;
+  authorId: number =1;
   author: IAuthor | null = null;
   Books: any[] = [];
   baseUrl = environment.apiUrl;
@@ -184,6 +193,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
   private loadAuthorData(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
+
     if (!id || isNaN(id)) {
       this.error = 'معرف الكاتب غير صحيح';
       this.loading = false;
@@ -193,6 +203,7 @@ export class AuthorDetails implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
 
+    this.authorId = id; // Assign the authorId here
     this.authorService.getAuthorById(id)
       .pipe(
         takeUntil(this.destroy$),
@@ -202,10 +213,22 @@ export class AuthorDetails implements OnInit, OnDestroy {
         next: (author) => {
           this.author = author;
           this.Books = author.books || [];///////////////////////////////////////added
+          this.breadcrumbs[1].name = author.name; 
           // Set page title
           if (typeof document !== 'undefined') {
             document.title = `${author.name} - عصير الكتب`;
           }
+          // Fetch follower count
+         this.authorService.getAuthorFollowerCount(author.id).subscribe({
+          next:(res)=>{
+            this.AuthorFollowerCount=res.followerCount;
+          },
+          error: (err) => {
+            console.error('API error:', err);
+            console.log("error to fetch data")
+          }});
+
+          this.isFollow(); 
         },
         error: (error) => {
           console.error('Error loading author:', error);
@@ -213,7 +236,6 @@ export class AuthorDetails implements OnInit, OnDestroy {
         }
       });
   }
-
   /**
    * تغيير التاب النشط
    */
@@ -355,16 +377,16 @@ export class AuthorDetails implements OnInit, OnDestroy {
   /**
    * متابعة أو إلغاء متابعة الكاتب
    */
-  toggleFollow(): void {
-    if (!this.author) return;
+  // toggleFollow(): void {
+  //   if (!this.author) return;
 
-    this.isFollowing = !this.isFollowing;
+  //   this.isFollowing = !this.isFollowing;
 
-    // يمكنك إضافة منطق متابعة الكاتب هنا
-    // this.authorService.followAuthor(this.author.id).subscribe(...)
+  //   // يمكنك إضافة منطق متابعة الكاتب هنا
+  //   // this.authorService.followAuthor(this.author.id).subscribe(...)
 
-    console.log(`${this.isFollowing ? 'Following' : 'Unfollowing'} author:`, this.author.name);
-  }
+  //   console.log(`${this.isFollowing ? 'Following' : 'Unfollowing'} author:`, this.author.name);
+  // }
 
   /**
    * الحصول على عدد المراجعات
@@ -376,9 +398,9 @@ export class AuthorDetails implements OnInit, OnDestroy {
   /**
    * الحصول على عدد المتابعين
    */
-  get followersCount(): number {
-    return this.author?.followers?.length || this.staticFollowers.length;
-  }
+  // get followersCount(): number {
+  //   return this.author?.followers?.length || this.staticFollowers.length;
+  // }
 
   /**
    * الحصول على عدد الكتب
@@ -449,4 +471,51 @@ export class AuthorDetails implements OnInit, OnDestroy {
   trackByFollowerId(index: number, follower: any): number {
     return follower.id;
   }
+
+
+  ///////////////////////////////////////////////////////////
+isFollow(){
+  this.authorService.isFollowAuthor(this.authorId).subscribe({
+    next:(response)=>{
+      this.isFollowing=response.data.isFollow
+      console.log(response.data.isFollow)
+    },
+    error:(err)=>{
+     console.error('API error:', err);
+     console.log("error to fetch data")
+    }
+  })
+}
+
+toggleFollow(): void {
+  if (this.isFollowing) {
+    this.authorService.unfollowAuthor(this.authorId).subscribe({
+      next: (response) => {
+        this.isFollowing = false;
+        this.AuthorFollowerCount--;  
+      },
+      error: (err) => {
+        console.error('Failed to unfollow', err);
+        // Refresh the follow status to ensure UI is in sync
+        this.isFollow();
+      }
+    });
+  } else {
+    this.authorService.followAuthor(this.authorId).subscribe({
+      next: (response) => {
+        this.isFollowing = true;
+        this.AuthorFollowerCount++;
+      },
+      error: (err) => {
+        console.error('Failed to follow', err);
+        // If already following, sync the UI state
+        if (err.status === 400 && err.error?.message?.includes('already following')) {
+          this.isFollowing = true;
+          this.isFollow(); // Refresh to get actual count
+        }
+      }
+    });
+  }
+}
+
 }
