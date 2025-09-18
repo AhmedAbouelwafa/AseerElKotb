@@ -326,7 +326,7 @@ export class BookDetails implements OnInit , AfterViewInit {
   loadReviews(bookId: number) {
     this.modalService.getAllReviews({
       BookId: bookId,
-      SearchTerm: '',
+      Search: '',
       PageNumber: 1,
       PageSize: 10
     }).subscribe({

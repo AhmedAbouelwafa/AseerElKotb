@@ -1,0 +1,215 @@
+<div class="pt-2 mt-5 mb-4">
+  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+</div>
+
+<div class="account-settings-container">
+  <!-- Header -->
+  <div class="settings-header">
+    <h1 class="page-title">إعدادات الحساب</h1>
+    <p class="page-subtitle">قم بتحديث معلومات ملفك الشخصي وبياناتك الأساسية</p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">جاري التحميل...</span>
+      </div>
+      <p class="loading-text">جاري تحميل بيانات الملف الشخصي...</p>
+    </div>
+  } @else {
+    <!-- Settings Form -->
+    <div class="settings-card">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="settings-form">
+        
+        <!-- Personal Information Section -->
+        <div class="form-section">
+          <h3 class="section-title">المعلومات الشخصية</h3>
+          
+          <div class="row">
+            <!-- First Name -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="firstName" class="form-label">الاسم الأول</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="firstNameError()"
+                  formControlName="firstName"
+                  placeholder="أدخل اسمك الأول"
+                  (focus)="onInputFocus($event, 'firstName')"
+                  (input)="onInputChange($event, 'firstName')"
+                  style="direction: rtl; text-align: right;"
+                >
+                @if (firstNameError()) {
+                  <div class="invalid-feedback">{{ firstNameError() }}</div>
+                }
+              </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lastName" class="form-label">اسم العائلة</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  class="form-control"
+                  [class.is-invalid]="lastNameError()"
+                  formControlName="lastName"
+                  placeholder="أدخل اسم العائلة"
+                  (focus)="onInputFocus($event, 'lastName')"
+                  (input)="onInputChange($event, 'lastName')"
+                  style="direction: rtl; text-align: right;"
+                >
+                @if (lastNameError()) {
+                  <div class="invalid-feedback">{{ lastNameError() }}</div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Email (Read-only) -->
+          <div class="form-group">
+            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <input
+              id="email"
+              type="email"
+              class="form-control"
+              [value]="profileData()?.email || auth.user()?.email || ''"
+              readonly
+              style="direction: ltr; text-align: left; background-color: #f8f9fa;"
+            >
+            <small class="text-muted">
+              <i class="bi bi-info-circle"></i>
+              لا يمكن تغيير البريد الإلكتروني
+            </small>
+          </div>
+          
+          <!-- Date of Birth -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="dateOfBirth" class="form-label">تاريخ الميلاد</label>
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  class="form-control"
+                  formControlName="dateOfBirth"
+                  style="direction: ltr;"
+                >
+              </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="gender" class="form-label">النوع</label>
+                <select
+                  id="gender"
+                  class="form-control"
+                  formControlName="gender"
+                  style="direction: rtl; text-align: right;"
+                >
+                  <option value="">اختر النوع</option>
+                  <option [value]="Gender.Male">ذكر</option>
+                  <option [value]="Gender.Female">أنثى</option>
+                  <option [value]="Gender.PreferNotToSay">أفضل عدم القول</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nationality -->
+          <div class="form-group">
+            <label for="nationality" class="form-label">الجنسية</label>
+            <input
+              id="nationality"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="nationalityError()"
+              formControlName="nationality"
+              placeholder="أدخل جنسيتك"
+              (focus)="onInputFocus($event, 'nationality')"
+              (input)="onInputChange($event, 'nationality')"
+              style="direction: rtl; text-align: right;"
+            >
+            @if (nationalityError()) {
+              <div class="invalid-feedback">{{ nationalityError() }}</div>
+            }
+          </div>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="form-section">
+          <h3 class="section-title">نبذة عني</h3>
+          
+          <div class="form-group">
+            <label for="bio" class="form-label">النبذة الشخصية</label>
+            <textarea
+              id="bio"
+              class="form-control"
+              [class.is-invalid]="bioError()"
+              formControlName="bio"
+              rows="4"
+              placeholder="اكتب نبذة عن نفسك..."
+              (focus)="onInputFocus($event, 'bio')"
+              (input)="onInputChange($event, 'bio')"
+              style="direction: rtl; text-align: right; resize: vertical;"
+            ></textarea>
+            @if (bioError()) {
+              <div class="invalid-feedback">{{ bioError() }}</div>
+            }
+            <small class="text-muted">
+              الحد الأقصى: 500 حرف
+            </small>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="profileForm.invalid || isSaving()"
+          >
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              جاري الحفظ...
+            } @else {
+              <i class="bi bi-check-circle me-2"></i>
+              حفظ التغييرات
+            }
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onCancel()"
+            [disabled]="isSaving()"
+          >
+            <i class="bi bi-x-circle me-2"></i>
+            إلغاء
+          </button>
+        </div>
+
+        <!-- Success Message -->
+        @if (successMessage()) {
+          <div class="alert alert-success mt-3" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ successMessage() }}
+          </div>
+        }
+
+        <!-- Error Message -->
+        @if (errorMessage()) {
+          <div class="alert alert-danger mt-3" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ errorMessage() }}
+          </div>
+        }
+      </form>
+    </div>
+  }
+</div>

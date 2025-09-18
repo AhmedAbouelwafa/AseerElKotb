@@ -1,4 +1,5 @@
 export interface IAddReview {
+
   AuthorId?: number | null;
   BookId?: number | null;
   UserId: number;
@@ -7,6 +8,7 @@ export interface IAddReview {
 }
 
 export interface IGetAllReviews {
+
   AuthorId?: number;
   BookId?: number;
   SearchTerm: string;

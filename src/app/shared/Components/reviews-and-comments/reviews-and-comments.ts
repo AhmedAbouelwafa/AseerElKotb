@@ -1,4 +1,3 @@
-// reviews-and-comments.component.ts
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Ibook } from '../../../features/products/book-model/Ibook';
 import { CommonModule } from '@angular/common';
@@ -16,10 +15,9 @@ import { ToastService } from '../toast-notification/toast-notification';
   styleUrl: './reviews-and-comments.css'
 })
 export class ReviewsAndComments implements OnChanges, OnInit {
-  @Input() book !: Ibook | null;
-  @Input() bookId !: number;
+  @Input() book!: Ibook | null;
+  @Input() bookId!: number;
 
-  // Static data for rating percentage calculation
   staticReviews = [
     { rating: 5, comment: 'ممتاز' },
     { rating: 4, comment: 'جيد' },
@@ -35,9 +33,15 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   totalReviews = 0;
   averageRating = 0;
 
-  activeTab: string = 'quotes';
+  userNameother: string = '';
 
-  constructor(private api: ModalService, private translate: TranslateService, private toastService: ToastService) {}
+  activeTab: string = 'reviews';
+
+  constructor(
+    private api: ModalService,
+    private translate: TranslateService,
+    private toastService: ToastService
+  ) {}
 
   getRatingPercentage(level: number): number {
     const count = this.reviews.filter(r => r.rating === level).length;
@@ -71,12 +75,20 @@ export class ReviewsAndComments implements OnChanges, OnInit {
     }
   }
 
+  isCurrentUser(userId?: number): boolean {
+    try {
+      const storedId = localStorage.getItem('user_id');
+      const currentId = storedId ? parseInt(storedId, 10) : 0;
+      return !!userId && currentId > 0 && Number(userId) === currentId;
+    } catch {
+      return false;
+    }
+  }
+
   deleteQuote(quoteId: number) {
     this.api.deleteQuote(quoteId).subscribe({
       next: () => {
-        // امسح من الـ quotes array
         this.quotes = this.quotes.filter(quote => quote.id !== quoteId);
-        // امسح من الـ allAddedQuotes كمان
         this.allAddedQuotes = this.allAddedQuotes.filter(quote => quote.id !== quoteId);
         console.log('Quote deleted successfully');
       },
@@ -89,17 +101,53 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   onQuoteAdded(newQuote: any) {
     console.log('New quote received:', newQuote);
 
-
     if (newQuote && newQuote.id) {
-
-      this.quotes.unshift(newQuote);
-      this.allAddedQuotes.unshift(newQuote);
-
+      // Fix the mapping: comment should be the quote text, not the user name
+      const mapped = {
+        ...newQuote,
+        // For newly added quotes, backend should echo comment as the text
+        text: newQuote.comment || newQuote.text || newQuote.userName || '',
+        // Always trust userId and re-resolve the name in the child component
+        userId: newQuote.userId,
+        userName: ''
+      };
+      console.log('Mapped new quote:', mapped);
+      this.quotes.unshift(mapped);
+      this.allAddedQuotes.unshift(mapped);
       console.log('Updated quotes:', this.quotes);
+
+      // Switch to quotes tab and scroll to quotes section
+      this.activeTab = 'quotes';
+
+      // Wait for DOM to update then scroll
+      setTimeout(() => {
+        this.scrollToQuotes();
+      }, 100);
     } else {
       console.error('Invalid quote structure:', newQuote);
-
       this.loadQuotes(this.bookId);
+    }
+  }
+
+  private scrollToQuotes() {
+    // Try to find the quotes section and scroll to it
+    const quotesSection = document.querySelector('.quotes-container');
+    if (quotesSection) {
+      quotesSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    } else {
+      // Fallback: scroll to the reviews-and-comments component
+      const reviewsAndCommentsSection = document.querySelector('.reviewsAndComments');
+      if (reviewsAndCommentsSection) {
+        reviewsAndCommentsSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
     }
   }
 
@@ -111,9 +159,30 @@ export class ReviewsAndComments implements OnChanges, OnInit {
       PageSize: 10
     }).subscribe({
       next: (data) => {
-        this.quotes = data || [];
-        this.allAddedQuotes = [...(data || [])];
-        console.log('Loaded quotes:', this.quotes);
+        console.log('Raw API response:', data);
+
+        const mappedQuotes = (data || []).map(quote => {
+          console.log('Processing quote:', quote);
+          // Some backend responses have quote text in userName and user name in comment
+          // Heuristic: if userName looks like a real sentence (not purely digits), prefer it for text
+          const userNameField: string = (quote.userName || '').toString().trim();
+          const commentField: string = (quote.comment || '').toString().trim();
+          const userNameLooksLikeText = userNameField.length > 1 && !/^\d+$/.test(userNameField);
+
+          const mapped = {
+            ...quote,
+            text: userNameLooksLikeText ? userNameField : commentField,
+            // Ignore backend userName for display; resolve via userId in child
+            userName: '',
+            userId: quote.userId
+          };
+          console.log('Mapped quote:', mapped);
+          return mapped;
+        });
+
+        this.quotes = mappedQuotes;
+        this.allAddedQuotes = [...mappedQuotes];
+        console.log('Mapped quotes:', this.quotes);
       },
       error: (error) => {
         console.error('Error fetching quotes:', error);
@@ -126,7 +195,7 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   loadReviews(bookId: number) {
     this.api.getAllReviews({
       BookId: bookId,
-      SearchTerm: '',
+      Search: '',
       PageNumber: 1,
       PageSize: 10
     }).subscribe({
@@ -135,6 +204,9 @@ export class ReviewsAndComments implements OnChanges, OnInit {
         this.allAddedReviews = [...(data || [])];
         this.calculateAverageRating();
         console.log('Loaded reviews:', this.reviews);
+        this.userNameother = this.reviews[0].userName;
+        console.log('userNameother:', this.userNameother);
+
       },
       error: (error) => {
         console.error('Error fetching reviews:', error);
@@ -147,7 +219,6 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   }
 
   deleteReview(reviewId: number | string) {
-    // If it's a string (index), just remove from array
     if (typeof reviewId === 'string') {
       const index = parseInt(reviewId);
       this.reviews.splice(index, 1);
@@ -156,7 +227,6 @@ export class ReviewsAndComments implements OnChanges, OnInit {
       return;
     }
 
-    // If it's a number (actual ID), call API
     this.api.deleteReview(reviewId).subscribe({
       next: () => {
         this.reviews = this.reviews.filter(review => review.id !== reviewId);
@@ -178,9 +248,39 @@ export class ReviewsAndComments implements OnChanges, OnInit {
       this.allAddedReviews.unshift(newReview);
       this.calculateAverageRating();
       console.log('Updated reviews:', this.reviews);
+
+      // Switch to reviews tab and scroll to reviews section
+      this.activeTab = 'reviews';
+
+      // Wait for DOM to update then scroll
+      setTimeout(() => {
+        this.scrollToReviews();
+      }, 100);
     } else {
       console.error('Invalid review structure:', newReview);
       this.loadReviews(this.bookId);
+    }
+  }
+
+  private scrollToReviews() {
+    // Try to find the reviews section and scroll to it
+    const reviewsSection = document.querySelector('.reviews-container');
+    if (reviewsSection) {
+      reviewsSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    } else {
+      // Fallback: scroll to the reviews-and-comments component
+      const reviewsAndCommentsSection = document.querySelector('.reviewsAndComments');
+      if (reviewsAndCommentsSection) {
+        reviewsAndCommentsSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
     }
   }
 
@@ -193,6 +293,6 @@ export class ReviewsAndComments implements OnChanges, OnInit {
 
     this.totalReviews = this.reviews.length;
     const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
-    this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10; // تقريب لرقم عشري واحد
+    this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10;
   }
 }

@@ -146,7 +146,7 @@ export class Navbar implements OnInit, OnDestroy {
     const userId = this.userId;
     console.log('🔄 Navigating to profile with userId:', userId);
     if (userId) {
-      this.router.navigate(['/profile', userId]);
+      this.router.navigate(['/user-profile', userId]);
       this.closeNavbar();
     } else {
       console.error('❌ Cannot navigate to profile: Invalid userId');

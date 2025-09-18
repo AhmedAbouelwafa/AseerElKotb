@@ -22,4 +22,10 @@ export class UserService {
     );
   }
 
+  getUserById(userId: number): Observable<any> {
+    return this.http.get<any>(`${this._api}/Account/GetProfile`, {params: {UserId: userId}}).pipe(
+      map((response: any) => response.data)
+    );
+  }
+
 }
