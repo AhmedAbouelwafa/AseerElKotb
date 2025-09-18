@@ -201,10 +201,9 @@
   border-radius: 10px;
   padding: 30px 0;
   width: fit-content;
-  direction: rtl;
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: column;
   gap: 10px;
   font-size: 16px;
@@ -240,17 +239,19 @@
   gap: 10px;
 }
 
+/* Keep the same alignment for both RTL and LTR */
 [dir="rtl"] .before,
 [dir="rtl"] .after,
 [dir="rtl"] .discount{
-  justify-content: flex-end;
+  justify-content: flex-start;
+  flex-direction: row;
 }
-
 
 [dir="ltr"] .before,
 [dir="ltr"] .after,
 [dir="ltr"] .discount{
   justify-content: flex-start;
+  flex-direction: row;
 }
 
 

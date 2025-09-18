@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ProfileResponse, ReviewDto, QuoteDto, UserFollowDto, ReviewFor, QuoteFor, FollowType } from '../UserModels/UserModels';
 import { UserService } from '../UserServices/user-service';
-import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
+import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 
 interface StatItem {
   label: string;
@@ -22,7 +21,7 @@ interface StatItem {
   templateUrl: './user-profile.html',
   styleUrls: ['./user-profile.css'],
   standalone: true,
-  imports: [CommonModule, NavCrumb, DatePipe, TranslateModule]
+  imports: [CommonModule, NavCrumb , TranslateModule]
 })
 export class UserProfileComponent implements OnInit {
   user: ProfileResponse | null = null;
@@ -30,21 +29,13 @@ export class UserProfileComponent implements OnInit {
   breadcrumbs: NavcrumbItem[] = [];
   loading = true;
   userId!: number;
-  activeStatType: string = 'reviews';
-  quotes: QuoteDto[] = [];
-  allAddedQuotes: QuoteDto[] = [];
-  reviews: ReviewDto[] = [];
-  allAddedReviews: ReviewDto[] = [];
-  totalReviews = 0;
-  averageRating = 0;
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
-    private translate: TranslateService,
-    private toastService: ToastService
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -56,8 +47,6 @@ export class UserProfileComponent implements OnInit {
 
       if (this.userId && !isNaN(this.userId) && this.userId > 0) {
         this.loadUserProfile();
-        this.loadQuotes();
-        this.loadReviews();
       } else {
         console.error('❌ Invalid userId:', this.userId, 'from param:', idParam);
         this.loading = false;
@@ -65,17 +54,49 @@ export class UserProfileComponent implements OnInit {
       }
     });
 
-    this.setupBreadcrumbs();
+    // Setup breadcrumbs after translation service is ready
+    this.setupBreadcrumbsWithTranslation();
+    
+    // Also listen for language changes to update breadcrumbs
+    this.translate.onLangChange.subscribe(() => {
+      this.setupBreadcrumbsWithTranslation();
+    });
+  }
+
+  private setupBreadcrumbsWithTranslation(): void {
+    console.log('🍞 Setting up breadcrumbs with translation...');
+    console.log('🌍 Current language:', this.translate.currentLang);
+    console.log('🌍 Default language:', this.translate.defaultLang);
+    
+    // First try using the get method which returns an observable
+    this.translate.get(['userProfile.HOME', 'userProfile.USER_PROFILE']).subscribe({
+      next: (translations) => {
+        console.log('🔄 Translations received:', translations);
+        this.breadcrumbs = [
+          { name: translations['userProfile.HOME'] || 'الرئيسية', path: '/' },
+          { name: translations['userProfile.USER_PROFILE'] || 'الملف الشخصي' }
+        ];
+        console.log('✅ Breadcrumbs updated:', this.breadcrumbs);
+      },
+      error: (error) => {
+        console.error('❌ Translation error:', error);
+        // Fallback to hardcoded values
+        this.breadcrumbs = [
+          { name: 'الرئيسية', path: '/' },
+          { name: 'الملف الشخصي' }
+        ];
+      }
+    });
   }
 
   private setupBreadcrumbs() {
     this.breadcrumbs = [
-      { name: 'الرئيسية', path: '/' },
-      { name: 'الملف الشخصي' }
+      { name: this.translate.instant('userProfile.HOME'), path: '/' },
+      { name: this.translate.instant('userProfile.USER_PROFILE') }
     ];
   }
 
-  loadUserProfile() {
+   loadUserProfile() {
     this.loading = true;
     console.log('🔄 Loading user profile for userId:', this.userId);
 
@@ -84,179 +105,74 @@ export class UserProfileComponent implements OnInit {
         console.log('📡 API Response:', response);
         if (response) {
           this.user = response;
-          if (!this.user.reviews) this.user.reviews = [];
-          if (!this.user.quotes) this.user.quotes = [];
-          if (!this.user.following) this.user.following = [];
+          
+          // Detailed logging of reviews and quotes
+          console.log('🔍 Reviews count:', response.reviews?.length || 0);
+          console.log('🔍 Quotes count:', response.quotes?.length || 0);
+          
+          if (response.reviews && response.reviews.length > 0) {
+            console.log('🔍 First review structure:', response.reviews[0]);
+            console.log('🔍 First review properties:', Object.keys(response.reviews[0]));
+          }
+          
+          if (response.quotes && response.quotes.length > 0) {
+            console.log('🔍 First quote structure:', response.quotes[0]);
+            console.log('🔍 First quote properties:', Object.keys(response.quotes[0]));
+          }
+          
+          this.setupStats();
           console.log('✅ User profile loaded successfully:', response);
         } else {
           console.warn('⚠️ No user data received');
-          this.createFallbackUser();
+          this.user = null;
         }
-        this.setupStats();
         this.loading = false;
       },
       error: (error) => {
         console.error('❌ Error fetching user profile:', error);
-        this.createFallbackUser();
-        this.setupStats();
         this.loading = false;
+        this.user = null;
       }
     });
-  }
-
-  private createFallbackUser() {
-    console.log('📝 Creating fallback user data');
-    this.user = {
-      id: this.userId,
-      firstName: 'مستخدم',
-      lastName: 'غير معروف',
-      imageUrl: '/icons/user.png',
-      registrationPeriod: '30.0:0:0',
-      reviews: [],
-      quotes: [],
-      following: []
-    };
-  }
-
-  loadQuotes() {
-    this.modalService.getAllQuotes({
-      SearchTerm: '',
-      PageNumber: 1,
-      PageSize: 100
-    }).subscribe({
-      next: (data) => {
-        console.log('📝 Raw quotes data:', data);
-        const mappedQuotes = (data || [])
-          .filter(quote => Number(quote.userId) === Number(this.userId))
-          .map(quote => {
-          console.log('Processing quote:', quote);
-          const userNameField: string = (quote.userName || '').toString().trim();
-          const commentField: string = (quote.comment || quote.content || '').toString().trim();
-          const userNameLooksLikeText = userNameField.length > 1 && !/^\d+$/.test(userNameField);
-
-          return {
-            id: quote.id,
-            userId: quote.userId,
-            quoteFor: quote.quoteFor || QuoteFor.Book,
-            content: userNameLooksLikeText ? userNameField : commentField,
-            creationDate: quote.creationDate || new Date().toISOString(),
-            bookId: quote.bookId,
-            bookTitle: quote.bookTitle,
-            authorName: quote.authorName
-          } as QuoteDto;
-        });
-
-        this.quotes = mappedQuotes;
-        this.allAddedQuotes = [...mappedQuotes];
-        console.log('📝 Mapped quotes:', this.quotes);
-        this.setupStats();
-      },
-      error: (error) => {
-        console.error('❌ Error fetching quotes:', error);
-        this.quotes = [];
-        this.allAddedQuotes = [];
-        this.setupStats();
-      }
-    });
-  }
-
-  loadReviews() {
-    this.modalService.getAllReviews({
-      Search: '',
-      PageNumber: 1,
-      PageSize: 100
-    }).subscribe({
-      next: (data) => {
-        console.log('📝 Raw reviews data:', data);
-        this.reviews = (data || []).map(review => ({
-          id: review.id,
-          userId: review.userId,
-          reviewFor: review.reviewFor || ReviewFor.Book,
-          comment: review.comment || '',
-          rating: review.rating || 0,
-          createdAt: review.createdAt || new Date().toISOString(),
-          bookId: review.bookId,
-          bookTitle: review.bookTitle,
-          authorName: review.authorName
-        })) as ReviewDto[];
-        this.allAddedReviews = [...this.reviews];
-        this.calculateAverageRating();
-        console.log('📝 Loaded reviews:', this.reviews);
-        this.setupStats();
-      },
-      error: (error) => {
-        console.error('❌ Error fetching reviews:', error);
-        this.reviews = [];
-        this.allAddedReviews = [];
-        this.totalReviews = 0;
-        this.averageRating = 0;
-        this.setupStats();
-      }
-    });
-  }
-
-  calculateAverageRating() {
-    if (this.reviews.length === 0) {
-      this.totalReviews = 0;
-      this.averageRating = 0;
-      return;
-    }
-
-    this.totalReviews = this.reviews.length;
-    const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
-    this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10;
   }
 
   private setupStats() {
-    if (!this.user) {
-      console.error('❌ User object is null, cannot setup stats');
-      return;
-    }
-
-    console.log('📊 Setting up stats with data:', {
-      reviews: this.reviews.length,
-      quotes: this.quotes.length,
-      following: this.user.following?.length || 0
-    });
+    if (!this.user) return;
 
     this.stats = [
       {
-        label: 'المراجعات',
-        value: this.reviews.length,
+        label: this.translate.instant('userProfile.REVIEWS'),
+        value: this.user.reviews.length,
         icon: '⭐',
-        isActive: this.activeStatType === 'reviews',
+        isActive: true,
         type: 'reviews',
-        data: this.reviews
+        data: this.user.reviews
       },
       {
-        label: 'الاقتباسات',
-        value: this.quotes.length,
+        label: this.translate.instant('userProfile.QUOTES'),
+        value: this.user.quotes.length,
         icon: '📝',
-        isActive: this.activeStatType === 'quotes',
+        isActive: false,
         type: 'quotes',
-        data: this.quotes
+        data: this.user.quotes
       },
       {
-        label: 'المتابعات',
-        value: this.user.following?.length || 0,
+        label: this.translate.instant('userProfile.FOLLOWING'),
+        value: this.user.following.length,
         icon: '👥',
-        isActive: this.activeStatType === 'following',
+        isActive: false,
         type: 'following',
-        data: this.user.following || []
+        data: this.user.following
       }
     ];
-
-    console.log('📊 Stats configured:', this.stats);
   }
 
   onStatClick(clickedStat: StatItem) {
-    console.log('📊 Stat clicked:', clickedStat.label, clickedStat.type);
-    this.activeStatType = clickedStat.type;
     this.stats.forEach(stat => (stat.isActive = stat === clickedStat));
   }
 
   get userName(): string {
-    return this.user ? `${this.user.firstName} ${this.user.lastName}` : 'غير متوفر';
+    return this.user ? `${this.user.firstName} ${this.user.lastName}` : this.translate.instant('userProfile.NOT_AVAILABLE');
   }
 
   get userAvatar(): string {
@@ -264,7 +180,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   get memberSince(): string {
-    if (!this.user?.registrationPeriod) return 'غير محدد';
+    if (!this.user?.registrationPeriod) return this.translate.instant('userProfile.NOT_SPECIFIED');
     try {
       const [days] = this.user.registrationPeriod.split('.');
       const joinDate = new Date();
@@ -275,60 +191,114 @@ export class UserProfileComponent implements OnInit {
         day: 'numeric'
       });
     } catch {
-      return 'غير محدد';
+      return this.translate.instant('userProfile.NOT_SPECIFIED');
     }
+  }
+
+  get activeStatData(): ReviewDto[] | QuoteDto[] | UserFollowDto[] {
+    const activeStat = this.stats.find(stat => stat.isActive);
+    return activeStat?.data || [];
+  }
+
+  get activeStatType(): string {
+    const activeStat = this.stats.find(stat => stat.isActive);
+    return activeStat?.type || '';
   }
 
   getReviewTypeLabel(reviewFor: ReviewFor): string {
     switch (reviewFor) {
       case ReviewFor.Book:
-        return 'كتاب';
+        return this.translate.instant('userProfile.BOOK');
       case ReviewFor.Author:
-        return 'مؤلف';
+        return this.translate.instant('userProfile.AUTHOR');
       default:
-        return 'غير معروف';
+        return this.translate.instant('userProfile.UNKNOWN');
     }
   }
 
   getQuoteTypeLabel(quoteFor: QuoteFor): string {
     switch (quoteFor) {
       case QuoteFor.Book:
-        return 'كتاب';
+        return this.translate.instant('userProfile.BOOK');
       case QuoteFor.Author:
-        return 'مؤلف';
+        return this.translate.instant('userProfile.AUTHOR');
       default:
-        return 'غير معروف';
+        return this.translate.instant('userProfile.UNKNOWN');
     }
   }
 
   getFollowTypeLabel(followType: FollowType): string {
     switch (followType) {
       case FollowType.Author:
-        return 'مؤلف';
+        return this.translate.instant('userProfile.AUTHOR');
       case FollowType.Publisher:
-        return 'ناشر';
+        return this.translate.instant('userProfile.PUBLISHER');
       default:
-        return 'غير معروف';
+        return this.translate.instant('userProfile.UNKNOWN');
     }
   }
 
-  getReviewComment(review: ReviewDto): string {
-    return review.comment || 'لا يوجد تعليق';
+  // Type guards to narrow types in the template
+  isReviewDto(item: ReviewDto | QuoteDto | UserFollowDto): item is ReviewDto {
+    return (item as ReviewDto).reviewFor !== undefined;
+  }
+
+  isQuoteDto(item: ReviewDto | QuoteDto | UserFollowDto): item is QuoteDto {
+    return (item as QuoteDto).quoteFor !== undefined;
+  }
+
+  isUserFollowDto(item: ReviewDto | QuoteDto | UserFollowDto): item is UserFollowDto {
+    return (item as UserFollowDto).followType !== undefined;
+  }
+
+  // Helper methods for template data access
+  get reviews(): ReviewDto[] {
+    return this.user?.reviews || [];
+  }
+
+  get quotes(): QuoteDto[] {
+    return this.user?.quotes || [];
   }
 
   getReviewRating(review: ReviewDto): number {
     return review.rating || 0;
   }
 
-  getReviewCreatedAt(review: ReviewDto): string {
-    return review.createdAt || '';
+  getReviewComment(review: ReviewDto): string {
+    console.log('🔍 Review object:', review);
+    console.log('🔍 Review comment property:', review.comment);
+    console.log('🔍 Available properties:', Object.keys(review));
+    
+    // Check multiple possible property names that the API might use
+    const comment = review.comment || (review as any).Comment || (review as any).text || (review as any).reviewText || (review as any).content;
+    
+    console.log('🔍 Final comment value:', comment);
+    
+    return comment || this.translate.instant('userProfile.NO_COMMENT');
+  }
+
+  getReviewCreatedAt(review: ReviewDto): Date | null {
+    return review.createdAt ? new Date(review.createdAt) : null;
   }
 
   getQuoteComment(quote: QuoteDto): string {
-    return quote.content || 'لا يوجد اقتباس';
+    console.log('🔍 Quote object:', quote);
+    console.log('🔍 Quote content property:', quote.content);
+    console.log('🔍 Available properties:', Object.keys(quote));
+    
+    // Check multiple possible property names that the API might use
+    const content = quote.content || (quote as any).Content || (quote as any).text || (quote as any).comment || (quote as any).quoteText;
+    
+    console.log('🔍 Final quote content value:', content);
+    
+    return content || this.translate.instant('userProfile.NO_QUOTE');
   }
 
-  getQuoteCreatedAt(quote: QuoteDto): string {
-    return quote.creationDate || '';
+  getQuoteCreatedAt(quote: QuoteDto): Date | null {
+    return quote.creationDate ? new Date(quote.creationDate) : null;
   }
+
+
+
+
 }

@@ -47,22 +47,53 @@ export class Modal implements OnInit {
   }
 
   ngOnInit() {
+    this.initializeUser();
+  }
+
+  private initializeUser(): void {
     // Initialize current user ID if available
     const currentUser = this.auth.user();
+    
+    // First try to get user ID from the current user object
     if (currentUser && currentUser.id) {
       this.userId = currentUser.id;
-      console.log('Using current user ID:', this.userId);
+      console.log('Using current user ID from auth service:', this.userId);
+      return;
+    }
+    
+    // Fallback: try to get user ID from localStorage if auth service fails
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId && !isNaN(parseInt(storedUserId))) {
+      this.userId = parseInt(storedUserId);
+      console.log('Using user ID from localStorage:', this.userId);
+      return;
+    }
+    
+    // Final fallback: check if we have a valid token (user is authenticated but ID parsing failed)
+    const token = localStorage.getItem('auth_token');
+    if (token && this.auth.isTokenValid()) {
+      console.log('User has valid token but no ID - will extract from token in modal actions');
+      this.userId = 0; // Temporary, will be resolved when needed
     } else {
-      console.warn('No current user ID found');
+      console.warn('No valid authentication found');
       this.userId = 0;
     }
   }
 
   openModal() {
     this.modalInstance = new bootstrap.Modal(this.quoteModalRef.nativeElement);
-    // Refresh current user on each open
-    const currentUser = this.auth.user();
-    this.userId = currentUser?.id || 0;
+    
+    // Re-initialize user authentication on each modal open
+    this.initializeUser();
+    
+    // Additional check: if we still don't have userId but have valid token, show modal anyway
+    if (!this.userId) {
+      const token = localStorage.getItem('auth_token');
+      if (token && this.auth.isTokenValid()) {
+        console.log('Opening modal with valid token but no parsed userId - will resolve during save');
+      }
+    }
+    
     this.modalInstance.show();
   }
 
@@ -71,13 +102,15 @@ export class Modal implements OnInit {
   }
 
   saveQuote() {
-    // Ensure user is authenticated
-    const currentUser = this.auth.user();
-    this.userId = currentUser?.id || 0;
-    if (!this.userId) {
-      this.errorMsg = 'يجب تسجيل الدخول لإضافة اقتباس';
+    // Enhanced authentication check
+    if (!this.isUserAuthenticated()) {
+      this.errorMsg = this.translate.instant('auth.LOGIN_REQUIRED') || 'يجب تسجيل الدخول لإضافة اقتباس';
       return;
     }
+    
+    // Ensure we have a valid user ID before proceeding
+    this.ensureUserId();
+    
     if (!this.quoteText.trim()) {
       this.errorMsg = 'الرجاء إدخال نص الاقتباس';
       return;
@@ -124,13 +157,14 @@ export class Modal implements OnInit {
     console.log('rating:', this.rating);
     console.log('bookId:', this.bookId);
 
-    // Ensure user is authenticated
-    const currentUser = this.auth.user();
-    this.userId = currentUser?.id || 0;
-    if (!this.userId) {
-      this.errorMsg = 'يجب تسجيل الدخول لإضافة مراجعة';
+    // Enhanced authentication check
+    if (!this.isUserAuthenticated()) {
+      this.errorMsg = this.translate.instant('auth.LOGIN_REQUIRED') || 'يجب تسجيل الدخول لإضافة مراجعة';
       return;
     }
+    
+    // Ensure we have a valid user ID before proceeding
+    this.ensureUserId();
 
     if (!this.reviewText.trim()) {
       this.errorMsg = `مطلوب كتابة ال${this.title}`;
@@ -192,6 +226,76 @@ export class Modal implements OnInit {
 
   setRating(rating: number) {
     this.rating = rating;
+  }
+
+  // Helper methods for enhanced authentication
+  private isUserAuthenticated(): boolean {
+    // Check if we have a valid token
+    const token = localStorage.getItem('auth_token');
+    if (!token || !this.auth.isTokenValid()) {
+      console.log('Modal authentication check: No valid token found');
+      return false;
+    }
+    
+    // Check if we have a user in the auth service or a stored user ID
+    const currentUser = this.auth.user();
+    const storedUserId = localStorage.getItem('user_id');
+    
+    const isAuthenticated = !!(currentUser && currentUser.id && currentUser.id > 0) || !!(storedUserId && !isNaN(parseInt(storedUserId)) && parseInt(storedUserId) > 0);
+    
+    console.log('Modal authentication check:', {
+      hasCurrentUser: !!(currentUser && currentUser.id),
+      currentUserId: currentUser?.id,
+      hasStoredUserId: !!storedUserId,
+      storedUserId: storedUserId,
+      isAuthenticated: isAuthenticated
+    });
+    
+    return isAuthenticated;
+  }
+  
+  private ensureUserId(): void {
+    // If we already have a valid userId, return
+    if (this.userId && this.userId > 0) {
+      return;
+    }
+    
+    // Try to get from current user
+    const currentUser = this.auth.user();
+    if (currentUser && currentUser.id) {
+      this.userId = currentUser.id;
+      return;
+    }
+    
+    // Try to get from localStorage
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId && !isNaN(parseInt(storedUserId))) {
+      this.userId = parseInt(storedUserId);
+      return;
+    }
+    
+    // If all else fails, try to extract from token
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1]));
+          const extractedUserId = payload.userId || payload.sub || payload.id;
+          if (extractedUserId && !isNaN(parseInt(extractedUserId))) {
+            this.userId = parseInt(extractedUserId);
+            // Store it for future use
+            localStorage.setItem('user_id', this.userId.toString());
+            console.log('Extracted user ID from token:', this.userId);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error extracting user ID from token:', error);
+      }
+    }
+    
+    console.warn('Could not determine user ID');
   }
 
   // Determine if current modal is for reviews (supports both languages)

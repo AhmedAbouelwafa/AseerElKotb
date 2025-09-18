@@ -22,6 +22,7 @@ export class Navbar implements OnInit, OnDestroy {
   currentLang: string = localStorage.getItem('lang') || 'ar';
   isRTL: boolean = this.currentLang === 'ar';
   showDropdown = false;
+  showUserDropdown = false;
   cartItemsCount = signal<number>(0);
   wishlistItemsCount = signal<number>(0);
   private cartSubscription?: Subscription;
@@ -113,7 +114,26 @@ export class Navbar implements OnInit, OnDestroy {
   // Getter for userId
   get userId(): number | null {
     const user = this.auth.user();
-    return user && typeof user.id === 'number' ? user.id : null;
+    console.log('🔍 Getting userId from auth.user():', user);
+    
+    // First try to get user ID from the current user object
+    if (user && user.id && typeof user.id === 'number' && user.id > 0) {
+      console.log('✅ Found valid userId from auth.user():', user.id);
+      return user.id;
+    }
+    
+    // Fallback: try to get user ID from localStorage
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      const parsedId = parseInt(storedUserId, 10);
+      if (!isNaN(parsedId) && parsedId > 0) {
+        console.log('✅ Found valid userId from localStorage:', parsedId);
+        return parsedId;
+      }
+    }
+    
+    console.log('❌ No valid userId found, returning null');
+    return null;
   }
 
   @HostListener('window:scroll')
@@ -144,13 +164,29 @@ export class Navbar implements OnInit, OnDestroy {
 
   goToProfile(): void {
     const userId = this.userId;
+    const user = this.auth.user();
+    
     console.log('🔄 Navigating to profile with userId:', userId);
-    if (userId) {
+    console.log('👤 Current user object:', user);
+    console.log('💾 localStorage user_id:', localStorage.getItem('user_id'));
+    
+    if (userId && userId > 0) {
+      console.log('✅ Valid userId found, navigating to profile:', userId);
       this.router.navigate(['/user-profile', userId]);
       this.closeNavbar();
     } else {
       console.error('❌ Cannot navigate to profile: Invalid userId');
-      this.router.navigate(['/login']);
+      console.log('Authentication state:', this.isAuthenticated());
+      console.log('Token exists:', !!localStorage.getItem('auth_token'));
+      
+      // If user is authenticated but userId is invalid, something is wrong
+      if (this.isAuthenticated()) {
+        console.error('⚠️ User appears authenticated but userId is invalid - this should not happen');
+        // Try to re-initialize user data
+        window.location.reload();
+      } else {
+        this.router.navigate(['/login']);
+      }
     }
   }
 
@@ -182,10 +218,34 @@ export class Navbar implements OnInit, OnDestroy {
     this.showDropdown = !this.showDropdown;
   }
 
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
+  }
+
+  closeDropdownAndNavbar() {
+    this.showUserDropdown = false;
+    this.closeNavbar();
+  }
+
   changeLang(lang: string) {
     this.langService.setLang(lang);
     this.showDropdown = false;
     window.location.reload();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const dropdown = target.closest('.dropdown');
+    const langDropdown = target.closest('.lang-dropdown');
+    
+    if (!dropdown) {
+      this.showUserDropdown = false;
+    }
+    
+    if (!langDropdown) {
+      this.showDropdown = false;
+    }
   }
 
 
