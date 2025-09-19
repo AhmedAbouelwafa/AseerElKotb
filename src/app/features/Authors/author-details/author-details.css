@@ -176,26 +176,25 @@
 }
 
 .tab-navigation {
-  display: flex;
   align-items: center;
   gap: 1px;
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 0;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
 }
 
 .tab-btn {
-  display: flex;
+  display:flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background: #ffffff;
   border: none;
   padding: 16px;
   transition: all 0.3s ease;
   position: relative;
   border-bottom: 2px solid transparent;
-  width: 33.33%;
+  width: 100%;
   cursor: pointer;
 }
 
@@ -215,6 +214,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: bold;
 }
 
 
@@ -222,7 +222,7 @@
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: bold;
   transition: all 0.3s ease;
 }
 
