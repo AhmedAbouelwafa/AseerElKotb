@@ -434,12 +434,12 @@ padding: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 15px;
-  text-align: center;
+  text-align: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items:center;
+  justify-content:left;
   gap: 10px;
 }
 
