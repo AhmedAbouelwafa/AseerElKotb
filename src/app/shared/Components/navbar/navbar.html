@@ -53,14 +53,14 @@
         <div class="d-flex align-items-center gap-3">
 
           <!-- User Dropdown -->
-          <div class="dropdown" *ngIf="isAuthenticated()">
+          <div class="dropdown user-dropdown" *ngIf="isAuthenticated()">
             <button class="btn p-0 user-dropdown-btn" type="button" (click)="toggleUserDropdown()" [attr.aria-expanded]="showUserDropdown">
               <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
             </button>
 
-            <ul class="dropdown-menu-custom dropdown-menu" [class.show]="showUserDropdown">
+            <ul class="dropdown-menu" [class.show]="showUserDropdown">
               <li>
-                <a class="nav-link useraya dropdown-item" [routerLink]="['/user-profile', userId]" (click)="closeDropdownAndNavbar()">
+                <a class="dropdown-item" [routerLink]="['/user-profile', userId]" (click)="closeDropdownAndNavbar()">
                   <i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}
                 </a>
               </li>
@@ -86,7 +86,7 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" (click)="logout()">
+                <a class="dropdown-item text-danger" (click)="logout()">
                   <i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}
                 </a>
               </li>
@@ -105,9 +105,9 @@
           </a>
 
           <!-- Delivery Icon -->
-          <button class="btn btn-nav p-0 position-relative">
-            <i class="fas fa-truck text-success fs-6 opacity-75"></i>
-          </button>
+          <!-- <button class="btn btn-nav p-0 position-relative"> -->
+            <!-- <i class="fas fa-truck text-success fs-6 opacity-75"></i> -->
+          <!-- </button> --> 
 
           <!-- Language Switcher -->
           <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">

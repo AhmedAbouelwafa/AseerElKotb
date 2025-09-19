@@ -72,12 +72,13 @@
 
         <div class="book-rating">
           <span class="stars">
-            @for (star of stars; track star) {
+            @for (star of [1, 2, 3, 4, 5]; track star) {
               <i class="fa-star" [ngClass]="{
-                'fas text-warning': star < (book?.rating || 0),
-                'far text-secondary': star >= (book?.rating || 0)
-              }" ></i>
+                'fas text-warning': star <= (book?.rating || 0),
+                'far text-secondary': star > (book?.rating || 0)
+              }"></i>
             }
+            <span class="rating-text">({{book?.rating || 0}})</span>
           </span>
 
           <button class="heart-btn" (click)="toggleHeart()" type="button">
@@ -113,8 +114,7 @@
                 @for (book of authorBooks ; track book) {
                   <a routerLink="/book-details/{{book.id}}" class="text-decoration-none">
                   <div class="bookaya">
-                    <i class="fa fa-book-open"></i>
-
+                    <i class="fa-solid fa-book" style="color :rgb(65, 63, 63)"></i>
                     <a routerLink="/book-details/{{book.id}}" class="booksauthor text-decoration-none text-dark fw-bold ">{{book.title}}</a>
                   </div>
                   </a>
@@ -131,23 +131,14 @@
           <div class="book-container">
             <table class="book-table">
               <tbody>
-                <tr><th>{{'bookDetails.authors' | translate}}</th><td>{{book?.authorName}}</td></tr>
+                <tr><th>{{'bookDetails.authors' | translate}}</th><td><a routerLink = "/authors/{{book?.authorId}}" class="text-decoration-none" style="color: rgb(3, 36, 249);">{{book?.authorName}}</a></td><td><i class="fa-solid fa-link" routerLink = "/authors/{{book?.authorId}}"></i></td></tr>
                 <tr><th>{{'bookDetails.pages' | translate}}</th><td>{{book?.pageCount}}</td></tr>
-                <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate | date:'dd/MM/yyyy' }}</td></tr>
+                <tr><th>{{'bookDetails.publishYear' | translate}}</th><td>{{book?.publishedDate | date:'yyyy' }}</td></tr>
                 <tr><th>{{'bookDetails.format' | translate}}</th><td>{{book?.format}}</td></tr>
-                <tr><th>{{'bookDetails.publisher' | translate}}</th><td><a routerLink = "/Publisher/{{book?.publisherId}}" class="text-decoration-none">{{book?.publisherName}}</a></td></tr>
-                <tr><th>{{'bookDetails.categories' | translate}}</th><td>{{book?.categoryIds}}</td></tr>
+                <tr><th>{{'bookDetails.publisher' | translate}}</th><td><a routerLink = "/Publisher/{{book?.publisherId}}" class="text-decoration-none" style="color:  rgb(3, 36, 249);;">{{book?.publisherName}}</a></td><td><i class="fa-solid fa-link" routerLink = "/Publisher/{{book?.publisherId}}"></i></td></tr>
+                <tr><th>{{'bookDetails.categories' | translate}}</th><td>{{book?.categoryNames}}</td></tr>
                 <tr><th>ISBN</th><td>{{book?.isbn}}</td></tr>
-                <tr><th>{{'bookDetails.shortLink' | translate}}</th><td><a routerLink="/book-details/{{book?.id}}" class="text-decoration-none">{{book?.title}} <i class="fa-solid fa-link"></i></a></td></tr>
-                <tr>
-                  <th>{{'bookDetails.share' | translate}}</th>
-                  <td>
-                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
-                  </td>
-                </tr>
+              
               </tbody>
             </table>
           </div>
@@ -158,10 +149,10 @@
           <div class="p-0 cat">
             <h5 class="mb-3 text-muted text-center">{{'bookDetails.categories' | translate}}</h5>
             <ul class="list-group list-group-flush w-75">
-              @for (category of categories; track category.id) {
+              @for (category of categories.slice(0, 7); track category.id) {
                 <a routerLink="/MainFilterContainer/{{category.id}}" class="category-itesm">
                   <li class="list-group-item category-item">
-                    {{category.name}} <span class="badge bg-light text-danger">0</span>
+                    {{category.name}} <span class="badge bg-light text-danger"></span>
                   </li>
                 </a>
               }
@@ -195,4 +186,3 @@
           [bookId]="bookId">
      </app-reviews-and-comments>
 </div>
-
