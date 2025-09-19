@@ -7,25 +7,71 @@
       <div class="date">{{ date }}</div>
     </div>
   </div>
-  <button class="delete-btn" (click)="onDelete()" title="Delete review">
-    <i class="fas fa-trash"></i>
-  </button>
+  <div class="action-buttons">
+    @if (!isEditing) {
+      <button class="edit-btn" (click)="startEdit()" title="{{ 'reviewWithComments.editReview' | translate }}">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="delete-btn" (click)="onDelete()" title="{{ 'reviewWithComments.deleteReview' | translate }}">
+        <i class="fas fa-trash"></i>
+      </button>
+    }
+  </div>
   </div>
 
-  <div class="rating-section">
-    <div class="stars">
-      @for (star of getStarsArray(); track star) {
-        <i class="fa fa-star text-warning"></i>
-      }
-      @for (star of getEmptyStarsArray(); track star) {
-        <i class="fa fa-star text-muted"></i>
-      }
-      <span class="rating-text">{{ rating }}/5</span>
+  @if (!isEditing) {
+    <div class="rating-section">
+      <div class="stars">
+        @for (star of getStarsArray(); track star) {
+          <i class="fa fa-star text-warning"></i>
+        }
+        @for (star of getEmptyStarsArray(); track star) {
+          <i class="fa fa-star text-muted"></i>
+        }
+        <span class="rating-text">{{ rating }}/5</span>
+      </div>
     </div>
-  </div>
 
-  <div class="review-text">
-    {{ review }}
-  </div>
+    <div class="review-text">
+      {{ review }}
+    </div>
+  }
+
+  @if (isEditing) {
+    <div class="edit-form">
+      <div class="rating-edit">
+        <label>{{ 'reviewWithComments.rating' | translate }}:</label>
+        <div class="stars-edit">
+          @for (star of [1,2,3,4,5]; track star) {
+            <i class="fa fa-star" 
+               [class.text-warning]="star <= editRating"
+               [class.text-muted]="star > editRating"
+               (click)="setRating(star)"
+               style="cursor: pointer;"></i>
+          }
+          <span class="rating-text">{{ editRating }}/5</span>
+        </div>
+      </div>
+      
+      <div class="review-edit">
+        <label>{{ 'reviewWithComments.review' | translate }}:</label>
+        <textarea 
+          [(ngModel)]="editReview" 
+          class="form-control" 
+          rows="3" 
+          [placeholder]="'reviewWithComments.enterReview' | translate">
+        </textarea>
+      </div>
+      
+      <div class="edit-actions">
+        <button class="btn btn-success btn-sm" (click)="saveEdit()" [disabled]="!editReview.trim()">
+          <i class="fas fa-save"></i> {{ 'reviewWithComments.save' | translate }}
+        </button>
+        <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> {{ 'reviewWithComments.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  }
 
 </div>

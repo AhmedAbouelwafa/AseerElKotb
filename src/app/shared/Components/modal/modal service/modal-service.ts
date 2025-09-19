@@ -109,8 +109,34 @@ export class ModalService {
     return this.http.get<any>(`${this._apiBaseUrl}/Reviews/${id}`);
   }
 
-  updateReview(id: number, review: string, rating: number): Observable<any> {
-    return this.http.put<any>(`${this._apiBaseUrl}/Reviews`, { id, review, rating });
+  // Method to update a review
+  updateReview(id: number, comment: string, rating: number): Observable<any> {
+    const updateData = {
+      Id: id,
+      Rating: rating,
+      Comment: comment
+    };
+    
+    console.log('🚨 STARTING UPDATE REVIEW REQUEST 🚨');
+    console.log('Update data:', updateData);
+    console.log('API URL:', `${this._apiBaseUrl}/Reviews`);
+    console.log('Auth token exists:', !!localStorage.getItem('auth_token'));
+    console.log('User ID:', localStorage.getItem('user_id'));
+    
+    return this.http.put<any>(`${this._apiBaseUrl}/Reviews`, updateData).pipe(
+      map((response: any) => {
+        console.log('✅ Update review SUCCESS:', response);
+        return response?.data || response;
+      }),
+      catchError((error: any) => {
+        console.error('❌ UPDATE REVIEW ERROR ❌');
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
+        console.error('Error details:', error.error);
+        console.error('Full error object:', error);
+        throw error;
+      })
+    );
   }
 
   deleteReview(Id: number): Observable<any> {

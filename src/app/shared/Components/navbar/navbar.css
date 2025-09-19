@@ -553,7 +553,7 @@
     left: auto;
     right: 10px;
   }
-  
+
   [dir="rtl"] .dropdown-menu-custom {
     left: 10px;
     right: auto;
@@ -659,6 +659,15 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(5px);
+}
+
+/* Raise user dropdown a bit so it doesn't dip inside the screen */
+.user-dropdown-btn + .dropdown-menu-custom {
+  top: calc(100% - 4px);
+}
+
+.user-dropdown-btn + .dropdown-menu-custom.show {
+  transform: translateY(-4px);
 }
 
 /* موبايل - الاحتفاظ بـ display: none */
@@ -850,7 +859,129 @@
 }
 
 
-.useraya{
-  position: relative;
-  right: -5px;
+/* User Dropdown Menu Styles */
+.user-dropdown .dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: -10px;
+  left: auto;
+  min-width: 220px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1050;
+  padding: 8px 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.user-dropdown .dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* RTL: المنيو تطلع يمين أكتر (في الاتجاه العربي يعني شمال) */
+[dir="rtl"] .user-dropdown .dropdown-menu {
+  left: -30px;
+  right: auto;
+}
+
+/* Dropdown Items */
+.user-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+[dir="rtl"] .user-dropdown .dropdown-item {
+  text-align: right;
+}
+
+.user-dropdown .dropdown-item:hover,
+.user-dropdown .dropdown-item:focus {
+  color: #e60000;
+  background: linear-gradient(135deg, rgba(230, 0, 0, 0.08), rgba(255, 68, 68, 0.08));
+  transform: translateX(2px);
+}
+
+[dir="rtl"] .user-dropdown .dropdown-item:hover,
+[dir="rtl"] .user-dropdown .dropdown-item:focus {
+  transform: translateX(-2px);
+}
+
+.user-dropdown .dropdown-item i {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.user-dropdown .dropdown-item:hover i {
+  color: #e60000;
+}
+
+/* Special styling for logout item */
+.user-dropdown .dropdown-item.text-danger {
+  color: #dc3545;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  padding-top: 16px;
+}
+
+.user-dropdown .dropdown-item.text-danger:hover {
+  color: #c82333;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.user-dropdown .dropdown-item.text-danger i {
+  color: #dc3545;
+}
+
+/* Badge styles */
+.user-dropdown .badge {
+  margin-left: auto;
+  background: linear-gradient(135deg, #e60000, #ff4444);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+[dir="rtl"] .user-dropdown .badge {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575.98px) {
+  .user-dropdown .dropdown-menu {
+    min-width: 200px;
+    right: 5px;
+  }
+  
+  [dir="rtl"] .user-dropdown .dropdown-menu {
+    left: 5px;
+    right: auto;
+  }
 }
