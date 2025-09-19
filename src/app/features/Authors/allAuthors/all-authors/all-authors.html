@@ -17,22 +17,24 @@
                     <a [routerLink]="['/authors', author.id]" routerLinkActive="true">
                       <h6>{{author.name}}</h6>
                     </a>
-                    <p class="Bio">{{author.bio}}</p>
+                    <!-- get part of bio not all of it -->
+                     <p class="Bio">{{author.bio.substring(0, 150)}}...</p>
+                    <!-- <p class="Bio">{{author.bio}}</p> -->
                </div>
-
+<!-- 
                 <div class="book-rating ">
                     <div class="star-rating">
                         @for (star of [1,2,3,4,5]; track star) {
                             <span class="star" [class.yellow]="star <= author.rating">★</span>
                         }
-                    </div>
+                    </div> -->
 
-                </div>
+                <!-- </div> -->
             </div>
 
                 <div id="info">
                     <div class="info"> {{author.booksCount}} الكتب </div>
-                    <div class="info"> {{author.QoutationsCount}} اقتباسات </div>
+                    <!-- <div class="info"> {{author.QoutationsCount}} اقتباسات </div> -->
                     <div id="lastDiv" class="info"> {{author.followerCount}} المتابعين </div>
                 </div>
         </div>

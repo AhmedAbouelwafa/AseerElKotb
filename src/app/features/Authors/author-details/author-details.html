@@ -53,25 +53,6 @@
 
         <div class="author-stats">
           <div class="stat-item">
-            <span class="stat-number">{{
-              getAverageRating() | number : "1.1-1"
-            }}</span>
-            <div class="stat-label rating-stars">
-              <span
-                class="star"
-                *ngFor="let star of getStarsArray(getAverageRating())"
-                [class.filled]="star <= getAverageRating()"
-                >★</span
-              >
-            </div>
-          </div>
-
-          <div class="stat-item">
-            <span class="stat-number">{{ reviewsCount }}</span>
-            <span class="stat-label">مراجعات</span>
-          </div>
-
-          <div class="stat-item">
             <button class="custom-button" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
               <span class="text">{{ isFollowing ? "متابع" : "متابعة" }}</span>
               <span class="count">({{ AuthorFollowerCount }})</span>

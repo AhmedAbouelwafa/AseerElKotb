@@ -54,10 +54,11 @@ a{
 }
 h6 {
     font-weight: bold;
+    font-size: large;
 }
 
 .Bio {
-    font-size: .9rem;
+    font-size:medium;
     color: #333;
     text-align: center;
     height: 3rem;
@@ -65,7 +66,7 @@ h6 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    line-height: 1rem;
+    line-height: 1.4rem;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
 }
@@ -90,6 +91,7 @@ h6 {
     padding-inline: 29px;
     padding: .5rem;
     padding-inline: 26px;
+    width: 50%;
 }
 
 #lastDiv {
