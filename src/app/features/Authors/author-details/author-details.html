@@ -1,18 +1,18 @@
 <!-- Loading State -->
 <div class="loading-container" *ngIf="loading">
   <div class="loading-spinner"></div>
-  <p class="loading-text">جاري تحميل بيانات الكاتب...</p>
+  <p class="loading-text">{{ 'author.loadingText' | translate }}</p>
 </div>
 
 <!-- Error State -->
 <div class="error-container" *ngIf="error && !loading">
   <div class="error-content">
     <div class="error-icon">⚠️</div>
-    <h3 class="error-title">حدث خطأ</h3>
+    <h3 class="error-title">{{ 'author.errorTitle' | translate }}</h3>
     <p class="error-message">{{ error }}</p>
     <button class="btn-retry" (click)="retry()">
       <span class="retry-icon">🔄</span>
-      إعادة المحاولة
+      {{ 'author.retry' | translate }}
     </button>
   </div>
 </div>
@@ -45,7 +45,7 @@
             class="flag rounded"
             width="17"
             height="12"
-            alt="علم الدولة"
+            alt="{{ 'author.countryFlag' | translate }}"
             (error)="onImageError($event, 'assets/images/default-flag.png')"
           />
         </h1>
@@ -54,7 +54,7 @@
         <div class="author-stats">
           <div class="stat-item">
             <button class="custom-button" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
-              <span class="text">{{ isFollowing ? "متابع" : "متابعة" }}</span>
+              <span class="text">{{ isFollowing ? ('author.following' | translate) : ('author.follow' | translate) }}</span>
               <span class="count">({{ AuthorFollowerCount }})</span>
               <span class="icon">
                 <i
@@ -70,7 +70,7 @@
               <a
                 class="follow-link link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0"
                 routerLink="/authors/{{ author.id }}"
-                >رابط مختصر</a
+                >{{ 'author.shortLink' | translate }}</a
               >
             </span>
           </div>
@@ -103,7 +103,7 @@
               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
             ></path>
           </svg>
-          الكتب
+          {{ 'author.books' | translate }}
         </span>
         <span class="tab-count">{{ booksCount }}</span>
       </button>
@@ -287,7 +287,7 @@
                               <button
                                 type="button"
                                 class="vote-button upvote-button"
-                                title="أعجبني"
+                                [title]="'authorDetails.quote.like' | translate"
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +313,7 @@
                               <button
                                 type="button"
                                 class="vote-button downvote-button"
-                                title="لم يعجبني"
+                                [title]="'authorDetails.quote.dislike' | translate"
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -340,7 +340,7 @@
                               href="https://www.facebook.com/sharer/sharer.php?u=https://www.aseeralkotb.com/ar/books/%D8%B4%D9%8A%D9%81%D8%B1%D8%A9-%D8%A8%D9%84%D8%A7%D9%84/quotes/19736"
                               class="social-link"
                               target="_blank"
-                              title="Share on Facebook"
+                              [title]="'authorDetails.quote.share.facebook' | translate"
                             >
                               <div class="social-button facebook-button">
                                 <svg
@@ -361,7 +361,7 @@
                               href="https://twitter.com/share?url=https://www.aseeralkotb.com/ar/books/%D8%B4%D9%8A%D9%81%D8%B1%D8%A9-%D8%A8%D9%84%D8%A7%D9%84/quotes/19736&text=ما دمنا نعاني بكل الأحوال، فلنجعل لمعاناتنا معنى"
                               target="_blank"
                               class="social-link"
-                              title="Share on Twitter"
+                              [title]="'authorDetails.quote.share.twitter' | translate"
                             >
                               <div class="social-button twitter-button">
                                 <svg

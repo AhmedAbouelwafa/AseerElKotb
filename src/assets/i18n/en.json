@@ -93,6 +93,28 @@
     "addToCart": "Add to Cart",
     "addToWishlist": "Add to Wishlist"
   },
+  "author": {
+    "follow": "Follow",
+    "following": "Following",
+    "shortLink": "Short Link",
+    "books": "Books",
+    "bookCount": "Books Count",
+    "quote": {
+      "like": "Like"
+    },
+    "errors": {
+      "notFound": "Author not found",
+      "loadError": "Error loading author details"
+    },
+    "quote": {
+      "like": "Like",
+      "dislike": "Dislike",
+      "share": {
+        "facebook": "Share on Facebook",
+        "twitter": "Share on Twitter"
+      }
+    }
+  },
   "categories": {
     "title": "Categories",
     "filter": "Filter",
@@ -365,6 +387,32 @@
   "auth": {
     "SESSION_EXPIRED": "Session expired, please log in again",
     "LOGIN_REQUIRED": "You must log in first to access account settings"
+  },
+  "error": {
+    "invalidAuthorId": "Invalid author ID",
+    "loadingAuthorData": "Error loading author data. Please try again.",
+    "generalError": "An error occurred. Please try again."
+  },
+  "author": {
+    "loadingText": "Loading author data...",
+    "errorTitle": "Error",
+    "retry": "Retry",
+    "books": "Books",
+    "reviews": "Reviews",
+    "followers": "Followers",
+    "follow": "Follow",
+    "following": "Following",
+    "share": "Share",
+    "viewProfile": "View Profile",
+    "addToCart": "Add to Cart",
+    "loading": "Loading...",
+    "noReviews": "No reviews yet",
+    "noBooks": "No books found",
+    "noFollowers": "No followers yet",
+    "countryFlag": "Country flag",
+    "readMore": "Read more",
+    "shareText": "Discover books by",
+    "aboutAuthor": "About the Author"
   }
 
 }
