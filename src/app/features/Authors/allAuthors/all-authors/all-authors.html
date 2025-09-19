@@ -1,51 +1,39 @@
-<div id="mainContainer">
-    <div id="NavCrumb">
+<div class="main-container">
+    <div class="nav-crumb">
         <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
     </div>
 
-    <div id="bigContainer">
+    <div class="authors-grid">
         @for(author of authors;track author.id) {
-        <div id="AuthorContainer" >
-            <div id="Authors" >
-               <div id="data">
-                    <!-- <img id="authorImage" [src]="getCoverImageUrl(author)"  /> -->
-                     @if(author && getCoverImageUrl(author)) {
-                         <img id="authorImage" [src]="getCoverImageUrl(author)">
+        <div class="author-card" [routerLink]="['/authors', author.id]">
+            <div class="author-header">
+                <div class="author-info">
+                    @if(author && getCoverImageUrl(author)) {
+                        <img class="author-image" [src]="getCoverImageUrl(author)" [alt]="author.name">
                     } @else {
-                    <i id="AlternativeImage" class="fa-solid fa-circle-user"></i>
+                        <i class="author-placeholder fa-solid fa-circle-user"></i>
                     }
-                    <a [routerLink]="['/authors', author.id]" routerLinkActive="true">
-                      <h6>{{author.name}}</h6>
-                    </a>
-                    <!-- get part of bio not all of it -->
-                     <p class="Bio">{{author.bio.substring(0, 150)}}...</p>
-                    <!-- <p class="Bio">{{author.bio}}</p> -->
-               </div>
-<!-- 
-                <div class="book-rating ">
-                    <div class="star-rating">
-                        @for (star of [1,2,3,4,5]; track star) {
-                            <span class="star" [class.yellow]="star <= author.rating">★</span>
-                        }
-                    </div> -->
-
-                <!-- </div> -->
+                    <div class="author-name-bio">
+                        <h2 class="author-name">{{author.name}}</h2>
+                        <p class="author-bio">{{author.bio?.substring(0, 150)}}...</p>
+                    </div>
+                </div>
             </div>
 
-                <div id="info">
-                    <div class="info"> {{author.booksCount}} الكتب </div>
-                    <!-- <div class="info"> {{author.QoutationsCount}} اقتباسات </div> -->
-                    <div id="lastDiv" class="info"> {{author.followerCount}} المتابعين </div>
-                </div>
+            <div id="info">
+                <div class="info">{{ author.booksCount }} {{ 'author.books' | translate }}</div>
+                <!-- <div class="info">{{ author.QoutationsCount }} {{ 'author.list.quotes' | translate }}</div> -->
+                <div id="lastDiv" class="info">{{ author.followerCount }} {{ 'author.followers' | translate }}</div>
+            </div>
         </div>
-    }
-
+        }
     </div>
-
     
     <div id="Pagination">
-          <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="onPageChange($event)"></app-pagination>
-
-    </div >
-
+        <app-pagination 
+            [CurrentPage]="currentPage" 
+            [TotalPages]="totalPages" 
+            (PageChanged)="onPageChange($event)">
+        </app-pagination>
+    </div>
 </div>

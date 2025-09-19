@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { AuthorApiService } from '../../../../core/services/Author/author-api-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { environment } from '../../../../core/configs/environment.config';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-all-authors',
-  imports: [NavCrumb,Pagination,CommonModule,RouterLink,RouterLinkActive],
+  imports: [NavCrumb, Pagination, CommonModule, RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './all-authors.html',
   styleUrl: './all-authors.css'
 })
@@ -28,10 +29,26 @@ export class AllAuthors implements OnInit {
    
 
 
-constructor(private authorService: AuthorApiService) {}
+constructor(
+    private authorService: AuthorApiService,
+    private translate: TranslateService
+  ) {
+    this.updateBreadcrumbs();
+  }
+
+  private updateBreadcrumbs(): void {
+    this.breadcrumbs = [
+      { name: this.translate.instant('Authors'), path: '/allAuthors' }
+    ];
+  }
 
   ngOnInit(): void {
     this.loadAuthors();
+    
+    // Subscribe to language changes
+    this.translate.onLangChange.subscribe(() => {
+      this.updateBreadcrumbs();
+    });
   }
 
   loadAuthors(): void {

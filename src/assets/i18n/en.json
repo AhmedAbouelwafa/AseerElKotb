@@ -106,6 +106,15 @@
       "notFound": "Author not found",
       "loadError": "Error loading author details"
     },
+    "list": {
+      "title": "Authors",
+      "books": "Books",
+      "quotes": "Quotes",
+      "followers": "Followers",
+      "search": "Search authors...",
+      "noResults": "No authors found",
+      "loading": "Loading authors..."
+    },
     "quote": {
       "like": "Like",
       "dislike": "Dislike",
