@@ -171,7 +171,17 @@
     "noReaders": "⚠ No readers yet",
     "review": "Review",
     "quote": "Quote",
-    "bookTitle": "Book Title"
+    "bookTitle": "Book Title",
+    "editReview": "Edit Review",
+    "deleteReview": "Delete Review",
+    "rating": "Rating",
+    "enterReview": "Enter your review here...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "success": "Success",
+    "error": "Error",
+    "reviewUpdatedSuccessfully": "Review updated successfully",
+    "failedToUpdateReview": "Failed to update review. Please try again."
   },
 
 

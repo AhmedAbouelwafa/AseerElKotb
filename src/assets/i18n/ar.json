@@ -169,7 +169,17 @@
     "noReaders": "⚠ لا توجد قراء بعد",
     "review": "مراجعة",
     "quote": "اقتباس",
-    "bookTitle": "عنوان الكتاب"
+    "bookTitle": "عنوان الكتاب",
+    "editReview": "تعديل المراجعة",
+    "deleteReview": "حذف المراجعة",
+    "rating": "التقييم",
+    "enterReview": "اكتب مراجعتك هنا...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "success": "نجح",
+    "error": "خطأ",
+    "reviewUpdatedSuccessfully": "تم تحديث المراجعة بنجاح",
+    "failedToUpdateReview": "فشل في تحديث المراجعة. يرجى المحاولة مرة أخرى."
   },
 
 

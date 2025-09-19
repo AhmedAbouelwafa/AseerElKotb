@@ -66,6 +66,25 @@
   color: #e03131;
 }
 
+.edit-btn {
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.2s ease;
+  margin-right: 10px;
+}
+
+.edit-btn:hover {
+  color: #339af0;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+}
+
 /* Rating */
 .rating-section {
   margin-bottom: 12px;
@@ -155,4 +174,111 @@
 .votes button:last-child:hover {
   color: #2f9e44;
   border-color: #2f9e44;
+}
+
+/* Edit Form Styles */
+.edit-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.rating-edit {
+  margin-bottom: 15px;
+}
+
+.rating-edit label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.stars-edit {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.stars-edit .fa-star {
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.stars-edit .fa-star:hover {
+  transform: scale(1.1);
+}
+
+.review-edit {
+  margin-bottom: 15px;
+}
+
+.review-edit label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.review-edit textarea {
+  width: 100%;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.review-edit textarea:focus {
+  outline: none;
+  border-color: #339af0;
+  box-shadow: 0 0 0 3px rgba(51, 154, 240, 0.1);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.edit-actions .btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.edit-actions .btn-success {
+  background-color: #2f9e44;
+  border: 1px solid #2f9e44;
+  color: white;
+}
+
+.edit-actions .btn-success:hover:not(:disabled) {
+  background-color: #2b8a3e;
+  border-color: #2b8a3e;
+}
+
+.edit-actions .btn-secondary {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: white;
+}
+
+.edit-actions .btn-secondary:hover {
+  background-color: #545862;
+  border-color: #545862;
 }
