@@ -20,6 +20,10 @@
     "subtitle": "نحن هنا لمساعدتك",
     "welcome": "مرحباً! كيف يمكنني مساعدتك اليوم؟"
   },
+  "common": {
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل"
+  },
   "hero": {
     "title": "عصير الكتب",
     "bookTypes": {
@@ -40,6 +44,26 @@
     "results": "نتائج البحث"
   },
   "categories": {
+    "title": "الأقسام",
+    "filter": "تصفية",
+    "authorLanguage": "لغة المؤلف",
+    "arabic": "الكتب العربية",
+    "english": "الكتب الإنجليزية",
+    "allCategories": "جميع الأقسام",
+    "books": "الكتب",
+    "allBooks": "جميع الكتب",
+    "browseAllBooks": "تصفح جميع الكتب المتاحة",
+    "orderBy": {
+      "title": "ترتيب حسب",
+      "newest": "⇡ الأحدث",
+      "oldest": "⇣ الأقدم",
+      "mostPopular": "⇡ الأكثر رواجاً"
+    },
+    "subCategories": {
+      "title": "الأقسام الفرعية"
+    },
+    "more": "عرض المزيد",
+    "less": "عرض أقل",
     "novels": "روايات",
     "childrenBooks": "تربية الأطفال والناشئين",
     "comics": "كوميكس",
@@ -69,6 +93,24 @@
     "listenNow": "استمع الآن",
     "addToCart": "أضف للسلة",
     "addToWishlist": "أضف للمفضلة"
+  },
+  "wishlist": {
+    "title": "قائمة رغباتي",
+    "emptyState": {
+      "title": "قائمة الرغبات فارغة",
+      "description": "لم تقم بإضافة أي كتب إلى قائمة الرغبات بعد",
+      "browseBooks": "تصفح الكتب"
+    },
+    "loading": "جاري تحميل قائمة الرغبات...",
+    "error": "فشل في تحميل قائمة الرغبات. يرجى المحاولة مرة أخرى",
+    "retry": "إعادة المحاولة",
+    "itemsCount": "لديك {{count}} كتاب في قائمة الرغبات",
+    "actions": {
+      "addToCart": "أضف للسلة",
+      "remove": "إزالة",
+      "viewBook": "عرض الكتاب",
+      "viewAuthor": "عرض المؤلف"
+    }
   },
   "bookDetails": {
     "buyPaperCopy": "شراء نسخة ورقية",

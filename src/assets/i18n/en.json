@@ -21,6 +21,10 @@
     "subtitle": "We are here to help you",
     "welcome": "Welcome! How can I help you today?"
   },
+  "common": {
+    "showMore": "Show More",
+    "showLess": "Show Less"
+  },
   "hero": {
     "title": "Aseer AlKotb",
     "bookTypes": {
@@ -42,6 +46,23 @@
     "results": "Search Results"
   },
   "categories": {
+    "title": "Categories",
+    "filter": "Filter",
+    "authorLanguage": "Author Language",
+    "arabic": "Arabic Books",
+    "english": "English Books",
+    "allCategories": "All Categories",
+    "orderBy": {
+      "title": "Order By",
+      "newest": "⇡ Newest",
+      "oldest": "⇣ Oldest",
+      "mostPopular": "⇡ Most Popular"
+    },
+    "subCategories": {
+      "title": "Sub Categories"
+    },
+    "more": "Show More",
+    "less": "Show Less",
     "novels": "Novels",
     "childrenBooks": "Children & Youth Education",
     "comics": "Comics",
@@ -71,6 +92,44 @@
     "listenNow": "Listen Now",
     "addToCart": "Add to Cart",
     "addToWishlist": "Add to Wishlist"
+  },
+  "categories": {
+    "title": "Categories",
+    "filter": "Filter",
+    "authorLanguage": "Author Language",
+    "arabic": "Arabic Books",
+    "english": "English Books",
+    "allCategories": "All Categories",
+    "books": "Books",
+    "allBooks": "All Books",
+    "browseAllBooks": "Browse All Available Books",
+    "orderBy": {
+      "title": "Order By",
+      "newest": "⇡ Newest",
+      "oldest": "⇣ Oldest",
+      "mostPopular": "⇡ Most Popular"
+    },
+    "subCategories": {
+      "title": "Sub Categories"
+    }
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "emptyState": {
+      "title": "Your wishlist is empty",
+      "description": "You haven't added any books to your wishlist yet",
+      "browseBooks": "Browse Books"
+    },
+    "loading": "Loading your wishlist...",
+    "error": "Failed to load wishlist. Please try again.",
+    "retry": "Retry",
+    "itemsCount": "You have {{count}} books in your wishlist",
+    "actions": {
+      "addToCart": "Add to Cart",
+      "remove": "Remove",
+      "viewBook": "View Book",
+      "viewAuthor": "View Author"
+    }
   },
   "bookDetails": {
     "buyPaperCopy": "Buy Paper Copy",

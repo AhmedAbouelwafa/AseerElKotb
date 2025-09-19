@@ -5,25 +5,26 @@ import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { PublisherServices } from '../../Publisher/PublisherServices/publisher-services';
 import { IPublisher } from '../../Publisher/Publisher Interfaces/publisher-interfaces';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-filtering',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './filtering.html',
   styleUrl: './filtering.css'
 })
 export class Filtering implements OnInit {
-  languages: string[] = ['الكتب العربية', 'الكتب الانجلزية'];
+  languages: string[] = ['categories.arabic', 'categories.english'];
   
   public languageMap: {[key: string]: number} = {
-    'الكتب العربية': 1, 
-    'الكتب الانجلزية': 2 
+    'categories.arabic': 1, 
+    'categories.english': 2 
   };
 
   sortOptions = [
-    { label: '⇡ الأحدث', value: 0 }, 
-    { label: '⇣ الأقدم', value: 1 }, 
-    { label: '⇡ الأكثر رواجاً', value: 4 } 
+    { label: 'categories.orderBy.newest', value: 0 }, 
+    { label: 'categories.orderBy.oldest', value: 1 }, 
+    { label: 'categories.orderBy.mostPopular', value: 4 } 
   ];
   
   sectionVisibility = {
@@ -45,7 +46,15 @@ export class Filtering implements OnInit {
 
   @Output() filterChanged = new EventEmitter<FilterParams>();
 
-  constructor(private publisherService: PublisherServices) {}
+  constructor(
+    private publisherService: PublisherServices,
+    private translate: TranslateService
+  ) {
+    // Subscribe to language changes
+    this.translate.onLangChange.subscribe(() => {
+      // No need to update anything as we're using translation keys directly
+    });
+  }
 
   ngOnInit() {
     this.loadPublishers();

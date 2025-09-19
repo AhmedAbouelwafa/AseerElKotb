@@ -2,12 +2,12 @@
 <div id="outerContainer">
     <div id="mainFilterContainer">
         <div id="filterHeader">
-            <h2>تصفية</h2>
+            <h2>{{ 'categories.filter' | translate }}</h2>
         </div>
 
         <div id="language">
             <div id="languageHeader" class="header" (click)="toggleSection('language')">
-                <h3>لغة الكاتب</h3>
+                <h3>{{ 'categories.authorLanguage' | translate }}</h3>
                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.language"></i>
             </div>
 
@@ -20,7 +20,7 @@
                            id="{{'lang-' + lang}}" 
                            [checked]="selectedLanguage === languageMap[lang]"
                            (change)="onLanguageChange(lang)"> 
-                    <label for="{{'lang-' + lang}}">{{lang}}</label>
+                    <label for="{{'lang-' + lang}}">{{ lang | translate }}</label>
                 </div>
                 }
             </div>
@@ -29,7 +29,7 @@
 
         <div id="order">
             <div id="orderHeader" class="header" (click)="toggleSection('order')">
-                <h3>ترتيب حسب</h3>
+                <h3>{{ 'categories.orderBy.title' | translate }}</h3>
                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.order"></i>
             </div>
 
@@ -37,7 +37,7 @@
             <div id="orderOption">
                 <select [ngModel]="selectedSort" (ngModelChange)="onSortChange($event)">
                     @for (option of sortOptions; track option.value) {
-                        <option [value]="option.value">{{option.label}}</option>
+                        <option [value]="option.value">{{ option.label | translate }}</option>
                     }
                 </select>
             </div>
@@ -46,7 +46,7 @@
 
         <div id="bublisher">
             <div id="bublisherHeader" class="header" (click)="toggleSection('publisher')">
-                <h3>دور النشر</h3>
+                <h3>{{ 'bookDetails.publisher' | translate }}</h3>
                 <i class="fa-solid fa-angle-down" [class.rotated]="!sectionVisibility.publisher"></i>
             </div>
 
@@ -54,7 +54,7 @@
             <div class="searchContainer">
                 <input 
                 type="text" 
-                placeholder="ابحث عن دور النشر"
+                [placeholder]="'search.placeholder' | translate"
                 class="search-input"
                 [ngModel]="searchPublisherTerm"
                 (ngModelChange)="searchPublisherTerm = $event; onSearchInput()"
@@ -74,13 +74,13 @@
                 }
                 @if (!showAllPublishers && allPublishers.length > 3 && !searchPublisherTerm) {
                     <button type="button" (click)="toggleShowAllPublishers()" class="show-more-btn">
-                        عرض المزيد
+                        {{ 'common.showMore' | translate }}
                     </button>
                 }
 
                 @if (showAllPublishers && !searchPublisherTerm) {
                 <button type="button" (click)="toggleShowAllPublishers()" class="show-less-btn">
-                    عرض أقل
+                    {{ 'common.showLess' | translate }}
                 </button>
                 }
             </div>
