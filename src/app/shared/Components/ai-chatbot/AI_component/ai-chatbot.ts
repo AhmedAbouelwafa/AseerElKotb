@@ -64,6 +64,12 @@ export class AICHATBOT {
     });
   }
 
+  onChatIconClick() {
+    // Create/send session only when the floating chat icon is clicked
+    this.sendSession();
+    this.toggleChat();
+  }
+
   toggleChat() {
     if (this.showModal) {
       this.closeModal();
@@ -280,5 +286,13 @@ export class AICHATBOT {
     } catch (error) {
       throw error;
     }
+  }
+
+
+  sendSession()
+  {
+    const randomNumber = Math.floor(Math.random() * 1000000);
+    localStorage.setItem('chatSession', randomNumber.toString());
+
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable, catchError } from 'rxjs';
+import { map, Observable, catchError, tap } from 'rxjs';
 import { environment } from '../../../../core/configs/environment.config';
 import { IAddQuote } from '../modal model/IAddQuote';
 import { IGetAllQuota, IGetAllReviews } from '../../../../features/user-profile/UserModels/UserModels';
@@ -89,12 +89,14 @@ export class ModalService {
   }
   getAllReviews(params: IGetAllReviews): Observable<any[]> {
     let queryParams = new HttpParams();
+
     if (params.AuthorId) {
       queryParams = queryParams.set('AuthorId', params.AuthorId.toString());
     }
     if (params.BookId) {
       queryParams = queryParams.set('BookId', params.BookId.toString());
     }
+
     queryParams = queryParams.set('Search', params.Search);
     queryParams = queryParams.set('PageNumber', params.PageNumber.toString());
     queryParams = queryParams.set('PageSize', params.PageSize.toString());
@@ -102,9 +104,11 @@ export class ModalService {
     return this.http.get<any[]>(`${this._apiBaseUrl}/Reviews/GetAll`, {
       params: queryParams
     }).pipe(
-      map((response: any) => response.data || response)
+      tap((response: any) => console.log("getallllllllllllllllllllllll" , response)), // ده للعرض فقط
+      map((response: any) => response.data || response) // ده بيرجع البيانات اللي عايزها
     );
   }
+
   getReviewById(id: number): Observable<any> {
     return this.http.get<any>(`${this._apiBaseUrl}/Reviews/${id}`);
   }
@@ -116,13 +120,13 @@ export class ModalService {
       Rating: rating,
       Comment: comment
     };
-    
+
     console.log('🚨 STARTING UPDATE REVIEW REQUEST 🚨');
     console.log('Update data:', updateData);
     console.log('API URL:', `${this._apiBaseUrl}/Reviews`);
     console.log('Auth token exists:', !!localStorage.getItem('auth_token'));
     console.log('User ID:', localStorage.getItem('user_id'));
-    
+
     return this.http.put<any>(`${this._apiBaseUrl}/Reviews`, updateData).pipe(
       map((response: any) => {
         console.log('✅ Update review SUCCESS:', response);
