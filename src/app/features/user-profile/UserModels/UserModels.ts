@@ -4,21 +4,37 @@ export interface ProfileResponse {
   lastName: string;
   imageUrl: string | null;
   registrationPeriod: string;
-  reviews: ReviewDto[];
-  quotes: QuoteDto[];
+  reviews: ReviewDtoResponse[];
+    quotes: QuoteDtoResponse[];
+
+  // reviews: ReviewDto[];
+  // quotes: QuoteDto[];
   following: UserFollowDto[];
 }
 
-export interface ReviewDto {
-  id: number;
-  userId: number; // For client-side filtering
-  reviewFor: ReviewFor;
-  comment: string; // Review text
-  rating: number; // Review rating
-  createdAt: string; // Creation date
-  bookId?: number; // Book ID, if applicable
-  bookTitle?: string;
-  authorName?: string;
+// export interface ReviewDto {
+//   id: number;
+//   userId: number; // For client-side filtering
+//   reviewFor: ReviewFor;
+//   comment: string; // Review text
+//   rating: number; // Review rating
+//   createdAt: string; // Creation date
+//   bookId?: number; // Book ID, if applicable
+//   bookTitle?: string;
+//   authorName?: string;
+// }
+
+export interface ReviewDtoResponse {
+  id: string;
+  comment: string;
+  rating: number;
+  bookId: string;
+  title: string;
+  coverImageUrl: string;
+}
+export interface QuoteDtoResponse {
+  Id :number;
+ qouteComment :string;
 }
 
 export interface QuoteDto {

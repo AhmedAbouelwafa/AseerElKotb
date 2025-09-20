@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProfileResponse, ReviewDto, QuoteDto, UserFollowDto, ReviewFor, QuoteFor, FollowType } from '../UserModels/UserModels';
+import { ProfileResponse, QuoteDto, UserFollowDto, ReviewFor, QuoteFor, FollowType, ReviewDtoResponse, QuoteDtoResponse } from '../UserModels/UserModels';
 import { UserService } from '../UserServices/user-service';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { ReviewsAndComments } from '../../../shared/Components/reviews-and-comments/reviews-and-comments';
+import { environment } from '../../../core/configs/environment.config';
 
 interface StatItem {
   label: string;
@@ -15,7 +15,7 @@ interface StatItem {
   icon: string;
   isActive: boolean;
   type: 'reviews' | 'quotes' | 'following';
-  data: ReviewDto[] | QuoteDto[] | UserFollowDto[];
+  data: ReviewDtoResponse[] | QuoteDtoResponse[] | UserFollowDto[];
 }
 
 @Component({
@@ -23,7 +23,7 @@ interface StatItem {
   templateUrl: './user-profile.html',
   styleUrls: ['./user-profile.css'],
   standalone: true,
-  imports: [CommonModule, NavCrumb , TranslateModule,FormsModule,ReviewsAndComments]
+  imports: [CommonModule, NavCrumb , TranslateModule,FormsModule,RouterLink,RouterLinkActive]
 })
 export class UserProfileComponent implements OnInit {
   user: ProfileResponse | null = null;
@@ -102,11 +102,12 @@ export class UserProfileComponent implements OnInit {
     this.loading = true;
     console.log('🔄 Loading user profile for userId:', this.userId);
 
-    this.userService.getUserProfile(this.userId).subscribe({
+    this.userService.getUserProfile().subscribe({
       next: (response: ProfileResponse | null) => {
         console.log('📡 API Response:', response);
         if (response) {
           this.user = response;
+          console.log('🔍 User profile data:', this.user);
           
           // Detailed logging of reviews and quotes
           console.log('🔍 Reviews count:', response.reviews?.length || 0);
@@ -197,7 +198,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  get activeStatData(): ReviewDto[] | QuoteDto[] | UserFollowDto[] {
+  get activeStatData(): ReviewDtoResponse[] | QuoteDtoResponse[] | UserFollowDto[] {
     const activeStat = this.stats.find(stat => stat.isActive);
     return activeStat?.data || [];
   }
@@ -241,32 +242,32 @@ export class UserProfileComponent implements OnInit {
   }
 
   // Type guards to narrow types in the template
-  isReviewDto(item: ReviewDto | QuoteDto | UserFollowDto): item is ReviewDto {
-    return (item as ReviewDto).reviewFor !== undefined;
-  }
+  // isReviewDto(item: ReviewDtoResponse | QuoteDto | UserFollowDto): item is ReviewDtoResponse {
+  //   return (item as ReviewDtoResponse).reviewFor !== undefined;
+  // }
 
-  isQuoteDto(item: ReviewDto | QuoteDto | UserFollowDto): item is QuoteDto {
+  isQuoteDto(item: ReviewDtoResponse | QuoteDto | UserFollowDto): item is QuoteDto {
     return (item as QuoteDto).quoteFor !== undefined;
   }
 
-  isUserFollowDto(item: ReviewDto | QuoteDto | UserFollowDto): item is UserFollowDto {
+  isUserFollowDto(item: ReviewDtoResponse | QuoteDto | UserFollowDto): item is UserFollowDto {
     return (item as UserFollowDto).followType !== undefined;
   }
 
   // Helper methods for template data access
-  get reviews(): ReviewDto[] {
+  get reviews(): ReviewDtoResponse[] {
     return this.user?.reviews || [];
   }
 
-  get quotes(): QuoteDto[] {
+  get quotes(): QuoteDtoResponse[] {
     return this.user?.quotes || [];
   }
 
-  getReviewRating(review: ReviewDto): number {
+  getReviewRating(review: ReviewDtoResponse): number {
     return review.rating || 0;
   }
 
-  getReviewComment(review: ReviewDto): string {
+  getReviewComment(review: ReviewDtoResponse): string {
     console.log('🔍 Review object:', review);
     console.log('🔍 Review comment property:', review.comment);
     console.log('🔍 Available properties:', Object.keys(review));
@@ -279,9 +280,9 @@ export class UserProfileComponent implements OnInit {
     return comment || this.translate.instant('userProfile.NO_COMMENT');
   }
 
-  getReviewCreatedAt(review: ReviewDto): Date | null {
-    return review.createdAt ? new Date(review.createdAt) : null;
-  }
+  // getReviewCreatedAt(review: ReviewDto): Date | null {
+  //   return review.createdAt ? new Date(review.createdAt) : null;
+  // }
 
   getQuoteComment(quote: QuoteDto): string {
     console.log('🔍 Quote object:', quote);
@@ -300,6 +301,19 @@ export class UserProfileComponent implements OnInit {
     return quote.creationDate ? new Date(quote.creationDate) : null;
   }
 
+
+  private baseUrl =environment.apiBaseUrl
+    
+       getCoverImageUrl(item:ReviewDtoResponse): string {
+        if (item.coverImageUrl.startsWith('/uploads')) {
+              return this.baseUrl + item.coverImageUrl;
+            }
+          return item.coverImageUrl;
+      }
+
+    getStarArray(rating: number): number[] {
+      return Array(5).fill(0);
+    }
 
 
 

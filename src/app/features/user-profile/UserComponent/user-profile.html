@@ -1,7 +1,3 @@
-<div class="pt-2 mt-5 mb-4" dir="rtl">
-  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
-</div>
-
 <!-- Loading State -->
 @if (loading) {
   <div class="text-center py-5">
@@ -15,6 +11,10 @@
 <!-- Profile Content -->
 @if (!loading && user) {
   <div class="user-profile-container" dir="rtl">
+
+    <div class="pt-2 mt-5 mb-4" dir="rtl">
+      <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
+    </div>
 
     <!-- Header Section -->
     <div class="profile-header">
@@ -64,8 +64,21 @@
             @if (reviews && reviews.length > 0) {
               <div class="row">
                 @for (review of reviews; track review.id) {
-                  <div class="reviews">
-                    
+                  <div class="review">
+
+                     <img id="BookCover" [src]="getCoverImageUrl(review)" alt="BookImage">
+                     <span class="review-header">
+                        <a [routerLink]="['/book-details', review.bookId]" routerLinkActive="true">
+                            {{review.title}}
+                        </a>
+                        <div class="star-rating">
+                          @for (star of [1,2,3,4,5]; track star) {
+                            <span class="star" [class.yellow]="star <= review.rating">★</span>
+                          }
+                        </div>
+                     </span>
+                     <p>{{review.comment}}</p>
+
                   </div>
                   <!-- <div class="col-md-6 mb-3">
                     <div class="card h-100">
@@ -122,8 +135,11 @@
             <h3>{{ 'userProfile.QUOTES' | translate }} ({{ quotes.length }})</h3>
             @if (quotes && quotes.length > 0) {
               <div class="row">
-                @for (quote of quotes; track quote.id) {
-                  <div class="col-md-6 mb-3">
+                @for (quote of quotes; track quote.Id) {
+                  <div class="qoute">
+                      <p>“{{quote.qouteComment}}”</p>
+                  </div>
+                  <!-- <div class="col-md-6 mb-3">
                     <div class="card h-100">
                       <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -147,7 +163,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 }
               </div>
             } @else {
