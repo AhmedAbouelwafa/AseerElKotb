@@ -5,7 +5,7 @@
     <div class="position-relative">
       <img [src]="getCoverImageUrl()" class="card-img-top" alt="Book Cover">
       <span class="badge bg-danger position-absolute start-50 translate-middle-x" style="bottom: -12px;">
-        خصم {{book.discountPercentage}}%
+        {{'books.discount' | translate}} {{book.discountPercentage}}%
       </span>
     </div>
 
@@ -21,10 +21,10 @@
       <div class="underBook">
 
           <span class="told text-danger text-decoration-line-through">
-            ج.م {{book.price | number}}
+            {{ book.price | egyCurrency }}
           </span>
           <span class="tnew text-dark">
-            ج.م {{book.price - (book.price * book.discountPercentage / 100) | number}}
+            {{ (book.price - (book.price * book.discountPercentage / 100)) | egyCurrency }}
           </span>
 
           <button class="cart-ribbon"

@@ -3,24 +3,40 @@ import { parentCategory } from '../../category-model/Icategory';
 import { NavCrumb, NavcrumbItem } from '../../../../shared/Components/nav-crumb/nav-crumb';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CategoryServices } from '../../category-service/category-services';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-all-categories',
-  imports: [NavCrumb,RouterLink,RouterLinkActive],
+  imports: [NavCrumb, RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './all-categories.html',
   styleUrl: './all-categories.css'
 })
 export class AllCategories implements OnInit {
 
-  breadcrumbs: NavcrumbItem[] = [
-    { name: 'الأقسام', path: '/AllCategories' },
-  ];
-
+  breadcrumbs: NavcrumbItem[] = [];
   parentCategories: parentCategory[] = [];
-  constructor(private categoryService: CategoryServices) {}
+  
+  constructor(
+    private categoryService: CategoryServices,
+    private translate: TranslateService
+  ) {
+    // Initialize breadcrumbs
+    this.updateBreadcrumbs();
+  }
+
+  private updateBreadcrumbs(): void {
+    this.breadcrumbs = [
+      { name: this.translate.instant('categories.title'), path: '/AllCategories' },
+    ];
+  }
 
   ngOnInit(): void {
     this.loadParentCategories();
+
+    // Subscribe to language changes
+    this.translate.onLangChange.subscribe(() => {
+      this.updateBreadcrumbs();
+    });
   }
 
   loadParentCategories(): void {

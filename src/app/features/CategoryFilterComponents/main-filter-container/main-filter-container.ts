@@ -9,32 +9,40 @@ import { CategoeyBooks } from '../categoey-books/categoey-books';
 import { FilterBooksRequest } from '../../products/book-model/Ibook';
 import { Subscription } from 'rxjs';
 import { CategoryServices } from '../../categories/category-service/category-services';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-filter-container',
-  imports: [CategoryTitle, NavCrumb, SubCategoryCrumb, Filtering, CategoeyBooks],
+  imports: [CategoryTitle, NavCrumb, SubCategoryCrumb, Filtering, CategoeyBooks, TranslateModule],
   templateUrl: './main-filter-container.html',
   styleUrl: './main-filter-container.css'
 })
 export class MainFilterContainer implements OnInit, OnDestroy {
    
-  constructor(
-    private route: ActivatedRoute,
-    private categoryService: CategoryServices,
-  ) {}
- 
-
   categoryName: string = '';
   categoryDescription: string = '';
   CategoryId: number | null = null;
   Category: any;
   currentFilterParams?: FilterBooksRequest;
-  breadcrumbs: NavcrumbItem[] = [
-    { name: 'الأقسام', path: '/AllCategories' },
-    { name: 'جميع الكتب', path: '/MainFilterContainer' },
-  ];
+  breadcrumbs: NavcrumbItem[] = [];
+  private langChangeSub!: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private categoryService: CategoryServices,
+    private translate: TranslateService
+  ) {
+    this.updateDefaultBreadcrumbs();
+  }
 
   private routeSub!: Subscription;
+
+  private updateDefaultBreadcrumbs(): void {
+    this.breadcrumbs = [
+      { name: this.translate.instant('categories.title'), path: '/AllCategories' },
+      { name: this.translate.instant('books.title'), path: '/MainFilterContainer' },
+    ];
+  }
 
   ngOnInit(): void {
     // Subscribe to route parameter changes
@@ -47,11 +55,23 @@ export class MainFilterContainer implements OnInit, OnDestroy {
         this.setupForAllBooks();
       }
     });
+
+    // Subscribe to language changes
+    this.langChangeSub = this.translate.onLangChange.subscribe(() => {
+      if (!this.CategoryId) {
+        this.updateDefaultBreadcrumbs();
+      } else {
+        this.loadCategoryData(this.CategoryId);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.routeSub) {
       this.routeSub.unsubscribe();
+    }
+    if (this.langChangeSub) {
+      this.langChangeSub.unsubscribe();
     }
   }
 
@@ -65,7 +85,7 @@ export class MainFilterContainer implements OnInit, OnDestroy {
           this.CategoryId = this.Category.id;
 
           this.breadcrumbs = [
-            { name: 'الأقسام', path: '/AllCategories' },
+            { name: this.translate.instant('categories.title'), path: '/AllCategories' },
             { name: this.Category.name, path: `/MainFilterContainer/${categoryId}` }
           ];
           
@@ -83,13 +103,13 @@ export class MainFilterContainer implements OnInit, OnDestroy {
   }
 
   setupForAllBooks(): void {
-    this.categoryName = ' الكتب';
-    this.categoryDescription = 'تصفح جميع الكتب المتاحة';
+    this.categoryName = this.translate.instant('categories.books');
+    this.categoryDescription = this.translate.instant('categories.browseAllBooks');
     this.CategoryId = null;
     this.Category = null;
     
     this.breadcrumbs = [
-      { name: ' الكتب', path: '/MainFilterContainer' }
+      { name: this.translate.instant('books.title'), path: '/MainFilterContainer' }
     ];
     
     // Set initial filter parameters for all books

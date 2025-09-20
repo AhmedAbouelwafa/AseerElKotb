@@ -4,7 +4,7 @@
     class="paginationButton" 
     (click)="GoToPage(CurrentPage - 1)"
     [disabled]="TotalPages<1||CurrentPage === 1">
-    &laquo; Prev
+    <i class="fas fa-chevron-left"></i>
   </button>
 
   <!-- Page numbers -->
@@ -33,6 +33,6 @@
     class="paginationButton" 
     (click)="GoToPage(CurrentPage + 1)"
     [disabled]="TotalPages<1||CurrentPage === TotalPages">
-    Next &raquo;
+    <i class="fas fa-chevron-right"></i>
   </button>
 </div>

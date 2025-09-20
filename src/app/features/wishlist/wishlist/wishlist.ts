@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { Pagination } from '../../../shared/Components/pagination/pagination';
 import { WishlistService } from '../../../services/wishlist-service';
@@ -27,9 +27,24 @@ import { Auth } from '../../../services/auth';
 })
 export class Wishlist implements OnInit {
   // Breadcrumb navigation
-  breadcrumbs: NavcrumbItem[] = [
-    { name: 'قائمة رغباتي', path: '/wishlist' }
-  ];
+  breadcrumbs: NavcrumbItem[] = [];
+
+  ngOnInit(): void {
+    // Set up breadcrumbs with translation
+    this.breadcrumbs = [
+      { name: this.translate.instant('wishlist.title'), path: '/wishlist' }
+    ];
+
+    // Load wishlist items since user is authenticated (guaranteed by route guard)
+    this.loadWishlistItems();
+
+    // Subscribe to language changes to update breadcrumbs
+    this.translate.onLangChange.subscribe(() => {
+      this.breadcrumbs = [
+        { name: this.translate.instant('wishlist.title'), path: '/wishlist' }
+      ];
+    });
+  }
 
   // Wishlist data
   wishlistItems: GetWishlistItemsResponse[] = [];
@@ -47,13 +62,9 @@ export class Wishlist implements OnInit {
   constructor(
     private wishlistService: WishlistService,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
-
-  ngOnInit(): void {
-    // Load wishlist items since user is authenticated (guaranteed by route guard)
-    this.loadWishlistItems();
-  }
 
   /**
    * Load wishlist items from API
@@ -79,7 +90,7 @@ export class Wishlist implements OnInit {
       },
       error: (error) => {
         console.error('Error loading wishlist items:', error);
-        this.error = 'فشل في تحميل قائمة الرغبات. يرجى المحاولة مرة أخرى.';
+        this.error = this.translate.instant('wishlist.error');
         this.loading = false;
         
         // Handle authentication errors

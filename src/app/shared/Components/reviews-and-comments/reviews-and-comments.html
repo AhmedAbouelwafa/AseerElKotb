@@ -72,13 +72,13 @@
             @if(reviews && reviews.length > 0){
               @for (review of reviews; track $index) {
                 <app-review-reply
-                  [review]="review.comment"
-                  [rating]="review.rating"
-                  [userName]="review.userName"
-                  [userId]="review.userId"
-                  [reviewId]="review.id"
-                  [preferInputUserName]="isCurrentUser(review.userId)"
-                  (delete)="deleteReview(review.id || $index)"
+                  [review]="review.Comment"
+                  [rating]="review.Rating"
+                  [userName]="review.UserName"
+                  [userId]="review.UserId"
+                  [reviewId]="review.Id"
+                  [preferInputUserName]="isCurrentUser(review.UserId)"
+                  (delete)="deleteReview(review.Id || $index)"
                   (update)="updateReview($event)">
                 </app-review-reply>
               }

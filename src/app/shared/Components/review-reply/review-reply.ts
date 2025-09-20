@@ -32,14 +32,17 @@ export class ReviewReply implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    if (this.preferInputUserName && this.userName) {
+    // Always use the userName from API if available
+    if (this.userName && this.userName.trim()) {
       this.actualUserName = this.userName;
       return;
     }
+    
+    // Fallback to fetching by userId if userName is not provided
     if (this.userId && this.userId > 0) {
       this.fetchUserName();
     } else {
-      this.actualUserName = this.userName || 'مجهول';
+      this.actualUserName = 'مجهول';
     }
   }
 

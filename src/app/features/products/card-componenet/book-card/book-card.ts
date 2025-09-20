@@ -9,10 +9,12 @@ import { AddItemToCartRequest } from '../../../Cart/CartInterfaces/cart-interfac
 import { Auth } from '../../../../services/auth';
 import { Router } from '@angular/router';
 import { ToastService } from '../../../../shared/Components/toast-notification/toast-notification';
+import { EgyCurrencyPipe } from '../../../../Pipe/CurrencyPipe/egy-currency.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-card',
-  imports: [DecimalPipe, CommonModule , RouterLink],
+  imports: [DecimalPipe, CommonModule, RouterLink, EgyCurrencyPipe, TranslateModule],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css'
 })

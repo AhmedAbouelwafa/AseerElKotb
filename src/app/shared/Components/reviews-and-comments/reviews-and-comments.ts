@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Modal } from "../modal/modal component/modal";
 import { UserReply } from "../user-reply/user-reply";
 import { ReviewReply } from "../review-reply/review-reply";
-import { ModalService } from '../modal/modal service/modal-service';
+import { ModalService, GetAllReviewsPaginatedRequest, GetAllReviewsPaginatedResponse } from '../modal/modal service/modal-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../toast-notification/toast-notification';
 
@@ -28,8 +28,8 @@ export class ReviewsAndComments implements OnChanges, OnInit {
 
   quotes: any[] = [];
   allAddedQuotes: any[] = [];
-  reviews: any[] = [];
-  allAddedReviews: any[] = [];
+  reviews: GetAllReviewsPaginatedResponse[] = [];
+  allAddedReviews: GetAllReviewsPaginatedResponse[] = [];
   totalReviews = 0;
   averageRating = 0;
 
@@ -44,7 +44,7 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   ) {}
 
   getRatingPercentage(level: number): number {
-    const count = this.reviews.filter(r => r.rating === level).length;
+    const count = this.reviews.filter(r => r.Rating === level).length;
     return this.totalReviews === 0 ? 0 : Math.round((count / this.totalReviews) * 100);
   }
 
@@ -193,20 +193,24 @@ export class ReviewsAndComments implements OnChanges, OnInit {
   }
 
   loadReviews(bookId: number) {
-    this.api.getAllReviews({
+    const request: GetAllReviewsPaginatedRequest = {
       BookId: bookId,
       Search: '',
       PageNumber: 1,
       PageSize: 10
-    }).subscribe({
-      next: (data) => {
+    };
+
+    this.api.getAllReviewsPaginated(request).subscribe({
+      next: (data: GetAllReviewsPaginatedResponse[]) => {
         this.reviews = data || [];
         this.allAddedReviews = [...(data || [])];
         this.calculateAverageRating();
-        console.log('Loaded reviews:', this.reviews);
-        this.userNameother = this.reviews[0].userName;
-        console.log('userNameother:', this.userNameother);
-
+        console.log('Loaded reviews with UserName:', this.reviews);
+        
+        if (this.reviews.length > 0) {
+          this.userNameother = this.reviews[0].UserName;
+          console.log('userNameother:', this.userNameother);
+        }
       },
       error: (error) => {
         console.error('Error fetching reviews:', error);
@@ -229,8 +233,8 @@ export class ReviewsAndComments implements OnChanges, OnInit {
 
     this.api.deleteReview(reviewId).subscribe({
       next: () => {
-        this.reviews = this.reviews.filter(review => review.id !== reviewId);
-        this.allAddedReviews = this.allAddedReviews.filter(review => review.id !== reviewId);
+        this.reviews = this.reviews.filter(review => review.Id !== reviewId);
+        this.allAddedReviews = this.allAddedReviews.filter(review => review.Id !== reviewId);
         this.calculateAverageRating();
         console.log('Review deleted successfully');
       },
@@ -255,13 +259,13 @@ export class ReviewsAndComments implements OnChanges, OnInit {
         console.log('Review updated successfully:', updatedReview);
         
         // Update the review in both arrays
-        const updateReviewInArray = (reviewArray: any[]) => {
-          const index = reviewArray.findIndex(review => review.id === updateData.id);
+        const updateReviewInArray = (reviewArray: GetAllReviewsPaginatedResponse[]) => {
+          const index = reviewArray.findIndex(review => review.Id === updateData.id);
           if (index !== -1) {
             reviewArray[index] = {
               ...reviewArray[index],
-              comment: updateData.comment,
-              rating: updateData.rating
+              Comment: updateData.comment,
+              Rating: updateData.rating
             };
           }
         };
@@ -338,7 +342,7 @@ export class ReviewsAndComments implements OnChanges, OnInit {
     }
 
     this.totalReviews = this.reviews.length;
-    const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
+    const totalRating = this.reviews.reduce((sum, review) => sum + (review.Rating || 0), 0);
     this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10;
   }
 }
