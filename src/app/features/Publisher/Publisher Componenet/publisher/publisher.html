@@ -12,6 +12,7 @@
 
             <button id="followBtn" [ngClass]="{'followed': isFollowing}" (click)="toggleFollow()">
                 <span>{{ isFollowing ? 'إلغاء المتابعة' : 'متابعة' }}</span>
+                 <span class="count">({{ PublisherFollowerCount }})</span>
                 <i
                     [class]="
                         isFollowing

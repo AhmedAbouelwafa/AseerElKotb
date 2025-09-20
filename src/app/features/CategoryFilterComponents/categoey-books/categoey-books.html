@@ -1,10 +1,20 @@
-<div class="books">
+<div>
+  @if(Books.length == 0) {
+    <div class="noBooks">
+      <h2>لا توجد كتب فى هذا القسم</h2>
+    </div>
+  }
+  @else {
+    <div class="books">
 
-    @for (Book of Books ; track Book.id){
-    <app-book-card  [book]="Book"></app-book-card>
-    }
-</div>
+      @for (Book of Books ; track Book.id){
+      <app-book-card  [book]="Book"></app-book-card>
+      }
+    </div>
 
-<div class="books-pagination">
-  <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="GetNewPage($event)"></app-pagination>
+    <div class="books-pagination">
+      <app-pagination [CurrentPage]="currentPage" [TotalPages]="totalPages" (PageChanged)="GetNewPage($event)"></app-pagination>
+    </div>
+  }
 </div>
+  

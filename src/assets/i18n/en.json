@@ -235,6 +235,39 @@
     "clearHistory": "Clear History",
     "download": "Download",
     "copyLink": "Copy Link"
+  },
+
+  "cart": {
+  "emptyCart": "Your cart is empty",
+  "shopNow": "Shop now",
+  "title": "Shopping Cart",
+  "products": "Products",
+  "clearAll": "Clear all products from cart",
+  "book": "Book",
+  "afterDiscount": "After discount",
+  "quantity": "Quantity:",
+  "update": "Update",
+  "delete": "Delete",
+  "subtotalBeforeDiscount": "Subtotal before discount",
+  "subtotalAfterDiscount": "Subtotal after discount",
+  "freeShippingCongratulations": "🎉 Congratulations! You've earned free shipping",
+  "addMoreForFreeShipping": "Add {{amount}} more for free shipping",
+  "helpText": "If you encounter any problem, you can contact:",
+  "customerService": "Customer Service",
+  "nextStep": "Next step: shipping address and payment method",
+  "checkout": "Proceed to checkout",
+  "confirmDelete": "Do you want to delete this book from the cart?",
+  "deleteSuccessTitle": "Deleted",
+  "deleteSuccessMessage": "Book has been successfully deleted from cart!",
+  "deleteErrorTitle": "Delete Error",
+  "deleteErrorMessage": "An error occurred while deleting the book. Please try again.",
+  "updateErrorTitle": "Update Error",
+  "updateErrorMessage": "Failed to update quantity. Please try again.",
+  "confirmClear": "Do you want to clear the entire shopping cart?",
+  "clearSuccessTitle": "Cleared",
+  "clearSuccessMessage": "Shopping cart has been successfully cleared!",
+  "clearErrorTitle": "Error",
+  "clearErrorMessage": "An error occurred while clearing the cart. Please try again."
   }
 
 }
