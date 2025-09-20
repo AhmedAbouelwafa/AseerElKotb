@@ -6,6 +6,8 @@ import { UserService } from '../UserServices/user-service';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
 import { ModalService } from '../../../shared/Components/modal/modal service/modal-service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { ReviewsAndComments } from '../../../shared/Components/reviews-and-comments/reviews-and-comments';
 
 interface StatItem {
   label: string;
@@ -21,7 +23,7 @@ interface StatItem {
   templateUrl: './user-profile.html',
   styleUrls: ['./user-profile.css'],
   standalone: true,
-  imports: [CommonModule, NavCrumb , TranslateModule]
+  imports: [CommonModule, NavCrumb , TranslateModule,FormsModule,ReviewsAndComments]
 })
 export class UserProfileComponent implements OnInit {
   user: ProfileResponse | null = null;

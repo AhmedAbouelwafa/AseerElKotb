@@ -10,9 +10,8 @@ box-sizing: border-box;
     gap: 2rem;
     box-shadow: 1px 1px 4px rgb(239, 238, 238),-1px -1px 4px rgb(239, 238, 238);
     margin-top: 7rem;
-    margin-inline: .5rem;
     margin-bottom: 3rem;
-    margin-inline:1.3rem;
+    margin-inline:1.5rem;
 }
 #publisherData img{
     width: 100px;
@@ -41,11 +40,21 @@ box-sizing: border-box;
     display: block;
 }
 #followBtn{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #cad5e2;
+  color: #0f172b;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  line-height: 1.3rem;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
 }
-/*why not work*/
 #followBtn.followed {
   background-color: #28a745 !important;
   color: white !important;
@@ -58,41 +67,47 @@ box-sizing: border-box;
 #Fcontainer button:hover{
     background-color: #76808b;
 }
-/* #publisherInfo{
-    box-shadow: 1px 1px 4px rgb(239, 238, 238),-1px -1px 4px rgb(239, 238, 238);
+#publisherInfo{
     margin: 1rem;
-} */
+    margin-inline: 1.5rem;
+}
 #btns{
     display: flex;
-    justify-content: space-between;
+    justify-content:center;
     align-items: center;
-    flex-direction: row;
-     box-shadow: 1px 1px 4px rgb(239, 238, 238),-1px -1px 4px rgb(239, 238, 238);
-    padding-inline: 1rem;
-    padding: .3rem; 
+    box-shadow: 1px 1px 4px rgb(239, 238, 238),-1px -1px 4px rgb(239, 238, 238);
     margin-bottom: 1rem;
-
 }
 .btn{
-    width: 33%;
-   display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  width: 50%;
+  text-align: center;
+  padding-block: 1rem;
+  border-radius: 0%;
+  /* padding-block:10px; */
 }
 .vertical-separator {
-transform: rotate(90deg);
-width:3rem; 
-height: 1px; 
-background-color: #ccc;
+  transform: rotate(90deg);
+  width: 3rem;
+  /* height: 1px; */
+  background-color: #ccc;
+  margin: 0; /* Remove default margins */
+  position: absolute; /* Take it out of normal flow */
+  left: 48.5%; /* Center horizontally if needed */
+  transform-origin: center; /* Ensure rotation is centered */
 }
-.btn.active {
-  border: 3px solid lightcoral;
+ .btn.active {
+  border: none;
+  border-bottom: 3px solid lightcoral;
+}
+.count{
+  padding-inline: .5rem;
 }
 
-.btn:hover {
-    background-color: #f0f0f0;
-}
 /* CSS for Authors related to publisher - Enhanced Responsive Design */
 #AuthorsBigContainer {
   margin: 1rem;

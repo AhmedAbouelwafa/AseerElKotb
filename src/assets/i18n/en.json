@@ -95,7 +95,7 @@
   },
   "author": {
     "follow": "Follow",
-    "following": "Following",
+    "following": "unfollow",
     "shortLink": "Short Link",
     "books": "Books",
     "bookCount": "Books Count",
