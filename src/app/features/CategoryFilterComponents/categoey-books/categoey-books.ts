@@ -17,6 +17,7 @@ export class CategoeyBooks implements OnChanges {
   pageSize = 15; // 15 books per page
   totalPages = 1;
   totalCount = 0;
+  isLoading = false;
 
   @Input() CategoryId: number | null = null;
   @Input() filterParams?: FilterBooksRequest;
@@ -38,6 +39,7 @@ export class CategoeyBooks implements OnChanges {
   }
 
   getBooksByCategoryId(): void {
+    this.isLoading = true;
     const filterRequest: FilterBooksRequest = {
       CategoryIds: this.CategoryId ? [this.CategoryId] : [], // Empty array when no category
       PageNumber: this.currentPage,
@@ -61,11 +63,13 @@ export class CategoeyBooks implements OnChanges {
           this.Books = [];
           this.totalCountChange.emit(0); // Emit 0 on error
         }
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching books:', error);
         this.Books = [];
         this.totalCountChange.emit(0); // Emit 0 on error
+        this.isLoading = false;
 
         
       }
