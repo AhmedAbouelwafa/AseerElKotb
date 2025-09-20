@@ -30,6 +30,7 @@ import { Orders } from './features/orders/orders/orders/orders';
 import { OrderDetails } from './features/orders/orderDetails/order-details/order-details';
 import { ImageGeneration } from './features/image-generation/image-generation';
 import { CategoeyBooks } from './features/CategoryFilterComponents/categoey-books/categoey-books';
+import { ReviewsAndComments } from './shared/Components/reviews-and-comments/reviews-and-comments';
 
 
 
@@ -116,6 +117,10 @@ export const routes: Routes = [
   ,
   {
     path: 'image-generation', component : ImageGeneration
+  }
+  ,
+  {
+    path: 'rev', component : ReviewsAndComments
   }
 
 ];

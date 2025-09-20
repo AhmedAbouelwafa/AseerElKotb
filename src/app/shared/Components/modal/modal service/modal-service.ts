@@ -1,9 +1,69 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable, catchError } from 'rxjs';
+import { map, Observable, catchError, tap } from 'rxjs';
 import { environment } from '../../../../core/configs/environment.config';
 import { IAddQuote } from '../modal model/IAddQuote';
 import { IGetAllQuota, IGetAllReviews } from '../../../../features/user-profile/UserModels/UserModels';
+
+// New interfaces for the updated API
+export interface GetAllReviewsPaginatedRequest {
+  AuthorId?: number;
+  BookId?: number;
+  PageNumber?: number;
+  PageSize?: number;
+  Search?: string;
+}
+
+export interface GetAllReviewsPaginatedResponse {
+  id: number;
+  bookId?: number;
+  authorId?: number;
+  userId: number;
+  userName: string;
+  rating: number;
+  comment: string;
+}
+
+// Additional interfaces for other review operations
+export interface AddReviewRequest {
+  AuthorId?: number;
+  BookId?: number;
+  UserId: number;
+  Rating: number;
+  Comment?: string;
+}
+
+export interface AddReviewResponse {
+  Id: number;
+  AuthorId?: number;
+  BookId?: number;
+  UserId: number;
+  Rating: number;
+  Comment: string;
+}
+
+export interface UpdateReviewRequest {
+  Id: number;
+  Rating: number;
+  Comment: string;
+}
+
+export interface UpdateReviewResponse {
+  Id: number;
+  AuthorId?: number;
+  BookId?: number;
+  UserId: number;
+  Rating: number;
+  Comment: string;
+}
+
+export interface DeleteReviewRequest {
+  Id: number;
+}
+
+export interface DeleteReviewResponse {
+  Id: number;
+}
 
 
 @Injectable({
@@ -89,12 +149,14 @@ export class ModalService {
   }
   getAllReviews(params: IGetAllReviews): Observable<any[]> {
     let queryParams = new HttpParams();
+
     if (params.AuthorId) {
       queryParams = queryParams.set('AuthorId', params.AuthorId.toString());
     }
     if (params.BookId) {
       queryParams = queryParams.set('BookId', params.BookId.toString());
     }
+
     queryParams = queryParams.set('Search', params.Search);
     queryParams = queryParams.set('PageNumber', params.PageNumber.toString());
     queryParams = queryParams.set('PageSize', params.PageSize.toString());
@@ -102,9 +164,34 @@ export class ModalService {
     return this.http.get<any[]>(`${this._apiBaseUrl}/Reviews/GetAll`, {
       params: queryParams
     }).pipe(
+      tap((response: any) => console.log("getallllllllllllllllllllllll" , response)), // ده للعرض فقط
+      map((response: any) => response.data || response) // ده بيرجع البيانات اللي عايزها
+    );
+  }
+
+  // New method for the updated API with UserName included
+  getAllReviewsPaginated(params: GetAllReviewsPaginatedRequest): Observable<GetAllReviewsPaginatedResponse[]> {
+    let queryParams = new HttpParams();
+
+    if (params.AuthorId) {
+      queryParams = queryParams.set('AuthorId', params.AuthorId.toString());
+    }
+    if (params.BookId) {
+      queryParams = queryParams.set('BookId', params.BookId.toString());
+    }
+
+    queryParams = queryParams.set('Search', params.Search || '');
+    queryParams = queryParams.set('PageNumber', (params.PageNumber || 1).toString());
+    queryParams = queryParams.set('PageSize', (params.PageSize || 10).toString());
+
+    return this.http.get<GetAllReviewsPaginatedResponse[]>(`${this._apiBaseUrl}/Reviews/GetAll`, {
+      params: queryParams
+    }).pipe(
+      tap((response: any) => console.log("GetAllReviewsPaginated response:", response)),
       map((response: any) => response.data || response)
     );
   }
+
   getReviewById(id: number): Observable<any> {
     return this.http.get<any>(`${this._apiBaseUrl}/Reviews/${id}`);
   }
@@ -116,13 +203,13 @@ export class ModalService {
       Rating: rating,
       Comment: comment
     };
-    
+
     console.log('🚨 STARTING UPDATE REVIEW REQUEST 🚨');
     console.log('Update data:', updateData);
     console.log('API URL:', `${this._apiBaseUrl}/Reviews`);
     console.log('Auth token exists:', !!localStorage.getItem('auth_token'));
     console.log('User ID:', localStorage.getItem('user_id'));
-    
+
     return this.http.put<any>(`${this._apiBaseUrl}/Reviews`, updateData).pipe(
       map((response: any) => {
         console.log('✅ Update review SUCCESS:', response);

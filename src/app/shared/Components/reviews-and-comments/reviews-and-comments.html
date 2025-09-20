@@ -69,24 +69,26 @@
           </div>
 
           <div class="reviews-list">
-            @if(reviews && reviews.length > 0){
-              @for (review of reviews; track $index) {
-                <app-review-reply
-                  [review]="review.comment"
-                  [rating]="review.rating"
-                  [userName]="review.userName"
-                  [userId]="review.userId"
-                  [reviewId]="review.id"
-                  [preferInputUserName]="isCurrentUser(review.userId)"
-                  (delete)="deleteReview(review.id || $index)"
-                  (update)="updateReview($event)">
-                </app-review-reply>
+            @if(reviews$ | async; as reviewsList){
+              @if(reviewsList && reviewsList.length > 0){
+                @for (review of reviewsList; track $index) {
+                  <app-review-reply
+                    [review]="review.comment"
+                    [rating]="review.rating"
+                    [userName]="review.userName"
+                    [userId]="review.userId"
+                    [reviewId]="review.id"
+                    [preferInputUserName]="isCurrentUser(review.userId)"
+                    (delete)="deleteReview(review.id || $index)"
+                    (update)="updateReview($event)">
+                  </app-review-reply>
+                }
               }
-            }
-            @else {
-              <div class="alert">
-                {{ 'reviewWithComments.noReviews' | translate}}
-              </div>
+              @else {
+                <div class="alert">
+                  {{ 'reviewWithComments.noReviews' | translate}}
+                </div>
+              }
             }
           </div>
         </div>
