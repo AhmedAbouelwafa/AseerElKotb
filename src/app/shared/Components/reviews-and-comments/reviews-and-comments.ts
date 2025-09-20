@@ -240,6 +240,52 @@ export class ReviewsAndComments implements OnChanges, OnInit {
     });
   }
 
+  // Method to update a review
+  updateReview(updateData: {id: number, comment: string, rating: number}) {
+    console.log('Updating review with data:', updateData);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.warn('No auth token found. Blocking update request.');
+      this.toastService.showError(this.translate.instant('reviewWithComments.error'), this.translate.instant('reviewWithComments.loginRequired'));
+      return;
+    }
+    
+    this.api.updateReview(updateData.id, updateData.comment, updateData.rating).subscribe({
+      next: (updatedReview) => {
+        console.log('Review updated successfully:', updatedReview);
+        
+        // Update the review in both arrays
+        const updateReviewInArray = (reviewArray: any[]) => {
+          const index = reviewArray.findIndex(review => review.id === updateData.id);
+          if (index !== -1) {
+            reviewArray[index] = {
+              ...reviewArray[index],
+              comment: updateData.comment,
+              rating: updateData.rating
+            };
+          }
+        };
+        
+        updateReviewInArray(this.reviews);
+        updateReviewInArray(this.allAddedReviews);
+        
+        this.calculateAverageRating();
+        
+        this.toastService.showSuccess(
+          this.translate.instant('reviewWithComments.success'),
+          this.translate.instant('reviewWithComments.reviewUpdatedSuccessfully')
+        );
+      },
+      error: (error) => {
+        console.error('Error updating review:', error);
+        this.toastService.showError(
+          this.translate.instant('reviewWithComments.error'),
+          this.translate.instant('reviewWithComments.failedToUpdateReview')
+        );
+      }
+    });
+  }
+
   onReviewAdded(newReview: any) {
     console.log('New review received:', newReview);
 

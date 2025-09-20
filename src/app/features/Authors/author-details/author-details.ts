@@ -12,19 +12,17 @@ import { Auth } from '../../../services/auth';
 import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 import { BookCard } from '../../products/card-componenet/book-card/book-card';
 import { NavCrumb, NavcrumbItem } from '../../../shared/Components/nav-crumb/nav-crumb';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-author-details',
-  imports: [BookCard,CommonModule, RouterLink,NavCrumb], 
+  imports: [BookCard, CommonModule, RouterLink, NavCrumb, TranslateModule], 
   templateUrl: './author-details.html',
   styleUrl: './author-details.css'
 })
 export class AuthorDetails implements OnInit, OnDestroy {
 
-breadcrumbs: NavcrumbItem[] = [
-    { name: 'المؤلفون', path: '/allAuthors' },
-    { name: '', path: '#' },
-  ];
+breadcrumbs: NavcrumbItem[] = [];
 
   AuthorFollowerCount:number=0;
   authorId: number =1;
@@ -178,11 +176,20 @@ breadcrumbs: NavcrumbItem[] = [
     private location: Location,
     private cartService: CartServices,
     private auth: Auth,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private translate: TranslateService
+  ) {
+    this.updateBreadcrumbs();}
 
   ngOnInit(): void {
     this.loadAuthorData();
+    
+    // Subscribe to language changes
+    const langSub = this.translate.onLangChange.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.updateBreadcrumbs();
+    });
   }
 
   ngOnDestroy(): void {
@@ -190,12 +197,19 @@ breadcrumbs: NavcrumbItem[] = [
     this.destroy$.complete();
   }
 
+  private updateBreadcrumbs(): void {
+    this.breadcrumbs = [
+      { name: this.translate.instant('bookDetails.authors'), path: '/allAuthors' },
+      ...(this.author ? [{ name: this.author.name, path: '#' }] : [])
+    ];
+  }
+
   private loadAuthorData(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
 
     if (!id || isNaN(id)) {
-      this.error = 'معرف الكاتب غير صحيح';
+      this.error = this.translate.instant('authorDetails.errors.notFound');
       this.loading = false;
       return;
     }
@@ -212,27 +226,29 @@ breadcrumbs: NavcrumbItem[] = [
       .subscribe({
         next: (author) => {
           this.author = author;
-          this.Books = author.books || [];///////////////////////////////////////added
+          this.Books = author.books || [];
           this.breadcrumbs[1].name = author.name; 
           // Set page title
           if (typeof document !== 'undefined') {
             document.title = `${author.name} - عصير الكتب`;
           }
           // Fetch follower count
-         this.authorService.getAuthorFollowerCount(author.id).subscribe({
-          next:(res)=>{
-            this.AuthorFollowerCount=res.followerCount;
-          },
-          error: (err) => {
-            console.error('API error:', err);
-            console.log("error to fetch data")
-          }});
+          this.authorService.getAuthorFollowerCount(author.id).subscribe({
+            next:(res)=>{
+              this.AuthorFollowerCount=res.followerCount;
+            },
+            error: (err) => {
+              console.error('API error:', err);
+              console.log("error to fetch data")
+            }
+          });
 
-          this.isFollow(); 
+          this.isFollow();
+          this.updateBreadcrumbs();
         },
         error: (error) => {
           console.error('Error loading author:', error);
-          this.error = 'حدث خطأ في تحميل بيانات الكاتب. يرجى المحاولة مرة أخرى.';
+          this.error = this.translate.instant('authorDetails.errors.loadError');
         }
       });
   }
@@ -443,7 +459,7 @@ breadcrumbs: NavcrumbItem[] = [
     if (navigator.share) {
       navigator.share({
         title: this.author.name,
-        text: `اكتشف كتب ${this.author.name}`,
+        text: `${this.translate.instant('author.shareText')} ${this.author.name}`,
         url: window.location.href
       }).catch(console.error);
     } else {

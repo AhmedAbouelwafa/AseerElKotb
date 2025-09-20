@@ -5,9 +5,9 @@
 <!-- Loading State -->
 <div class="text-center py-5" *ngIf="loading">
   <div class="spinner-border" role="status">
-    <span class="visually-hidden">{{ 'LOADING' | translate }}</span>
+    <span class="visually-hidden">{{ 'userProfile.LOADING' | translate }}</span>
   </div>
-  <p class="mt-3">{{ 'LOADING_PROFILE' | translate }}</p>
+  <p class="mt-3">{{ 'userProfile.LOADING_PROFILE' | translate }}</p>
 </div>
 
 <!-- Profile Content -->
@@ -24,7 +24,7 @@
     <div class="profile-info">
       <h1 class="user-name">{{ userName }}</h1>
       <div class="user-status">
-        <span class="member-duration">{{ 'MEMBER_SINCE' | translate }} {{ memberSince }}</span>
+        <span class="member-duration">{{ 'userProfile.MEMBER_SINCE' | translate }} {{ memberSince }}</span>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
   <div class="content-section" *ngIf="stats && stats.length > 0">
     <!-- Reviews Content -->
     <div class="section-content" *ngIf="activeStatType === 'reviews'">
-      <h3>{{ 'REVIEWS' | translate }} ({{ reviews.length }})</h3>
+      <h3>{{ 'userProfile.REVIEWS' | translate }} ({{ reviews.length }})</h3>
       <div class="row" *ngIf="reviews && reviews.length > 0; else noReviews">
         <div class="col-md-6 mb-3" *ngFor="let review of reviews">
           <div class="card h-100">
@@ -89,8 +89,8 @@
         <div class="text-center py-4">
           <div class="alert alert-light">
             <i class="fas fa-star-o fa-3x text-muted mb-3"></i>
-            <h5>{{ 'NO_REVIEWS' | translate }}</h5>
-            <p class="text-muted">{{ 'NO_REVIEWS_MESSAGE' | translate }}</p>
+            <h5>{{ 'userProfile.NO_REVIEWS' | translate }}</h5>
+            <p class="text-muted">{{ 'userProfile.NO_REVIEWS_MESSAGE' | translate }}</p>
           </div>
         </div>
       </ng-template>
@@ -98,7 +98,7 @@
 
     <!-- Quotes Content -->
     <div class="section-content" *ngIf="activeStatType === 'quotes'">
-      <h3>{{ 'QUOTES' | translate }} ({{ quotes.length }})</h3>
+      <h3>{{ 'userProfile.QUOTES' | translate }} ({{ quotes.length }})</h3>
       <div class="row" *ngIf="quotes && quotes.length > 0; else noQuotes">
         <div class="col-md-6 mb-3" *ngFor="let quote of quotes">
           <div class="card h-100">
@@ -126,8 +126,8 @@
         <div class="text-center py-4">
           <div class="alert alert-light">
             <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
-            <h5>{{ 'NO_QUOTES' | translate }}</h5>
-            <p class="text-muted">{{ 'NO_QUOTES_MESSAGE' | translate }}</p>
+            <h5>{{ 'userProfile.NO_QUOTES' | translate }}</h5>
+            <p class="text-muted">{{ 'userProfile.NO_QUOTES_MESSAGE' | translate }}</p>
           </div>
         </div>
       </ng-template>
@@ -135,7 +135,7 @@
 
     <!-- Following Content -->
     <div class="section-content" *ngIf="activeStatType === 'following'">
-      <h3>{{ 'FOLLOWING' | translate }} ({{ user?.following?.length || 0 }})</h3>
+      <h3>{{ 'userProfile.FOLLOWING' | translate }} ({{ user?.following?.length || 0 }})</h3>
       <div class="row" *ngIf="user?.following && user.following.length > 0; else noFollowing">
         <div class="col-md-4 mb-3" *ngFor="let follow of user.following">
           <div class="card h-100">
@@ -144,7 +144,7 @@
                 <span class="badge bg-info">{{ getFollowTypeLabel(follow.followType) }}</span>
               </div>
               <h6 class="card-title">{{ getFollowTypeLabel(follow.followType) }} #{{ follow.id }}</h6>
-              <button class="btn btn-sm btn-outline-info">{{ 'VIEW_DETAILS' | translate }}</button>
+              <button class="btn btn-sm btn-outline-info">{{ 'userProfile.VIEW_DETAILS' | translate }}</button>
             </div>
           </div>
         </div>
@@ -153,8 +153,8 @@
         <div class="text-center py-4">
           <div class="alert alert-light">
             <i class="fas fa-users fa-3x text-muted mb-3"></i>
-            <h5>{{ 'NO_FOLLOWING' | translate }}</h5>
-            <p class="text-muted">{{ 'NO_FOLLOWING_MESSAGE' | translate }}</p>
+            <h5>{{ 'userProfile.NO_FOLLOWING' | translate }}</h5>
+            <p class="text-muted">{{ 'userProfile.NO_FOLLOWING_MESSAGE' | translate }}</p>
           </div>
         </div>
       </ng-template>
@@ -166,10 +166,10 @@
 <div class="text-center py-5" *ngIf="!loading && !user" dir="rtl">
   <div class="alert alert-danger">
     <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
-    <h4>{{ 'PROFILE_NOT_FOUND' | translate }}</h4>
-    <p class="text-muted">{{ 'PROFILE_NOT_FOUND_MESSAGE' | translate }}</p>
+    <h4>{{ 'userProfile.PROFILE_NOT_FOUND' | translate }}</h4>
+    <p class="text-muted">{{ 'userProfile.PROFILE_NOT_FOUND_MESSAGE' | translate }}</p>
     <button class="btn btn-primary" (click)="loadUserProfile()">
-      <i class="fas fa-refresh"></i> {{ 'RETRY' | translate }}
+      <i class="fas fa-refresh"></i> {{ 'userProfile.RETRY' | translate }}
     </button>
   </div>
 </div>

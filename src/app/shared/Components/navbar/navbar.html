@@ -13,119 +13,122 @@
         </div>
       </div>
 
-      <!-- زرار القائمة للموبايل (يستثني البحث) -->
-      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="!isNavbarCollapsed" aria-controls="navbarContent" aria-label="Toggle navigation">
+      <!-- زرار القائمة للموبايل -->
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()"
+              [attr.aria-expanded]="!isNavbarCollapsed"
+              aria-controls="navbarContent"
+              aria-label="Toggle navigation">
         <span class="toggler-line"></span>
         <span class="toggler-line"></span>
         <span class="toggler-line"></span>
       </button>
 
-      <div class="collapse navbar-collapse d-flex align-items-center" id="navbarContent" [class.show]="!isNavbarCollapsed">
+      <div class="collapse navbar-collapse d-flex align-items-center"
+           id="navbarContent"
+           [class.show]="!isNavbarCollapsed">
+
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0" (click)="closeNavbar()">
           <li class="nav-item books position-relative">
             <a class="nav-link" routerLink="/MainFilterContainer">{{ 'navbar.menu.books' | translate }}</a>
-
           </li>
-
-
 
           <li class="nav-item" *ngIf="!isAuthenticated()">
-
             <a class="nav-link" routerLink="/login">{{ 'navbar.menu.login' | translate }}</a>
-
           </li>
 
-           <li class="nav-item " *ngIf="!isAuthenticated()">
-
+          <li class="nav-item" *ngIf="!isAuthenticated()">
             <a class="nav-link" routerLink="/register">{{ 'navbar.menu.register' | translate }}</a>
-
           </li>
-          <li class="nav-item"><a class="nav-link" routerLink="/MainFilterContainer/74">{{ 'navbar.menu.kidsSection' | translate }}</a></li>
 
-          <li class="nav-item"><a class="nav-link" routerLink="/image-generation">{{ 'navbar.menu.aiChatbot' | translate }}</a></li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/MainFilterContainer/74">{{ 'navbar.menu.kidsSection' | translate }}</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/image-generation">{{ 'navbar.menu.aiChatbot' | translate }}</a>
+          </li>
         </ul>
 
-        <!-- أيقونات المستخدم والقائمة المنسدلة -->
+        <!-- أيقونات المستخدم + القائمة -->
         <div class="d-flex align-items-center gap-3">
-          <button class="btn p-0" *ngIf="isAuthenticated()" (click)="goToProfile()">
-            <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
 
-            <ul class="dropdown-menu-custom">
+          <!-- User Dropdown -->
+          <div class="dropdown user-dropdown" *ngIf="isAuthenticated()">
+            <button class="btn p-0 user-dropdown-btn" type="button" (click)="toggleUserDropdown()" [attr.aria-expanded]="showUserDropdown">
+              <img src="/icons/user.png" width="28" alt="{{ 'navbar.userMenu.profile' | translate }}" class="rounded-circle">
+            </button>
+
+            <ul class="dropdown-menu" [class.show]="showUserDropdown">
               <li>
-                <a class="nav-link useraya" [routerLink]="['/user-profile', userId]" (click)="closeNavbar()">
-                  <img src="/icons/user.png" width="28" class="rounded-circle">
-                  {{ 'navbar.userMenu.profile' | translate }}
+                <a class="dropdown-item" [routerLink]="['/user-profile', userId]" (click)="closeDropdownAndNavbar()">
+                  <i class="fas fa-user"></i> {{ 'navbar.userMenu.profile' | translate }}
                 </a>
               </li>
-
               <li>
-                <a routerLink="/account-settings"><i class="fas fa-gear"></i> {{ 'navbar.menu.settings' | translate }}</a>
+                <a class="dropdown-item" routerLink="/account-settings" (click)="closeDropdownAndNavbar()">
+                  <i class="fas fa-gear"></i> {{ 'navbar.menu.settings' | translate }}
+                </a>
               </li>
-
               <li>
-                <a routerLink="/wishlist">
+                <a class="dropdown-item" routerLink="/wishlist" (click)="closeDropdownAndNavbar()">
                   <i class="fas fa-heart"></i> {{ 'navbar.userMenu.wishlist' | translate }}
                 </a>
               </li>
-
-
               <li>
-                <a routerLink="/Cart">
+                <a class="dropdown-item" routerLink="/Cart" (click)="closeDropdownAndNavbar()">
                   <i class="fas fa-shopping-cart"></i> {{ 'navbar.userMenu.cart' | translate }}
                   <span class="badge bg-success" *ngIf="cartItemsCount() > 0">{{ cartItemsCount() }}</span>
                 </a>
               </li>
-
               <li>
-                <a routerLink="/orders">
+                <a class="dropdown-item" routerLink="/orders" (click)="closeDropdownAndNavbar()">
                   <i class="fas fa-box"></i> {{ 'navbar.userMenu.orders' | translate }}
                 </a>
               </li>
-
               <li>
-                <a (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}</a>
+                <a class="dropdown-item text-danger" (click)="logout()">
+                  <i class="fas fa-sign-out-alt"></i> {{ 'navbar.userMenu.logout' | translate }}
+                </a>
               </li>
             </ul>
-          </button>
+          </div>
 
-
+          <!-- Wishlist & Cart -->
           <a routerLink="/wishlist" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
             <i class="fas fa-heart fs-6 opacity-50 text-danger"></i>
-            <span class="badge" *ngIf="isAuthenticated() && wishlistItemsCount() > 0">{{ wishlistItemsCount() }}</span>
+            <span class="badge" *ngIf="wishlistItemsCount() > 0">{{ wishlistItemsCount() }}</span>
           </a>
+
           <a routerLink="/Cart" *ngIf="isAuthenticated()" class="btn btn-nav p-0 position-relative">
             <i class="fa-solid fa-cart-shopping fs-6 opacity-50"></i>
-            <span class="badge" *ngIf="isAuthenticated() && cartItemsCount() > 0">{{ cartItemsCount() }}</span>
+            <span class="badge" *ngIf="cartItemsCount() > 0">{{ cartItemsCount() }}</span>
           </a>
 
-          <button class="btn btn-nav p-0 position-relative">
-            <i class="fas fa-truck text-success fs-6 opacity-75"></i>
-            <!-- <span class="badge"></span> -->
-          </button>
+          <!-- Delivery Icon -->
+          <!-- <button class="btn btn-nav p-0 position-relative"> -->
+            <!-- <i class="fas fa-truck text-success fs-6 opacity-75"></i> -->
+          <!-- </button> --> 
 
-      <!-- Language Switcher -->
-      <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">
-
-        <button class="lang-btn" (click)="toggleMenu()">
-          <div class="flag" [ngClass]="'flag-' + currentLang"></div>
-        </button>
-
-        <div class="menu" [ngClass]="{'show': showDropdown}">
-          <button class="menu-item" (click)="changeLang('ar')">
-            <div class="flag flag-ar"></div>
-            <span>{{ 'navbar.languageSwitcher.arabic' | translate }}</span>
-          </button>
-          <button class="menu-item" (click)="changeLang('en')">
-            <div class="flag flag-en"></div>
-            <span>{{ 'navbar.languageSwitcher.english' | translate }}</span>
-          </button>
-        </div>
-
-      </div>
-
+          <!-- Language Switcher -->
+          <div class="lang-dropdown" [dir]="isRTL ? 'rtl' : 'ltr'">
+            <button class="lang-btn" (click)="toggleMenu()">
+              <div class="flag" [ngClass]="'flag-' + currentLang"></div>
+            </button>
+            <div class="menu" [ngClass]="{'show': showDropdown}">
+              <button class="menu-item" (click)="changeLang('ar')">
+                <div class="flag flag-ar"></div>
+                <span>{{ 'navbar.languageSwitcher.arabic' | translate }}</span>
+              </button>
+              <button class="menu-item" (click)="changeLang('en')">
+                <div class="flag flag-en"></div>
+                <span>{{ 'navbar.languageSwitcher.english' | translate }}</span>
+              </button>
+            </div>
+          </div>
 
         </div>
       </div>
     </div>
   </nav>
 </div>
+

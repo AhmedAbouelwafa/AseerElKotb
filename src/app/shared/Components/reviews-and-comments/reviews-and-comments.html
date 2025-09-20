@@ -76,8 +76,10 @@
                   [rating]="review.rating"
                   [userName]="review.userName"
                   [userId]="review.userId"
+                  [reviewId]="review.id"
                   [preferInputUserName]="isCurrentUser(review.userId)"
-                  (delete)="deleteReview(review.id || $index)">
+                  (delete)="deleteReview(review.id || $index)"
+                  (update)="updateReview($event)">
                 </app-review-reply>
               }
             }

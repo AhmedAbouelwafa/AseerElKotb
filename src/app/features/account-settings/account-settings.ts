@@ -2,13 +2,15 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavCrumb } from '../../shared/Components/nav-crumb/nav-crumb';
+import { NavCrumb, NavcrumbItem } from '../../shared/Components/nav-crumb/nav-crumb';
 import { Auth } from '../../services/auth';
 import { UpdateProfileRequest, GetProfileResponse, Gender } from '../../models/profile-interfaces';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-account-settings',
-  imports: [CommonModule, ReactiveFormsModule, NavCrumb],
+  imports: [CommonModule, ReactiveFormsModule, NavCrumb , TranslateModule],
   templateUrl: './account-settings.html',
   styleUrl: './account-settings.css'
 })
@@ -16,6 +18,7 @@ export class AccountSettings implements OnInit {
   protected readonly auth = inject(Auth);
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   // Signals
   protected readonly isLoading = signal(false);
@@ -38,19 +41,15 @@ export class AccountSettings implements OnInit {
   });
 
   // Breadcrumbs
-  readonly breadcrumbs = [
-    { name: 'الرئيسية', path: '/' },
-    { name: 'الملف الشخصي', path: '/user-profile' },
-    { name: 'إعدادات الحساب', path: '/account-settings' }
-  ];
+  protected readonly breadcrumbs: NavcrumbItem[] = [];
 
   // Computed properties for form validation
   protected readonly firstNameError = computed(() => {
     const control = this.profileForm.get('firstName');
     if (control?.errors && control.touched) {
-      if (control.errors['required']) return 'الاسم الأول مطلوب';
-      if (control.errors['minlength']) return 'يجب أن يكون الاسم الأول حرفين على الأقل';
-      if (control.errors['maxlength']) return 'لا يمكن أن يتجاوز الاسم الأول 50 حرفاً';
+      if (control.errors['required']) return this.translate.instant('accountSettings.FIRST_NAME') + ' مطلوب';
+      if (control.errors['minlength']) return 'يجب أن يكون ' + this.translate.instant('accountSettings.FIRST_NAME') + ' حرفين على الأقل';
+      if (control.errors['maxlength']) return 'لا يمكن أن يتجاوز ' + this.translate.instant('accountSettings.FIRST_NAME') + ' 50 حرفاً';
     }
     return '';
   });
@@ -58,9 +57,9 @@ export class AccountSettings implements OnInit {
   protected readonly lastNameError = computed(() => {
     const control = this.profileForm.get('lastName');
     if (control?.errors && control.touched) {
-      if (control.errors['required']) return 'اسم العائلة مطلوب';
-      if (control.errors['minlength']) return 'يجب أن يكون اسم العائلة حرفين على الأقل';
-      if (control.errors['maxlength']) return 'لا يمكن أن يتجاوز اسم العائلة 50 حرفاً';
+      if (control.errors['required']) return this.translate.instant('accountSettings.LAST_NAME') + ' مطلوب';
+      if (control.errors['minlength']) return 'يجب أن يكون ' + this.translate.instant('accountSettings.LAST_NAME') + ' حرفين على الأقل';
+      if (control.errors['maxlength']) return 'لا يمكن أن يتجاوز ' + this.translate.instant('accountSettings.LAST_NAME') + ' 50 حرفاً';
     }
     return '';
   });
@@ -68,7 +67,7 @@ export class AccountSettings implements OnInit {
   protected readonly bioError = computed(() => {
     const control = this.profileForm.get('bio');
     if (control?.errors && control.touched) {
-      if (control.errors['maxlength']) return 'لا يمكن أن تتجاوز النبذة الشخصية 500 حرف';
+      if (control.errors['maxlength']) return 'لا يمكن أن تتجاوز ' + this.translate.instant('accountSettings.BIO') + ' 500 حرف';
     }
     return '';
   });
@@ -76,13 +75,23 @@ export class AccountSettings implements OnInit {
   protected readonly nationalityError = computed(() => {
     const control = this.profileForm.get('nationality');
     if (control?.errors && control.touched) {
-      if (control.errors['maxlength']) return 'لا يمكن أن تتجاوز الجنسية 100 حرف';
+      if (control.errors['maxlength']) return 'لا يمكن أن تتجاوز ' + this.translate.instant('accountSettings.NATIONALITY') + ' 100 حرف';
     }
     return '';
   });
 
   ngOnInit(): void {
+    this.setupBreadcrumbs();
     this.loadProfile();
+  }
+
+  private setupBreadcrumbs(): void {
+    this.breadcrumbs.length = 0; // Clear existing breadcrumbs
+    this.breadcrumbs.push(
+      { name: this.translate.instant('userProfile.HOME'), path: '/' },
+      { name: this.translate.instant('userProfile.USER_PROFILE'), path: '/user-profile' },
+      { name: this.translate.instant('accountSettings.ACCOUNT_SETTINGS'), path: '/account-settings' }
+    );
   }
 
   private loadProfile(): void {
@@ -92,21 +101,21 @@ export class AccountSettings implements OnInit {
     // Check if user is authenticated first
     const currentUser = this.auth.user();
     console.log('Current user from auth service:', currentUser);
-    
+
     // Check if token is valid
     if (!this.auth.isTokenValid()) {
       console.error('Token is invalid or expired');
       this.isLoading.set(false);
-      this.errorMessage.set('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى');
+      this.errorMessage.set(this.translate.instant('auth.SESSION_EXPIRED'));
       this.auth.logout();
       this.router.navigate(['/login']);
       return;
     }
-    
+
     if (!currentUser || !currentUser.token) {
       console.error('User not authenticated or no token found');
       this.isLoading.set(false);
-      this.errorMessage.set('يجب تسجيل الدخول أولاً للوصول إلى إعدادات الحساب');
+      this.errorMessage.set(this.translate.instant('auth.LOGIN_REQUIRED'));
       this.router.navigate(['/login']);
       return;
     }
@@ -128,7 +137,7 @@ export class AccountSettings implements OnInit {
       error: (error) => {
         console.error('Profile load error:', error);
         this.isLoading.set(false);
-        
+
         // Handle specific error cases
         if (error.status === 401) {
           this.errorMessage.set('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مرة أخرى');
@@ -169,7 +178,7 @@ export class AccountSettings implements OnInit {
     this.successMessage.set('');
 
     const formValue = this.profileForm.value;
-    
+
     const updateData: UpdateProfileRequest = {
       firstName: formValue.firstName?.trim(),
       lastName: formValue.lastName?.trim(),
@@ -185,10 +194,10 @@ export class AccountSettings implements OnInit {
         if (result.success) {
           this.successMessage.set(result.message || 'تم تحديث الملف الشخصي بنجاح');
           this.errorMessage.set('');
-          
+
           // Clear any error messages after successful update
           this.errorMessage.set('');
-          
+
           // Reload profile data to get updated information
           setTimeout(() => {
             this.loadProfile();

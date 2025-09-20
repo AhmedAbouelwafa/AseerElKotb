@@ -8,28 +8,28 @@
   <div class="wishlist-header text-center mb-5">
     <h1 class="page-title">
       <i class="fas fa-heart text-danger me-2"></i>
-      قائمة رغباتي
+      {{ 'wishlist.title' | translate }}
     </h1>
     <p class="text-muted" *ngIf="!loading && wishlistItems.length > 0">
-      لديك {{ totalCount }} كتاب في قائمة الرغبات
+      {{ 'wishlist.itemsCount' | translate: { count: totalCount } }}
     </p>
   </div>
 
   <!-- Loading State -->
   <div *ngIf="loading" class="text-center py-5">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">جاري التحميل...</span>
+      <span class="visually-hidden">{{ 'wishlist.loading' | translate }}</span>
     </div>
-    <p class="mt-3 text-muted">جاري تحميل قائمة الرغبات...</p>
+    <p class="mt-3 text-muted">{{ 'wishlist.loading' | translate }}</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="error" class="alert alert-danger text-center" role="alert">
     <i class="fas fa-exclamation-triangle me-2"></i>
-    {{ error }}
+    {{ 'wishlist.error' | translate }}
     <button class="btn btn-outline-danger btn-sm ms-3" (click)="loadWishlistItems()">
       <i class="fas fa-redo me-1"></i>
-      إعادة المحاولة
+      {{ 'wishlist.retry' | translate }}
     </button>
   </div>
 
@@ -38,11 +38,11 @@
     <div class="empty-icon mb-4">
       <i class="fas fa-heart-broken text-muted" style="font-size: 4rem;"></i>
     </div>
-    <h3 class="mb-3 text-muted">قائمة الرغبات فارغة</h3>
-    <p class="text-muted mb-4">لم تقم بإضافة أي كتب إلى قائمة الرغبات بعد</p>
+    <h3 class="mb-3 text-muted">{{ 'wishlist.emptyState.title' | translate }}</h3>
+    <p class="text-muted mb-4">{{ 'wishlist.emptyState.description' | translate }}</p>
     <a routerLink="/" class="btn btn-primary btn-lg">
       <i class="fas fa-book me-2"></i>
-      تصفح الكتب
+      {{ 'wishlist.emptyState.browseBooks' | translate }}
     </a>
   </div>
 
@@ -76,7 +76,8 @@
                   <a 
                     (click)="viewBookDetails(item.bookId)" 
                     class="text-decoration-none text-dark book-link"
-                    style="cursor: pointer;">
+                    style="cursor: pointer;"
+                    [attr.aria-label]="'wishlist.actions.viewBook' | translate">
                     {{ item.bookName }}
                   </a>
                 </h5>
@@ -87,7 +88,8 @@
                   <a 
                     (click)="viewAuthorDetails(item.autherId)" 
                     class="text-decoration-none author-link"
-                    style="cursor: pointer;">
+                    style="cursor: pointer;"
+                    [attr.aria-label]="'wishlist.actions.viewAuthor' | translate">
                     {{ item.autherName }}
                   </a>
                 </p>
@@ -96,17 +98,17 @@
                 <div class="price-section mt-auto">
                   <div class="price-info d-flex align-items-center gap-3">
                     <span class="current-price fw-bold text-success fs-5">
-                      ج.م {{ item.discountedPrice | number:'1.0-0' }}
+                      {{ item.discountedPrice | currency:'EGP':'symbol':'1.0-0' }}
                     </span>
                     <span 
                       *ngIf="item.price !== item.discountedPrice" 
                       class="original-price text-muted text-decoration-line-through">
-                      ج.م {{ item.price | number:'1.0-0' }}
+                      {{ item.price | currency:'EGP':'symbol':'1.0-0' }}
                     </span>
                     <span 
                       *ngIf="item.price !== item.discountedPrice" 
                       class="discount-badge badge bg-danger">
-                      خصم {{ ((item.price - item.discountedPrice) / item.price * 100) | number:'1.0-0' }}%
+                      {{ 'bookDetails.discount' | translate }} {{ ((item.price - item.discountedPrice) / item.price * 100) | number:'1.0-0' }}%
                     </span>
                   </div>
                 </div>
@@ -124,7 +126,7 @@
                     (click)="addToCart(item.bookId)"
                     type="button">
                     <i class="fas fa-cart-plus me-2"></i>
-                    اشتراء نسخة ورقية
+                    {{ 'wishlist.actions.addToCart' | translate }}
                   </button>
 
                   <!-- Remove from Wishlist Button -->
@@ -133,7 +135,7 @@
                     (click)="removeFromWishlist(item.bookId)"
                     type="button">
                     <i class="fas fa-heart-broken me-2"></i>
-                    حذف من القائمة
+                    {{ 'wishlist.actions.remove' | translate }}
                   </button>
 
                 </div>

@@ -21,10 +21,10 @@
       <div class="underBook">
 
           <span class="told text-danger text-decoration-line-through">
-            ج.م {{book.price | number}}
+            {{ book.price | egyCurrency }}
           </span>
           <span class="tnew text-dark">
-            ج.م {{book.price - (book.price * book.discountPercentage / 100) | number}}
+            {{ (book.price - (book.price * book.discountPercentage / 100)) | egyCurrency }}
           </span>
 
           <button class="cart-ribbon"

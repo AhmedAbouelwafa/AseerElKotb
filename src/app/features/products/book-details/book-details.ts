@@ -31,7 +31,6 @@ export class BookDetails implements OnInit , AfterViewInit {
   book!: Ibook | null;
   newPrice!: number | undefined;
   discount!: number | undefined;
-  stars = Array(5).fill(0);
   bookId: number = 0;
   private baseUrl = environment.apiBaseUrl.replace('/api', '');
   booksByAuthor!: Ibook[];
@@ -372,5 +371,5 @@ export class BookDetails implements OnInit , AfterViewInit {
     const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
     this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10; // تقريب لرقم عشري واحد
   }
+  
 }
-

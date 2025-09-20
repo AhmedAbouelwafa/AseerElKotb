@@ -505,9 +505,22 @@ export class Auth {
         if (tokenParts.length === 3) {
           const payload = JSON.parse(atob(tokenParts[1]));
           console.log('Token payload:', payload);
+          
+          // Try to extract user ID from different possible fields in the token
+          let userId = payload.userId || payload.sub || payload.id || payload.nameid;
+          
+          // If token doesn't have user ID, try localStorage fallback
+          if (!userId) {
+            const storedUserId = localStorage.getItem('user_id');
+            if (storedUserId && !isNaN(parseInt(storedUserId))) {
+              userId = parseInt(storedUserId);
+              console.log('Using stored user ID as fallback:', userId);
+            }
+          }
+          
           const user: User = {
-            id: payload.userId || payload.sub || payload.id, // Extract user ID from token
-            email: payload.email || '',
+            id: userId || 0,
+            email: payload.email || localStorage.getItem('user_email') || '',
             userName: payload.userName || payload.unique_name || '',
             firstName: payload.firstName || payload.given_name || '',
             lastName: payload.lastName || payload.family_name || '',
@@ -516,24 +529,28 @@ export class Auth {
           console.log('User initialized from token:', user);
           this.currentUser.set(user);
         } else {
-          // Fallback if token parsing fails - will be updated on next login
+          // Fallback if token parsing fails - try to get user ID from localStorage
+          const storedUserId = localStorage.getItem('user_id');
+          const storedEmail = localStorage.getItem('user_email');
           const user: User = {
-            id: 0, // Will be updated when user logs in
-            email: '',
+            id: storedUserId && !isNaN(parseInt(storedUserId)) ? parseInt(storedUserId) : 0,
+            email: storedEmail || '',
             token: token
           };
-          console.log('Fallback user created:', user);
+          console.log('Fallback user created with localStorage data:', user);
           this.currentUser.set(user);
         }
       } catch (error) {
         console.error('Error parsing token:', error);
-        // Fallback user object - will be updated on next login
+        // Fallback user object using localStorage data
+        const storedUserId = localStorage.getItem('user_id');
+        const storedEmail = localStorage.getItem('user_email');
         const user: User = {
-          id: 0, // Will be updated when user logs in
-          email: '',
+          id: storedUserId && !isNaN(parseInt(storedUserId)) ? parseInt(storedUserId) : 0,
+          email: storedEmail || '',
           token: token
         };
-        console.log('Error fallback user created:', user);
+        console.log('Error fallback user created with localStorage data:', user);
         this.currentUser.set(user);
       }
     } else {

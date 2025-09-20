@@ -457,6 +457,45 @@
   }
 }
 
+/* User Dropdown Button */
+.user-dropdown-btn {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  padding: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-dropdown-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(230, 0, 0, 0.2);
+}
+
+.user-dropdown-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.2);
+}
+
+.user-dropdown-btn img {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.user-dropdown-btn:hover img {
+  border-color: rgba(230, 0, 0, 0.3);
+}
+
+/* Remove Bootstrap dropdown arrow */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.user-dropdown-btn::after {
+  display: none !important;
+}
+
 /* Dropdown styles (الاحتفاظ بالتصميم الأصلي) */
 .nav-item.books {
   position: relative;
@@ -464,22 +503,32 @@
 
 .dropdown-menu-custom {
   list-style: none;
-  padding: 10px 0;
+  padding: 8px 0;
   margin: 0;
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px);
   min-width: 200px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  max-width: 250px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   opacity: 0;
   visibility: hidden;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   font-weight: 500;
   font-size: 14px;
   color: #333;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: none;
+  transform: translateY(-10px) scale(0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dropdown-menu-custom.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
 }
 
 /* RTL: المنيو تطلع شمال */
@@ -496,42 +545,129 @@
   text-align: left;
 }
 
+/* Responsive positioning to prevent off-screen issues */
+@media (max-width: 575.98px) {
+  .dropdown-menu-custom {
+    min-width: 180px;
+    max-width: calc(100vw - 40px);
+    left: auto;
+    right: 10px;
+  }
+
+  [dir="rtl"] .dropdown-menu-custom {
+    left: 10px;
+    right: auto;
+  }
+}
+
+/* Add separator line between menu items */
+.dropdown-menu-custom li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+/* Special styling for logout item */
+.dropdown-menu-custom li:last-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  padding-top: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu-custom li:last-child a {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.dropdown-menu-custom li:last-child:hover a {
+  color: #c82333;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.dropdown-menu-custom li:last-child a i {
+  color: #dc3545;
+}
+
 .dropdown-menu-custom li {
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  margin: 2px 8px;
+  padding: 0;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .dropdown-menu-custom li a {
   text-decoration: none;
-  color: #333;
+  color: #495057;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  position: relative;
+  font-weight: 500;
 }
 
 .dropdown-menu-custom li:hover {
-  background-color: rgba(255, 0, 0, 0.1);
+  background: linear-gradient(135deg, rgba(230, 0, 0, 0.08), rgba(255, 68, 68, 0.08));
+  transform: translateX(2px);
 }
 
 .dropdown-menu-custom li:hover a {
   color: #e60000;
+  background: rgba(230, 0, 0, 0.05);
+}
+
+.dropdown-menu-custom li a i {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.dropdown-menu-custom li:hover a i {
+  color: #e60000;
 }
 
 .dropdown-menu-custom .badge {
-  padding: 2px 6px;
-  font-size: 0.75rem;
-  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e60000, #ff4444);
+  color: white;
+  font-weight: 600;
+  margin-left: auto;
 }
 
-.nav-item.books:hover .dropdown-menu-custom,
-.btn:hover .dropdown-menu-custom {
+[dir="rtl"] .dropdown-menu-custom .badge {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.nav-item.books:hover .dropdown-menu-custom {
   opacity: 1;
   visibility: visible;
   transform: translateY(5px);
+}
+
+/* Raise user dropdown a bit so it doesn't dip inside the screen */
+.user-dropdown-btn + .dropdown-menu-custom {
+  top: calc(100% - 4px);
+}
+
+.user-dropdown-btn + .dropdown-menu-custom.show {
+  transform: translateY(-4px);
 }
 
 /* موبايل - الاحتفاظ بـ display: none */
@@ -723,7 +859,129 @@
 }
 
 
-.useraya{
-  position: relative;
-  right: -5px;
+/* User Dropdown Menu Styles */
+.user-dropdown .dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: -10px;
+  left: auto;
+  min-width: 220px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1050;
+  padding: 8px 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.user-dropdown .dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* RTL: المنيو تطلع يمين أكتر (في الاتجاه العربي يعني شمال) */
+[dir="rtl"] .user-dropdown .dropdown-menu {
+  left: -30px;
+  right: auto;
+}
+
+/* Dropdown Items */
+.user-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+[dir="rtl"] .user-dropdown .dropdown-item {
+  text-align: right;
+}
+
+.user-dropdown .dropdown-item:hover,
+.user-dropdown .dropdown-item:focus {
+  color: #e60000;
+  background: linear-gradient(135deg, rgba(230, 0, 0, 0.08), rgba(255, 68, 68, 0.08));
+  transform: translateX(2px);
+}
+
+[dir="rtl"] .user-dropdown .dropdown-item:hover,
+[dir="rtl"] .user-dropdown .dropdown-item:focus {
+  transform: translateX(-2px);
+}
+
+.user-dropdown .dropdown-item i {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.user-dropdown .dropdown-item:hover i {
+  color: #e60000;
+}
+
+/* Special styling for logout item */
+.user-dropdown .dropdown-item.text-danger {
+  color: #dc3545;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  padding-top: 16px;
+}
+
+.user-dropdown .dropdown-item.text-danger:hover {
+  color: #c82333;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.user-dropdown .dropdown-item.text-danger i {
+  color: #dc3545;
+}
+
+/* Badge styles */
+.user-dropdown .badge {
+  margin-left: auto;
+  background: linear-gradient(135deg, #e60000, #ff4444);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+[dir="rtl"] .user-dropdown .badge {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575.98px) {
+  .user-dropdown .dropdown-menu {
+    min-width: 200px;
+    right: 5px;
+  }
+  
+  [dir="rtl"] .user-dropdown .dropdown-menu {
+    left: 5px;
+    right: auto;
+  }
 }
