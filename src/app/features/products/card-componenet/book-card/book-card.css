@@ -90,13 +90,8 @@ a{
   left: -15px;
 }
 
-[dir="rtl"] .cart-ribbon {
-  left: auto;
-  right: -15px;
-}
-
 [dir="ltr"] .cart-ribbon {
-  left: -15px;
+  background-color : red;
 }
 
 

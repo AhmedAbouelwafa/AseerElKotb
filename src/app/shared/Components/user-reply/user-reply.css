@@ -1,163 +1,282 @@
+/* Quote Card - نفس الريفيو بالظبط */
 .quote-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 6px;
-  width: 100%;
-  margin: auto;
-  background: white;
-  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f1f3f5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
-
-.delete-btn {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(220, 53, 69, 0.2);
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: 600;
-  color: #6c757d;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.delete-btn:hover {
-  background: #dc3545;
-  color: white;
-  border-color: #dc3545;
-  transform: scale(1.1);
-  box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
-}
-
-.delete-btn:active {
-  transform: scale(0.95);
-  transition-duration: 0.1s;
-}
-
-.delete-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
-}
-
-/* إضافة animation لطيفة */
-@keyframes deleteShake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
-}
-
-.delete-btn:hover {
-  animation: deleteShake 0.5s ease-in-out;
-}
-
-/* Alternative style - أكثر عصرية */
-.delete-btn.modern {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  border: none;
-  color: white;
-  box-shadow: 0 4px 15px rgba(238, 90, 82, 0.2);
-}
-
-.delete-btn.modern:hover {
-  background: linear-gradient(135deg, #ff5252, #d32f2f);
+.quote-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(238, 90, 82, 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-/* Style للـ glassmorphism */
-.delete-btn.glass {
-  background: rgba(255, 255, 255, 0.15);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #dc3545;
-}
-
-.delete-btn.glass:hover {
-  background: rgba(220, 53, 69, 0.2);
-  border-color: rgba(220, 53, 69, 0.4);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Header */
 .header {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  position: relative;
+  justify-content: space-between;
 }
 
-
-
 .profile-pic {
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  margin-left: 10px;
-  width: 40px;
-  height: 40px;
+  margin-right: 12px;
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+}
+
+.header-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ssss {
+  display: flex;
+  gap: 10px;
 }
 
 .author {
-  font-weight: bold;
-  color: #333;
+  font-weight: 600;
+  color: #212529;
+  font-size: 16px;
 }
 
 .date {
-  font-size: 0.85rem;
-  color: gray;
+  color: #868e96;
+  font-size: 13px;
 }
 
+/* Action Buttons - نفس الريفيو بالظبط */
+.action-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.edit-btn {
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.2s ease;
+  margin-right: 10px;
+}
+
+.edit-btn:hover {
+  color: #339af0;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #e03131;
+}
+
+/* Quote Text - بنفس ستايل الريفيو */
 .quote-text {
+  color: #343a40;
+  line-height: 1.6;
+  font-size: 15px;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #339af0;
+}
+
+/* Edit Form - نفس الريفيو */
+.edit-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.quote-edit {
+  margin-bottom: 15px;
+}
+
+.quote-edit label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.quote-edit textarea {
+  width: 100%;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.quote-edit textarea:focus {
+  outline: none;
+  border-color: #339af0;
+  box-shadow: 0 0 0 3px rgba(51, 154, 240, 0.1);
+}
+
+.edit-actions {
   display: flex;
   gap: 10px;
-  font-size: 1.1rem;
-  color: #444;
-  text-align: center;
-  line-height: 1.8;
+  justify-content: flex-end;
 }
 
-.quote-mark {
-  color: #547aa5;
-  font-weight: bold;
-  font-size: 1.5rem;
+.edit-actions .btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.sub-author {
-  color: #007bff;
+.edit-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
+.edit-actions .btn-success {
+  background-color: #2f9e44;
+  border: 1px solid #2f9e44;
+  color: white;
+}
+
+.edit-actions .btn-success:hover:not(:disabled) {
+  background-color: #2b8a3e;
+  border-color: #2b8a3e;
+}
+
+.edit-actions .btn-secondary {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: white;
+}
+
+.edit-actions .btn-secondary:hover {
+  background-color: #545862;
+  border-color: #545862;
+}
+
+/* Actions - نفس الريفيو */
 .actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #f1f3f5;
 }
 
-.actions button {
+.share {
+  display: flex;
+  gap: 8px;
+}
+
+.share button {
   background: none;
   border: none;
+  color: #868e96;
   cursor: pointer;
-  color: #555;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.actions button:hover {
-  color: #007bff;
+.share button:hover {
+  color: #339af0;
+  background: #e9ecef;
+}
+
+.votes {
+  display: flex;
+  gap: 10px;
+}
+
+.votes button {
+  background: none;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.votes button:hover {
+  background: #f1f3f5;
+  border-color: #adb5bd;
+}
+
+.votes button:first-child:hover {
+  color: #e03131;
+  border-color: #e03131;
+}
+
+.votes button:last-child:hover {
+  color: #2f9e44;
+  border-color: #2f9e44;
+}
+
+/* RTL Support */
+[dir="rtl"] .profile-pic {
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+[dir="rtl"] .edit-btn {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+[dir="rtl"] .quote-text {
+  border-left: none;
+  border-right: 4px solid #339af0;
+}
+
+[dir="rtl"] .edit-actions {
+  justify-content: flex-start;
+}
+
+/* LTR Explicit (للتأكد) */
+[dir="ltr"] .profile-pic {
+  margin-right: 12px;
+  margin-left: 0;
+}
+
+[dir="ltr"] .edit-btn {
+  margin-right: 10px;
+  margin-left: 0;
+}
+
+[dir="ltr"] .quote-text {
+  border-left: 4px solid #339af0;
+  border-right: none;
+}
+
+[dir="ltr"] .edit-actions {
+  justify-content: flex-end;
 }

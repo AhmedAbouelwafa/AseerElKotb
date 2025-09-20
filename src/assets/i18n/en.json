@@ -272,7 +272,10 @@
     "success": "Success",
     "error": "Error",
     "reviewUpdatedSuccessfully": "Review updated successfully",
-    "failedToUpdateReview": "Failed to update review. Please try again."
+    "failedToUpdateReview": "Failed to update review. Please try again.",
+    "quoteUpdatedSuccessfully": "Quote updated successfully",
+    "failedToUpdateQuote": "Failed to update quote. Please try again.",
+    "loginRequired": "You must log in to perform this action"
   },
 
 

@@ -103,8 +103,10 @@
               [quote]="quote.text || quote.comment"
               [userName]="quote.userName"
               [userId]="quote.userId"
+              [quoteId]="quote.id"
               [preferInputUserName]="isCurrentUser(quote.userId)"
-              (delete)="deleteQuote(quote.id)">
+              (delete)="deleteQuote(quote.id)"
+              (update)="updateQuote($event)">
             </app-user-reply>
           }
         }

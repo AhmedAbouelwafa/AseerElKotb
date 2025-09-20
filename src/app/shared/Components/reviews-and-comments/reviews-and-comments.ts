@@ -110,6 +110,53 @@ export class ReviewsAndComments implements OnChanges, OnInit {
     });
   }
 
+  updateQuote(updateData: {id: number, comment: string}) {
+    console.log('Updating quote with data:', updateData);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.warn('No auth token found. Blocking update request.');
+      this.toastService.showError(
+        this.translate.instant('reviewWithComments.error'), 
+        this.translate.instant('reviewWithComments.loginRequired') || 'يجب تسجيل الدخول'
+      );
+      return;
+    }
+    
+    this.api.updateQuote(updateData.id, updateData.comment).subscribe({
+      next: (updatedQuote) => {
+        console.log('Quote updated successfully:', updatedQuote);
+        
+        // Update the quote in both arrays
+        const updateInArray = (arr: any[]) => {
+          const index = arr.findIndex(q => q.id === updateData.id);
+          if (index !== -1) {
+            arr[index] = {
+              ...arr[index],
+              text: updateData.comment,
+              comment: updateData.comment
+            };
+          }
+        };
+        
+        updateInArray(this.quotes);
+        updateInArray(this.allAddedQuotes);
+        
+        this.toastService.showSuccess(
+          this.translate.instant('reviewWithComments.success'), 
+          this.translate.instant('reviewWithComments.quoteUpdatedSuccessfully') || 'تم تحديث الاقتباس بنجاح'
+        );
+        console.log('Updated quotes array:', this.quotes);
+      },
+      error: (error) => {
+        console.error('Error updating quote:', error);
+        this.toastService.showError(
+          this.translate.instant('reviewWithComments.error'), 
+          this.translate.instant('reviewWithComments.failedToUpdateQuote') || 'فشل في تحديث الاقتباس'
+        );
+      }
+    });
+  }
+
   onQuoteAdded(newQuote: any) {
     console.log('New quote received:', newQuote);
 

@@ -108,8 +108,29 @@ export class ModalService {
     return this.http.get<any>(`${this._apiBaseUrl}/Quotes/${id}`);
   }
 
-  updateQuote(id: number, quote: string): Observable<any> {
-    return this.http.put<any>(`${this._apiBaseUrl}/Quotes/${id}`, { quote });
+  updateQuote(id: number, comment: string): Observable<any> {
+    const updateData = {
+      Id: id,
+      Comment: comment
+    };
+    
+    console.log('🚨 STARTING UPDATE QUOTE REQUEST 🚨');
+    console.log('Update data:', updateData);
+    console.log('API URL:', `${this._apiBaseUrl}/Quotes/UpdateQuote`);
+    
+    return this.http.put<any>(`${this._apiBaseUrl}/Quotes/UpdateQuote`, updateData).pipe(
+      map((response: any) => {
+        console.log('✅ Update quote SUCCESS:', response);
+        return response?.data || response;
+      }),
+      catchError((error: any) => {
+        console.error('❌ UPDATE QUOTE ERROR ❌');
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
+        console.error('Error details:', error.error);
+        throw error;
+      })
+    );
   }
 
   deleteQuote(id: number): Observable<any> {
