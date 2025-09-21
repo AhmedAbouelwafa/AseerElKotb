@@ -29,20 +29,39 @@ export class SubCategoryCrumb implements OnInit,OnChanges {
     this.loadSubCategories(this.parentCategoryId);
   }
 
-  loadSubCategories(parentCategoryId: Number, search?: string): void {
-    this.categoryServices.getAllSubCategories(parentCategoryId, search).subscribe({
-      next: (response) => {
-        this.subCategories = response.data;
-        this.isLoading = false; // Set loading to false after data is loaded
+  // loadSubCategories(parentCategoryId: Number, search?: string): void {
+  //   this.categoryServices.getAllSubCategories(parentCategoryId, search).subscribe({
+  //     next: (response) => {
+  //       this.subCategories = response.data;
+  //       this.isLoading = false; // Set loading to false after data is loaded
 
-      },
-      error: (error) => {
-        console.error('Error fetching subcategories:', error);
-        this.isLoading = false; // Set loading to false even if there's an error
-      }
-    });
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching subcategories:', error);
+  //       this.isLoading = false; // Set loading to false even if there's an error
+  //     }
+  //   });
+  // }
+
+  loadSubCategories(parentCategoryId: Number | null, search?: string): void {
+  if (!parentCategoryId) {
+    this.subCategories = [];
+    this.isLoading = false;
+    return;
   }
-
+  this.categoryServices.getAllSubCategories(parentCategoryId, search).subscribe({
+    next: (response) => {
+      this.subCategories = response.data || [];
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error fetching subcategories:', error);
+      this.subCategories = [];
+      this.isLoading = false;
+      // Optionally set an error message
+    }
+  });
+}
   GetSubCategories(): Icategory[] {
     return this.subCategories;
   }
