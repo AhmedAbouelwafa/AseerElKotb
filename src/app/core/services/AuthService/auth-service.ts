@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../configs/environment.config';
 
 export interface ResetPasswordDto {
   userId: string;
@@ -26,7 +26,7 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl
+  private apiUrl = environment.apiBaseUrl;
   constructor(private httpClient: HttpClient) { }
 
   confirmEmail(userId: string, token: string): Observable<any> {
