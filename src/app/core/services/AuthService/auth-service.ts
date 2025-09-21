@@ -79,7 +79,7 @@ export class AuthService {
     });
 
     return this.httpClient.post<any>(
-      `${this.apiUrl}/api/Account/ResetPassword`,
+      `${this.apiUrl}/Account/ResetPassword`,
       dto,
       { headers }
     ).pipe(
