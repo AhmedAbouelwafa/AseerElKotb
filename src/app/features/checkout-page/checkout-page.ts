@@ -703,7 +703,7 @@ export class CheckoutPage implements OnInit {
     this.cartService.notifyCartChanged();
     
     // Show detailed payment information
-    const paymentMessage = `رقم التتبع: ${orderResponse.trackingNumber}<br>مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}<br><br>سيتم توجيهك إلى بوابة الدفع...`;
+    const paymentMessage = `رقم التتبع: ${orderResponse.trackingNumber}مبلغ الدفع: ${paymentInfo.amount} ${paymentInfo.currency}سيتم توجيهك إلى بوابة الدفع...`;
     
     this.toastService.showInfo('تم تأكيد الطلب بنجاح!', paymentMessage);
     
