@@ -371,5 +371,9 @@ export class BookDetails implements OnInit , AfterViewInit {
     const totalRating = this.reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
     this.averageRating = Math.round((totalRating / this.totalReviews) * 10) / 10; // تقريب لرقم عشري واحد
   }
-  
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
 }

@@ -219,7 +219,10 @@
     "success": "نجح",
     "error": "خطأ",
     "reviewUpdatedSuccessfully": "تم تحديث المراجعة بنجاح",
-    "failedToUpdateReview": "فشل في تحديث المراجعة. يرجى المحاولة مرة أخرى."
+    "failedToUpdateReview": "فشل في تحديث المراجعة. يرجى المحاولة مرة أخرى.",
+    "quoteUpdatedSuccessfully": "تم تحديث الاقتباس بنجاح",
+    "failedToUpdateQuote": "فشل في تحديث الاقتباس. يرجى المحاولة مرة أخرى.",
+    "loginRequired": "يجب تسجيل الدخول لتنفيذ هذا الإجراء"
   },
   "navbar": {
     "logo": "الشعار",
@@ -267,7 +270,7 @@
     "reviews": "المراجعات",
     "followers": "المتابعون",
     "follow": "متابعة",
-    "following": "تتابع",
+    "following": "الغاء المتابعة",
     "share": "مشاركة",
     "viewProfile": "عرض الملف الشخصي",
     "addToCart": "إضافة للسلة",

@@ -1,175 +1,229 @@
-<div class="pt-2 mt-5 mb-4" dir="rtl">
-  <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
-</div>
-
 <!-- Loading State -->
-<div class="text-center py-5" *ngIf="loading">
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">{{ 'userProfile.LOADING' | translate }}</span>
+@if (loading) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">{{ 'userProfile.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-3">{{ 'userProfile.LOADING_PROFILE' | translate }}</p>
   </div>
-  <p class="mt-3">{{ 'userProfile.LOADING_PROFILE' | translate }}</p>
-</div>
+}
 
 <!-- Profile Content -->
-<div class="user-profile-container" *ngIf="!loading && user" dir="rtl">
+@if (!loading && user) {
+  <div class="user-profile-container" dir="rtl">
 
-
-  <!-- Header Section -->
-  <div class="profile-header">
-    <div class="profile-avatar">
-      <img [src]="userAvatar" [alt]="userName" class="img-fluid rounded-circle"
-           onerror="this.src='/icons/user.png'" />
+    <div class="pt-2 mt-5 mb-4" dir="rtl">
+      <app-nav-crumb [Navcrumbs]="breadcrumbs"></app-nav-crumb>
     </div>
 
-    <div class="profile-info">
-      <h1 class="user-name">{{ userName }}</h1>
-      <div class="user-status">
-        <span class="member-duration">{{ 'userProfile.MEMBER_SINCE' | translate }} {{ memberSince }}</span>
+    <!-- Header Section -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="userAvatar" [alt]="userName" class="img-fluid rounded-circle"
+             onerror="this.src='/icons/user.png'" />
+      </div>
+
+      <div class="profile-info">
+        <h1 class="user-name">{{ userName }}</h1>
+        <div class="user-status">
+          <span class="member-duration">{{ 'userProfile.MEMBER_SINCE' | translate }} {{ memberSince }}</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Stats Section -->
-  <div class="stats-container" *ngIf="stats && stats.length > 0">
-    <div
-      class="stat-item"
-      *ngFor="let stat of stats"
-      [class.active]="stat.isActive"
-      (click)="onStatClick(stat)"
-      role="button"
-      tabindex="0"
-      (keyup.enter)="onStatClick(stat)"
-    >
-      <div class="d-flex gap-2 align-items-center">
-        <i>{{ stat.icon }}</i>
-        <div class="stat-label">{{ stat.label }}</div>
-      </div>
-      <div class="stat-value">{{ stat.value }}</div>
-      <div class="stat-underline" [class.show]="stat.isActive"></div>
-    </div>
-  </div>
-
-  <!-- Dynamic Content Section -->
-  <div class="content-section" *ngIf="stats && stats.length > 0">
-    <!-- Reviews Content -->
-    <div class="section-content" *ngIf="activeStatType === 'reviews'">
-      <h3>{{ 'userProfile.REVIEWS' | translate }} ({{ reviews.length }})</h3>
-      <div class="row" *ngIf="reviews && reviews.length > 0; else noReviews">
-        <div class="col-md-6 mb-3" *ngFor="let review of reviews">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-primary">{{ getReviewTypeLabel(review.reviewFor) }}</span>
-                <small class="text-muted">#{{ review.id }}</small>
-              </div>
-              <div class="mb-2" *ngIf="getReviewRating(review) > 0">
-                <span class="text-warning">
-                  <span *ngFor="let star of [1,2,3,4,5]; let i = index">
-                    <i [class]="i < getReviewRating(review) ? 'fas fa-star' : 'far fa-star'">★</i>
-                  </span>
-                </span>
-                {{ getReviewRating(review) }}/5
-              </div>
-              <p class="card-text" *ngIf="getReviewComment(review)">
-                {{ getReviewComment(review) }}
-              </p>
-              <small class="text-muted" *ngIf="getReviewCreatedAt(review)">
-                {{ getReviewCreatedAt(review) | date:'dd/MM/yyyy HH:mm':'ar' }}
-              </small>
-              <div class="mt-2">
-                <small class="text-info">User ID: {{ review.userId }}</small><br>
-                <small class="text-info">Book ID: {{ review.bookId || 'N/A' }}</small><br>
-                <small class="text-info">Book Title: {{ review.bookTitle || 'N/A' }}</small>
-              </div>
+    <!-- Stats Section -->
+    @if (stats && stats.length > 0) {
+      <div class="stats-container">
+        @for (stat of stats; track stat.type) {
+          <div
+            class="stat-item"
+            [class.active]="stat.isActive"
+            (click)="onStatClick(stat)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="onStatClick(stat)"
+          >
+            <div class="d-flex gap-2 align-items-center">
+              <i>{{ stat.icon }}</i>
+              <div class="stat-label">{{ stat.label }}</div>
             </div>
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-underline" [class.show]="stat.isActive"></div>
           </div>
-        </div>
+        }
       </div>
-      <ng-template #noReviews>
-        <div class="text-center py-4">
-          <div class="alert alert-light">
-            <i class="fas fa-star-o fa-3x text-muted mb-3"></i>
-            <h5>{{ 'userProfile.NO_REVIEWS' | translate }}</h5>
-            <p class="text-muted">{{ 'userProfile.NO_REVIEWS_MESSAGE' | translate }}</p>
-          </div>
-        </div>
-      </ng-template>
-    </div>
+    }
 
-    <!-- Quotes Content -->
-    <div class="section-content" *ngIf="activeStatType === 'quotes'">
-      <h3>{{ 'userProfile.QUOTES' | translate }} ({{ quotes.length }})</h3>
-      <div class="row" *ngIf="quotes && quotes.length > 0; else noQuotes">
-        <div class="col-md-6 mb-3" *ngFor="let quote of quotes">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-success">{{ getQuoteTypeLabel(quote.quoteFor) }}</span>
-                <small class="text-muted">#{{ quote.id }}</small>
-              </div>
-              <blockquote class="blockquote mb-2" *ngIf="getQuoteComment(quote)">
-                <p class="mb-0">"{{ getQuoteComment(quote) }}"</p>
-              </blockquote>
-              <small class="text-muted" *ngIf="getQuoteCreatedAt(quote)">
-                {{ getQuoteCreatedAt(quote) | date:'dd/MM/yyyy HH:mm':'ar' }}
-              </small>
-              <div class="mt-2">
-                <small class="text-info">User ID: {{ quote.userId }}</small><br>
-                <small class="text-info">Book ID: {{ quote.bookId || 'N/A' }}</small><br>
-                <small class="text-info">Book Title: {{ quote.bookTitle || 'N/A' }}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <ng-template #noQuotes>
-        <div class="text-center py-4">
-          <div class="alert alert-light">
-            <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
-            <h5>{{ 'userProfile.NO_QUOTES' | translate }}</h5>
-            <p class="text-muted">{{ 'userProfile.NO_QUOTES_MESSAGE' | translate }}</p>
-          </div>
-        </div>
-      </ng-template>
-    </div>
+    <!-- Dynamic Content Section -->
+    @if (stats && stats.length > 0) {
+      <div class="content-section">
+        <!-- Reviews Content -->
+        @if (activeStatType === 'reviews') {
+          <div class="section-content">
+            <h3>{{ 'userProfile.REVIEWS' | translate }} ({{ reviews.length }})</h3>
+            @if (reviews && reviews.length > 0) {
+              <div class="row">
+                @for (review of reviews; track review.id) {
+                  <div class="review">
 
-    <!-- Following Content -->
-    <div class="section-content" *ngIf="activeStatType === 'following'">
-      <h3>{{ 'userProfile.FOLLOWING' | translate }} ({{ user?.following?.length || 0 }})</h3>
-      <div class="row" *ngIf="user?.following && user.following.length > 0; else noFollowing">
-        <div class="col-md-4 mb-3" *ngFor="let follow of user.following">
-          <div class="card h-100">
-            <div class="card-body text-center">
-              <div class="mb-2">
-                <span class="badge bg-info">{{ getFollowTypeLabel(follow.followType) }}</span>
+                     <img id="BookCover" [src]="getCoverImageUrl(review)" alt="BookImage">
+                     <span class="review-header">
+                        <a [routerLink]="['/book-details', review.bookId]" routerLinkActive="true">
+                            {{review.title}}
+                        </a>
+                        <div class="star-rating">
+                          @for (star of [1,2,3,4,5]; track star) {
+                            <span class="star" [class.yellow]="star <= review.rating">★</span>
+                          }
+                        </div>
+                     </span>
+                     <p>{{review.comment}}</p>
+
+                  </div>
+                  <!-- <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-primary">{{ getReviewTypeLabel(review.reviewFor) }}</span>
+                          <small class="text-muted">#{{ review.id }}</small>
+                        </div>
+                        @if (getReviewRating(review) > 0) {
+                          <div class="mb-2">
+                            <span class="text-warning">
+                              @for (star of [1,2,3,4,5]; track star; let i = $index) {
+                                <i [class]="i < getReviewRating(review) ? 'fas fa-star' : 'far fa-star'">★</i>
+                              }
+                            </span>
+                            {{ getReviewRating(review) }}/5
+                          </div>
+                        }
+                        @if (getReviewComment(review)) {
+                          <p class="card-text">
+                            {{ getReviewComment(review) }}
+                          </p>
+                        }
+                        @if (getReviewCreatedAt(review)) {
+                          <small class="text-muted">
+                            {{ getReviewCreatedAt(review) | date:'dd/MM/yyyy HH:mm':'ar' }}
+                          </small>
+                        }
+                        <div class="mt-2">
+                          <small class="text-info">User ID: {{ review.userId }}</small><br>
+                          <small class="text-info">Book ID: {{ review.bookId || 'N/A' }}</small><br>
+                          <small class="text-info">Book Title: {{ review.bookTitle || 'N/A' }}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+                }
               </div>
-              <h6 class="card-title">{{ getFollowTypeLabel(follow.followType) }} #{{ follow.id }}</h6>
-              <button class="btn btn-sm btn-outline-info">{{ 'userProfile.VIEW_DETAILS' | translate }}</button>
-            </div>
+            } @else {
+              <div class="text-center py-4">
+                <div class="alert alert-light">
+                  <i class="fas fa-star-o fa-3x text-muted mb-3"></i>
+                  <h5>{{ 'userProfile.NO_REVIEWS' | translate }}</h5>
+                  <p class="text-muted">{{ 'userProfile.NO_REVIEWS_MESSAGE' | translate }}</p>
+                </div>
+              </div>
+            }
           </div>
-        </div>
+        }
+
+        <!-- Quotes Content -->
+        @if (activeStatType === 'quotes') {
+          <div class="section-content">
+            <h3>{{ 'userProfile.QUOTES' | translate }} ({{ quotes.length }})</h3>
+            @if (quotes && quotes.length > 0) {
+              <div class="row">
+                @for (quote of quotes; track quote.Id) {
+                  <div class="qoute">
+                      <p>“{{quote.qouteComment}}”</p>
+                  </div>
+                  <!-- <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-success">{{ getQuoteTypeLabel(quote.quoteFor) }}</span>
+                          <small class="text-muted">#{{ quote.id }}</small>
+                        </div>
+                        @if (getQuoteComment(quote)) {
+                          <blockquote class="blockquote mb-2">
+                            <p class="mb-0">"{{ getQuoteComment(quote) }}"</p>
+                          </blockquote>
+                        }
+                        @if (getQuoteCreatedAt(quote)) {
+                          <small class="text-muted">
+                            {{ getQuoteCreatedAt(quote) | date:'dd/MM/yyyy HH:mm':'ar' }}
+                          </small>
+                        }
+                        <div class="mt-2">
+                          <small class="text-info">User ID: {{ quote.userId }}</small><br>
+                          <small class="text-info">Book ID: {{ quote.bookId || 'N/A' }}</small><br>
+                          <small class="text-info">Book Title: {{ quote.bookTitle || 'N/A' }}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+                }
+              </div>
+            } @else {
+              <div class="text-center py-4">
+                <div class="alert alert-light">
+                  <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
+                  <h5>{{ 'userProfile.NO_QUOTES' | translate }}</h5>
+                  <p class="text-muted">{{ 'userProfile.NO_QUOTES_MESSAGE' | translate }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Following Content -->
+        @if (activeStatType === 'following') {
+          <div class="section-content">
+            <h3>{{ 'userProfile.FOLLOWING' | translate }} ({{ user?.following?.length || 0 }})</h3>
+            @if (user?.following && user.following.length > 0) {
+              <div class="row">
+                @for (follow of user.following; track follow.id) {
+                  <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body text-center">
+                        <div class="mb-2">
+                          <span class="badge bg-info">{{ getFollowTypeLabel(follow.followType) }}</span>
+                        </div>
+                        <h6 class="card-title">{{ getFollowTypeLabel(follow.followType) }} #{{ follow.id }}</h6>
+                        <button class="btn btn-sm btn-outline-info">{{ 'userProfile.VIEW_DETAILS' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="text-center py-4">
+                <div class="alert alert-light">
+                  <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                  <h5>{{ 'userProfile.NO_FOLLOWING' | translate }}</h5>
+                  <p class="text-muted">{{ 'userProfile.NO_FOLLOWING_MESSAGE' | translate }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
       </div>
-      <ng-template #noFollowing>
-        <div class="text-center py-4">
-          <div class="alert alert-light">
-            <i class="fas fa-users fa-3x text-muted mb-3"></i>
-            <h5>{{ 'userProfile.NO_FOLLOWING' | translate }}</h5>
-            <p class="text-muted">{{ 'userProfile.NO_FOLLOWING_MESSAGE' | translate }}</p>
-          </div>
-        </div>
-      </ng-template>
-    </div>
+    }
   </div>
-</div>
+}
 
 <!-- Error State -->
-<div class="text-center py-5" *ngIf="!loading && !user" dir="rtl">
-  <div class="alert alert-danger">
-    <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
-    <h4>{{ 'userProfile.PROFILE_NOT_FOUND' | translate }}</h4>
-    <p class="text-muted">{{ 'userProfile.PROFILE_NOT_FOUND_MESSAGE' | translate }}</p>
-    <button class="btn btn-primary" (click)="loadUserProfile()">
-      <i class="fas fa-refresh"></i> {{ 'userProfile.RETRY' | translate }}
-    </button>
+@if (!loading && !user) {
+  <div class="text-center py-5" dir="rtl">
+    <div class="alert alert-danger">
+      <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+      <h4>{{ 'userProfile.PROFILE_NOT_FOUND' | translate }}</h4>
+      <p class="text-muted">{{ 'userProfile.PROFILE_NOT_FOUND_MESSAGE' | translate }}</p>
+      <button class="btn btn-primary" (click)="loadUserProfile()">
+        <i class="fas fa-refresh"></i> {{ 'userProfile.RETRY' | translate }}
+      </button>
+    </div>
   </div>
-</div>
+}

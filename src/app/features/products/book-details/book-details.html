@@ -112,7 +112,7 @@
 
               <div class="AuthorBooks">
                 @for (book of authorBooks ; track book) {
-                  <a routerLink="/book-details/{{book.id}}" class="text-decoration-none">
+                  <a routerLink="/book-details/{{book.id}}" class="text-decoration-none" (click)="scrollToTop()">
                   <div class="bookaya">
                     <i class="fa-solid fa-book" style="color :rgb(65, 63, 63)"></i>
                     <a routerLink="/book-details/{{book.id}}" class="booksauthor text-decoration-none text-dark fw-bold ">{{book.title}}</a>
@@ -138,7 +138,7 @@
                 <tr><th>{{'bookDetails.publisher' | translate}}</th><td><a routerLink = "/Publisher/{{book?.publisherId}}" class="text-decoration-none" style="color:  rgb(3, 36, 249);;">{{book?.publisherName}}</a></td><td><i class="fa-solid fa-link" routerLink = "/Publisher/{{book?.publisherId}}"></i></td></tr>
                 <tr><th>{{'bookDetails.categories' | translate}}</th><td>{{book?.categoryNames}}</td></tr>
                 <tr><th>ISBN</th><td>{{book?.isbn}}</td></tr>
-              
+
               </tbody>
             </table>
           </div>

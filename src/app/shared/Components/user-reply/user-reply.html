@@ -1,29 +1,53 @@
+<!-- user-reply.html - بناء على TypeScript الموجود -->
 <div class="quote-card">
   <div class="header">
-    <button class="delete-btn" (click)="onDelete()">×</button>
-    <img class="profile-pic" src="/icons/user.png" alt="Profile">
-    <div class="header-content">
-      <div class="author">{{ actualUserName }}</div>
-      <div class="date">{{ date }}</div>
-
+    <div class="ssss">
+      <img class="profile-pic" src="/icons/user.png" alt="Profile">
+      <div class="header-content">
+        <div class="author">{{ actualUserName }}</div>
+        <div class="date">{{ date }}</div>
+      </div>
+    </div>
+    <div class="action-buttons">
+      @if (!isEditing && isCurrentUser()) {
+        <button class="edit-btn" (click)="startEdit()" title="{{ 'reviewWithComments.editReview' | translate }}">
+          <i class="fas fa-edit"></i>
+        </button>
+      }
+      @if (!isEditing && isCurrentUser()) {
+        <button class="delete-btn" (click)="onDelete()" title="{{ 'reviewWithComments.deleteReview' | translate }}">
+          <i class="fas fa-trash"></i>
+        </button>
+      }
     </div>
   </div>
 
-  <div class="quote-text">
-    <i class="fas fa-quote-right text-primary"></i>
-   "  {{ quote }}  "
-    <i class="fas fa-quote-left text-primary"></i>
-  </div>
+  @if (!isEditing) {
+    <div class="quote-text">
+      {{ quote }}
+    </div>
+  }
 
-  <div class="actions">
-    <div class="share">
-      <button><i class="fas fa-link"></i></button>
-      <button><i class="fab fa-twitter"></i></button>
-      <button><i class="fab fa-facebook"></i></button>
+  @if (isEditing) {
+    <div class="edit-form">
+      <div class="quote-edit">
+        <label>{{ 'reviewWithComments.quote' | translate }}:</label>
+        <textarea 
+          [(ngModel)]="editQuote" 
+          class="form-control" 
+          rows="3" 
+          [placeholder]="'reviewWithComments.enterReview' | translate">
+        </textarea>
+      </div>
+      
+      <div class="edit-actions">
+        <button class="btn btn-success btn-sm" (click)="saveEdit()" [disabled]="!editQuote.trim()">
+          <i class="fas fa-save"></i> {{ 'reviewWithComments.save' | translate }}
+        </button>
+        <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> {{ 'reviewWithComments.cancel' | translate }}
+        </button>
+      </div>
     </div>
-    <div class="votes">
-      <button><i class="fas fa-thumbs-down"></i> 0</button>
-      <button><i class="fas fa-thumbs-up"></i> 0</button>
-    </div>
-  </div>
+  }
 </div>

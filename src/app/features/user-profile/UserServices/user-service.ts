@@ -15,9 +15,15 @@ export class UserService {
   constructor(private http : HttpClient) {}
 
 
-  getUserProfile(UserId : number) : Observable<ProfileResponse>
+  // getUserProfile(UserId : number) : Observable<ProfileResponse>
+  // {
+  //   return this.http.get<ProfileResponse>(`${this._api}/Account/GetProfile` , {params : {UserId}}).pipe(
+  //     map((response: any) => response.data)
+  //   );
+  // }
+  getUserProfile() : Observable<ProfileResponse>
   {
-    return this.http.get<ProfileResponse>(`${this._api}/Account/GetProfile` , {params : {UserId}}).pipe(
+    return this.http.get<ProfileResponse>(`${this._api}/Account/GetProfile`).pipe(
       map((response: any) => response.data)
     );
   }

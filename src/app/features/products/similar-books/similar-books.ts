@@ -34,5 +34,8 @@ export class SimilarBooks implements OnInit {
     })
   }
 
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 

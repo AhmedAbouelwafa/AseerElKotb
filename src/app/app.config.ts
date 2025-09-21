@@ -7,6 +7,7 @@ import { errorInterceptor } from "./core/interceptors/error-interceptor"
 import { provideTranslateService } from "@ngx-translate/core"
 import { provideTranslateHttpLoader } from "@ngx-translate/http-loader"
 import { authInterceptor } from "./interceptors/auth-interceptor"
+import { randomNumberInterceptor } from "./interceptors/RandomNumberInterceptor"
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
      provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor, errorInterceptor, localizationInterceptor])
+      withInterceptors([authInterceptor, errorInterceptor, localizationInterceptor , randomNumberInterceptor])
     ),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       }),
       lang: 'ar',
       fallbackLang: 'en'
-    }) 
+    })
   ]
 };
 
