@@ -164,21 +164,8 @@
       </div>
 
       <!-- Submit Button -->
-      <div class="submit-section">
-        <button class="submit-btn" 
-                (click)="submitOrder()"
-                [disabled]="isSubmittingOrder || isLoadingCart || isRedirectingToPayment || !isFormValid()">
-          <span *ngIf="!isSubmittingOrder && !isRedirectingToPayment">تأكيد الطلب</span>
-          <span *ngIf="isSubmittingOrder && !isRedirectingToPayment">جاري إرسال الطلب...</span>
-          <span *ngIf="isRedirectingToPayment">جاري التوجيه لبوابة الدفع...</span>
-        </button>
-        <div *ngIf="!isFormValid()" class="form-validation-message">
-          يرجى ملء جميع الحقول المطلوبة بشكل صحيح
-        </div>
-      </div>
     </div>
-
-    <!-- Payment Method Section (Outside main form) -->
+        <!-- Payment Method Section (Outside main form) -->
     <div class="payment-section">
       <div class="form-section">
         <h2 class="section-title">وسيلة الدفع</h2>
@@ -205,6 +192,19 @@
         </div>
       </div>
     </div>
+    <div class="submit-section">
+      <div *ngIf="!isFormValid()" class="form-validation-message">
+        يرجى ملء جميع الحقول المطلوبة بشكل صحيح
+      </div>
+      <button class="submit-btn" 
+              (click)="submitOrder()"
+              [disabled]="isSubmittingOrder || isLoadingCart || isRedirectingToPayment || !isFormValid()">
+        <span *ngIf="!isSubmittingOrder && !isRedirectingToPayment">تأكيد الطلب</span>
+        <span *ngIf="isSubmittingOrder && !isRedirectingToPayment">جاري إرسال الطلب...</span>
+        <span *ngIf="isRedirectingToPayment">جاري التوجيه لبوابة الدفع...</span>
+      </button>
+    </div>
+
   </div>
 
 </div>
