@@ -37,9 +37,11 @@ a{
 
 .card-text {
   margin-bottom: 8px !important; /* تقليل المسافة تحت المؤلف */
+
 }
 
 .underBook {
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
