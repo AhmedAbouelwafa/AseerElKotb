@@ -220,6 +220,13 @@
   font-size: 12px;
 }
 
+
+.ss{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ margin-bottom: 10px;
+}
 /* Register Button */
 .btn-register {
   width: 10rem;
@@ -232,9 +239,11 @@
   font-family: 'Almarai', Arial, sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-right: 73%;
+  /* margin-right: 73%; */
   margin-top: 3px;
   /* Remove margin-bottom and margin-right since flexbox handles spacing */
+  /* translate: translateX(10px); */
+ 
 }
 
 .btn-register:hover:not(:disabled) {
@@ -352,6 +361,10 @@
   color: #666;
   line-height: 1.6;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .link-button {
