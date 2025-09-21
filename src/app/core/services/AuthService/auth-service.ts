@@ -108,7 +108,7 @@ export class AuthService {
 
     // Send email as a route parameter since backend expects it as a direct parameter
     return this.httpClient.post<any>(
-      `${this.apiUrl}/api/Account/ForgotPassword/${encodeURIComponent(dto.email)}`,
+      `${this.apiUrl}/Account/ForgotPassword/${encodeURIComponent(dto.email)}`,
       {}, // Empty body since email is in route
       { headers }
     ).pipe(
