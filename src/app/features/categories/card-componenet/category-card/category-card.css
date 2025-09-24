@@ -20,3 +20,23 @@ a span:hover{
 a{
   text-decoration: none;
 }
+
+/* Mobile: smaller hero cards and allow wrapping */
+@media (max-width: 768px) {
+  a span {
+    width: 120px;
+    height: 42px;
+    font-size: 11px;
+    border-radius: 8px;
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  a span {
+    width: 46vw; /* two per row approx */
+    max-width: 180px;
+    height: 40px;
+    font-size: 10px;
+  }
+}

@@ -432,3 +432,52 @@ app-book-card:hover {
     min-height: 200px;
   }
 }
+
+/* Responsive header blocks */
+@media (max-width: 768px) {
+  #publisherData {
+    margin-inline: 0.8rem;
+    margin-top: 5.5rem;
+    gap: 1rem;
+  }
+
+  #Fcontainer p {
+    font-size: 0.95rem;
+  }
+
+  #followBtn {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  #btns .btn {
+    font-size: 14px;
+    padding-block: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #publisherData {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #publisherData img {
+    width: 80px;
+    height: 80px;
+  }
+
+  #Fcontainer h3 {
+    font-size: 1.1rem;
+  }
+
+  #Fcontainer p {
+    font-size: 0.9rem;
+  }
+
+  #btns {
+    flex-direction: column;
+  }
+
+  .vertical-separator { display: none; }
+}
