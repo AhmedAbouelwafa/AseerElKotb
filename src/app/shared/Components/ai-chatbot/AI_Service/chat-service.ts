@@ -57,6 +57,10 @@ export class ChatService {
       this.currentAudioUrl = audioUrl;
       this.audioPlayer = new Audio(audioUrl);
 
+      // Configure to improve cross-origin playback and preloading
+      this.audioPlayer.crossOrigin = 'anonymous';
+      this.audioPlayer.preload = 'auto';
+
       // Set up event listeners
       this.audioPlayer.onplay = () => {
         this.audioStateSubject.next('playing');
@@ -73,18 +77,45 @@ export class ChatService {
         observer.complete();
       };
 
-      this.audioPlayer.onerror = (error) => {
+      this.audioPlayer.onerror = (event) => {
+        const mediaError = this.audioPlayer?.error || (event as any)?.currentTarget?.error || null;
+        const detailedMessage = this.describeMediaError(mediaError) || 'Unknown audio error';
+        console.error('Error playing audio:', {
+          message: detailedMessage,
+          code: mediaError?.code,
+          networkState: this.audioPlayer?.networkState,
+          readyState: this.audioPlayer?.readyState,
+          src: this.currentAudioUrl
+        });
         this.audioStateSubject.next('stopped');
         this.cleanupAudio();
-        observer.error(error);
+        observer.error(new Error(detailedMessage));
       };
 
-      // Start playing
-      this.audioPlayer.play().catch(error => {
-        this.audioStateSubject.next('stopped');
-        this.cleanupAudio();
-        observer.error(error);
-      });
+      // Start playing when the browser indicates it can
+      const startPlayback = () => {
+        // Guard in case cleanup already happened
+        if (!this.audioPlayer) return;
+        this.audioPlayer.play().catch(error => {
+          const mediaError = (this.audioPlayer as any)?.error || null;
+          const detailedMessage = this.describeMediaError(mediaError) || (error?.message || 'Failed to start audio playback');
+          console.error('Error starting audio playback:', detailedMessage, error);
+          this.audioStateSubject.next('stopped');
+          this.cleanupAudio();
+          observer.error(new Error(detailedMessage));
+        });
+      };
+
+      // Some browsers fire canplaythrough, some only loadeddata is reliable
+      this.audioPlayer.addEventListener('canplaythrough', startPlayback, { once: true } as any);
+      this.audioPlayer.addEventListener('loadeddata', startPlayback, { once: true } as any);
+
+      // As a fallback, try to play after a short delay if events don't fire
+      setTimeout(() => {
+        if (this.audioPlayer && this.audioPlayer.paused) {
+          startPlayback();
+        }
+      }, 500);
 
       // Cleanup function for when the observable is unsubscribed
       return () => {
@@ -133,6 +164,23 @@ export class ChatService {
       this.audioPlayer = null;
     }
     this.currentAudioUrl = null;
+  }
+
+  private describeMediaError(err: MediaError | null): string {
+    if (!err) return '';
+    // MediaError codes: 1 = MEDIA_ERR_ABORTED, 2 = MEDIA_ERR_NETWORK, 3 = MEDIA_ERR_DECODE, 4 = MEDIA_ERR_SRC_NOT_SUPPORTED
+    switch (err.code) {
+      case MediaError.MEDIA_ERR_ABORTED:
+        return 'Audio playback aborted.';
+      case MediaError.MEDIA_ERR_NETWORK:
+        return 'Network error while fetching audio (check connectivity or CORS).';
+      case MediaError.MEDIA_ERR_DECODE:
+        return 'Audio decode error (unsupported/corrupted format).';
+      case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        return 'Audio source not supported (URL may be invalid or content-type unsupported).';
+      default:
+        return 'Unknown media error.';
+    }
   }
 
   // Method to handle both text and audio responses
