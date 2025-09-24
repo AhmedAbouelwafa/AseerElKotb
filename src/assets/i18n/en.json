@@ -27,6 +27,7 @@
   },
   "hero": {
     "title": "Aseer Alkotb",
+    "more": "More",
     "bookTypes": {
       "paperBooks": "Paper Books for Purchase",
       "freeBooks": "Free Books to Read",

@@ -46,10 +46,28 @@ a button{
     border-radius: 5px;
     box-shadow: 1px 1px 10px rgb(231, 230, 230) , -1px -1px 10px rgb(231, 230, 230);
 }
+
+/* Cart expiration notice */
+.cart-notice {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #856404;
+    font-weight: 500;
+}
+
+.cart-notice p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 #main-title{
     font-weight: bold;
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 1rem;
 }  
 #cart{
     display: flex;
