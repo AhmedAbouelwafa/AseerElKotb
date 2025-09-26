@@ -22,12 +22,13 @@ import { LocationService } from '../../services/location.service';
 import { Governorate } from '../../models/governorate.model';
 import { City } from '../../models/city.model';
 import { environment } from '../../core/configs/environment.config';
+import { EgyCurrencyPipe } from '../../Pipe/CurrencyPipe/egy-currency.pipe';
 
 
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule, RouterLink, EgyCurrencyPipe],
   templateUrl: './checkout-page.html',
   styleUrl: './checkout-page.css'
 })
@@ -48,7 +49,6 @@ export class CheckoutPage implements OnInit {
   cartItemsCount = 0;
   shippingCost = 0;
   finalTotal = 0;
- 
 
   
   selectedPayment = PaymentMethod.CashOnDelivery;

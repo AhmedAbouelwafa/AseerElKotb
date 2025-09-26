@@ -29,18 +29,18 @@
         </div>
 
         <div class="book-price">
-          <div class="before">
+          <div class="before" *ngIf="book?.price !== undefined">
             <span>{{'bookDetails.before' | translate}} </span>
-            <span class="old-price">{{ book?.price }} ج.م</span>
+            <span class="old-price">{{ book?.price | egyCurrency }}</span>
           </div>
 
-          <div class="after">
+          <div class="after" *ngIf="newPrice !== undefined">
             <span>{{'bookDetails.after' | translate}} </span>
-            <span class="new-price"> {{newPrice}} ج.م</span>
+            <span class="new-price"> {{newPrice | egyCurrency}}</span>
           </div>
 
-          <div class="discount">
-            <span>{{'bookDetails.youWillSave' | translate}} {{discount | number:'1.1-1' }} ج.م</span>
+          <div class="discount" *ngIf="discount !== undefined && discount !== null">
+            <span>{{'bookDetails.youWillSave' | translate}} {{ discount | egyCurrency}}</span>
             <span class="badge">{{'bookDetails.discount' | translate}} {{book?.discountPercentage }}%</span>
           </div>
         </div>

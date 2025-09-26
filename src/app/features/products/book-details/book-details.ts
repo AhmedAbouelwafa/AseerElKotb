@@ -20,10 +20,11 @@ import { Auth } from '../../../services/auth';
 import { ToastService } from '../../../shared/Components/toast-notification/toast-notification';
 import { WishlistService } from '../../../services/wishlist-service';
 import { RemoveFromWishlistRequest } from '../../../models/wishlist-interfaces';
+import { EgyCurrencyPipe } from '../../../Pipe/CurrencyPipe/egy-currency.pipe';
 
 @Component({
   selector: 'app-book-details',
-  imports: [DecimalPipe, CommonModule, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb, SimilarBooks, Modal],
+  imports: [DecimalPipe, CommonModule, RouterLink, ReviewsAndComments, TranslateModule, NavCrumb, SimilarBooks, Modal, EgyCurrencyPipe],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css'
 })
