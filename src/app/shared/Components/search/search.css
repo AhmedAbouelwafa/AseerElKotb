@@ -99,3 +99,47 @@
   width: 15px;    /* عرض السكروول عمودي */
   height: 15px;   /* ارتفاع السكروول أفقي */
 }
+
+/* Responsive: Tablets */
+@media (max-width: 768px) {
+  .formSeearch {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100% !important;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.6rem;
+    line-height: 1.1;
+  }
+
+  .dropsaerch {
+    width: 100%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    max-height: 260px;
+  }
+
+  .dropsaerch .imageWithText img{
+    width: 28px;
+    height: 28px;
+  }
+
+  .searchLink {
+    font-size: 11px;
+    padding: 5px 4px;
+  }
+}
+
+/* Responsive: Small Mobile */
+@media (max-width: 480px) {
+  .search-input {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .dropsaerch {
+    max-height: 220px;
+  }
+}
