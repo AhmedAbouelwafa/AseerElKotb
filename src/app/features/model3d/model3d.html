@@ -9,7 +9,7 @@
     <div class="model-section">
       <div class="model-viewer-container">
         <model-viewer
-        src="./ModelImages/Hoodie.glb"
+        src="./ModelImages/Hoodiee.glb"
         alt="3D T-Shirt Model"
         auto-rotate
         camera-controls
@@ -27,7 +27,7 @@
         <button slot="ar-button" class="ar-button">View in AR</button>
       </model-viewer>
       </div>
-      
+
       <div class="model-info">
         <h3>Interactive 3D Preview</h3>
         <p>Rotate, zoom, and view your design in 3D</p>
@@ -86,11 +86,11 @@
         <div class="result-header">
           <h3>Your Design</h3>
         </div>
-        
+
         <div class="preview-container">
           <img [src]="generatedImageUrl" class="design-preview" alt="Generated Design">
         </div>
-        
+
         <div class="action-buttons">
           <button class="action-btn primary" (click)="applyDesignToModel()" [disabled]="isGenerating">
             <i class="icon-3d"></i>
@@ -101,7 +101,7 @@
             Create Mockup
           </button>
         </div>
-        
+
         <!-- Mockup Preview -->
         <div class="mockup-result" *ngIf="mockupPreviewUrl">
           <div class="mockup-header">
@@ -121,7 +121,7 @@
       <h2>Customization Options</h2>
       <p>Fine-tune your design</p>
     </div>
-    
+
     <div class="controls-grid">
       <!-- Base Colors -->
       <div class="control-group">

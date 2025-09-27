@@ -65,7 +65,7 @@
 
 .model-viewer-container {
   position: relative;
-  background: #f7fafc;
+  background: #cfd3b8;
 }
 
 model-viewer {
@@ -534,15 +534,15 @@ model-viewer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .header {
     padding: 2rem 1rem 1.5rem;
   }
-  
+
   .header h1 {
     font-size: 2rem;
   }
-  
+
   model-viewer {
     height: 500px;
   }
@@ -552,21 +552,21 @@ model-viewer {
   .designer-container {
     padding: 0;
   }
-  
+
   .main-content, .controls-section {
     margin: 1rem;
     padding: 0;
   }
-  
+
   .controls-grid {
     grid-template-columns: 1fr;
     padding: 1.5rem;
   }
-  
+
   .color-palette {
     grid-template-columns: repeat(6, 1fr);
   }
-  
+
   .style-grid {
     grid-template-columns: 1fr;
   }
@@ -576,15 +576,15 @@ model-viewer {
   .header h1 {
     font-size: 1.75rem;
   }
-  
+
   model-viewer {
     height: 400px;
   }
-  
+
   .design-form, .design-result {
     padding: 1rem;
   }
-  
+
   .color-option {
     width: 40px;
     height: 40px;
