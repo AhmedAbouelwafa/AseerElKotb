@@ -1,0 +1,199 @@
+<div class="designer-container">
+  <div class="header">
+    <h1>👕 Professional T-Shirt Designer</h1>
+    <p>Create custom designs for your apparel with AI-powered design generation</p>
+  </div>
+
+  <div class="main-content">
+    <!-- 3D Model Section -->
+    <div class="model-section">
+      <div class="model-viewer-container">
+        <model-viewer
+        src="./ModelImages/Hoodie.glb"
+        alt="3D T-Shirt Model"
+        auto-rotate
+        camera-controls
+        crossorigin="anonymous"
+        environment-image="neutral"
+        shadow-intensity="1"
+        camera-orbit="45deg 75deg 2.5m"
+        interaction-prompt="none"
+        loading="lazy"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        ar-scale="auto"
+        ar-placement="floor">
+        <div class="progress-bar" hidden></div>
+        <button slot="ar-button" class="ar-button">View in AR</button>
+      </model-viewer>
+      </div>
+      
+      <div class="model-info">
+        <h3>Interactive 3D Preview</h3>
+        <p>Rotate, zoom, and view your design in 3D</p>
+      </div>
+    </div>
+
+    <!-- Design Panel -->
+    <div class="design-panel">
+      <div class="panel-header">
+        <h2>🎨 Design Studio</h2>
+        <p>Bring your ideas to life</p>
+      </div>
+
+      <div class="design-form">
+        <div class="input-group">
+          <label for="designPrompt">Design Description</label>
+          <textarea
+            [(ngModel)]="designPrompt"
+            class="design-input"
+            placeholder="Describe your design idea... (e.g., 'Minimalist mountain landscape', 'Vintage band logo', 'Abstract geometric pattern')">
+          </textarea>
+        </div>
+
+        <div class="style-selector">
+          <label>Art Style</label>
+          <div class="style-grid">
+            <button
+              *ngFor="let style of designStyles"
+              class="style-option"
+              [class.selected]="currentStyle === style.id"
+              (click)="selectStyle(style.id)">
+              <span class="style-icon">{{style.icon}}</span>
+              <span class="style-name">{{style.name}}</span>
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="generate-button"
+          [class.loading]="isGenerating"
+          [disabled]="isGenerating || !designPrompt.trim()"
+          (click)="generateDesign()">
+          <span *ngIf="!isGenerating">
+            <i class="icon-generate"></i>
+            Generate Design
+          </span>
+          <span *ngIf="isGenerating">
+            <i class="icon-loading"></i>
+            Creating your design...
+          </span>
+        </button>
+      </div>
+
+      <!-- Design Preview -->
+      <div class="design-result" *ngIf="showPreview">
+        <div class="result-header">
+          <h3>Your Design</h3>
+        </div>
+        
+        <div class="preview-container">
+          <img [src]="generatedImageUrl" class="design-preview" alt="Generated Design">
+        </div>
+        
+        <div class="action-buttons">
+          <button class="action-btn primary" (click)="applyDesignToModel()" [disabled]="isGenerating">
+            <i class="icon-3d"></i>
+            Apply to 3D Model
+          </button>
+          <button class="action-btn secondary" (click)="placeOnMockup()" [disabled]="isGenerating">
+            <i class="icon-mockup"></i>
+            Create Mockup
+          </button>
+        </div>
+        
+        <!-- Mockup Preview -->
+        <div class="mockup-result" *ngIf="mockupPreviewUrl">
+          <div class="mockup-header">
+            <h4>T-Shirt Mockup Preview</h4>
+          </div>
+          <div class="mockup-container">
+            <img [src]="mockupPreviewUrl" alt="T-shirt Mockup" class="mockup-preview">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customization Controls -->
+  <div class="controls-section">
+    <div class="section-header">
+      <h2>Customization Options</h2>
+      <p>Fine-tune your design</p>
+    </div>
+    
+    <div class="controls-grid">
+      <!-- Base Colors -->
+      <div class="control-group">
+        <h3>Base Color</h3>
+        <div class="color-palette">
+          <div
+            *ngFor="let colorItem of baseColors"
+            class="color-option"
+            [class.selected]="currentColor === colorItem.color"
+            [style.background]="colorItem.color"
+            [title]="colorItem.name"
+            (click)="selectColor(colorItem.color)">
+            <span class="checkmark" *ngIf="currentColor === colorItem.color">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Size -->
+      <div class="control-group">
+        <h3>Design Size</h3>
+        <div class="option-buttons">
+          <button
+            *ngFor="let size of designSizes"
+            class="option-btn"
+            [class.selected]="currentSize === size.id"
+            (click)="selectSize(size.id)">
+            {{size.name}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Design Position -->
+      <div class="control-group">
+        <h3>Position</h3>
+        <div class="option-buttons">
+          <button
+            *ngFor="let position of designPositions"
+            class="option-btn"
+            [class.selected]="currentPosition === position.id"
+            (click)="selectPosition(position.id)">
+            {{position.name}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Effects -->
+      <div class="control-group">
+        <h3>Effects</h3>
+        <div class="effect-buttons">
+          <button class="effect-btn" (click)="addGlowEffect()">
+            <span class="effect-icon">✨</span>
+            Glow
+          </button>
+          <button class="effect-btn" (click)="addShadowEffect()">
+            <span class="effect-icon">🌑</span>
+            Shadow
+          </button>
+          <button class="effect-btn" (click)="addMetallicEffect()">
+            <span class="effect-icon">🪙</span>
+            Metallic
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" [class.active]="isGenerating">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h3>Creating your design</h3>
+      <p>This may take a few moments...</p>
+    </div>
+  </div>
+</div>

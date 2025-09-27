@@ -28,6 +28,7 @@
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@fortawesome/fontawesome-free": "^7.0.0",
+    "@google/model-viewer": "^4.1.0",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "bootstrap": "^5.3.7",

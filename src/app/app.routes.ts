@@ -31,6 +31,7 @@ import { OrderDetails } from './features/orders/orderDetails/order-details/order
 import { ImageGeneration } from './features/image-generation/image-generation';
 import { CategoeyBooks } from './features/CategoryFilterComponents/categoey-books/categoey-books';
 import { ReviewsAndComments } from './shared/Components/reviews-and-comments/reviews-and-comments';
+import { Model3d } from './features/model3d/model3d';
 
 
 
@@ -121,6 +122,10 @@ export const routes: Routes = [
   ,
   {
     path: 'rev', component : ReviewsAndComments
+  }
+  ,
+  {
+    path: 'model3d', component : Model3d
   }
 
 ];
