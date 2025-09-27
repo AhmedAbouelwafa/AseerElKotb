@@ -8,7 +8,11 @@ import { TranslateService } from '@ngx-translate/core';
 export class EgyCurrencyPipe implements PipeTransform {
   constructor(private translate: TranslateService) {}
 
-  transform(value: number): string {
+  transform(value: number | undefined): string | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+    
     const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     const formattedNumber = value.toFixed(2);
     

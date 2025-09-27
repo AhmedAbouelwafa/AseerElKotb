@@ -134,22 +134,22 @@
         <div class="order-items-detailed">
           <div class="order-item-detailed">
             <span class="item-title">المجموع قبل الخصم</span>
-            <span class="item-price">{{cartTotal}} ج.م</span>
+            <span class="item-price">{{cartTotal | egyCurrency}}</span>
           </div>
           <div class="order-item-detailed">
             <span class="item-title">المجموع بعد الخصم</span>
-            <span class="item-price">{{cartDiscountedTotal}} ج.م</span>
+            <span class="item-price">{{cartDiscountedTotal | egyCurrency}}</span>
           </div>
           <div class="order-item-detailed shipping-item">
             <span class="item-title">الشحن</span>
             <span class="item-price" [class.free-shipping]="shippingCost === 0">
-              <span *ngIf="shippingCost > 0; else freeShipping">{{shippingCost}} ج.م</span>
+              <span *ngIf="shippingCost > 0; else freeShipping">{{shippingCost | egyCurrency}}</span>
               <ng-template #freeShipping>مجاني</ng-template>
             </span>
           </div>
           <div class="order-item-detailed total-item">
             <span class="item-title">الإجمالي</span>
-            <span class="item-price total-price">{{finalTotal}} ج.م</span>
+            <span class="item-price total-price">{{finalTotal | egyCurrency}}</span>
           </div>
         </div>
 

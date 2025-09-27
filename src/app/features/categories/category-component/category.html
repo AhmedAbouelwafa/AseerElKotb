@@ -1,8 +1,6 @@
-
 <div class = "categories">
   @for (category of categories; track category.id) {
     <app-category-card [categoryName]="category.name" [routerLink]="['/MainFilterContainer', category.id]"></app-category-card>
   }
-  <app-category-card [categoryName]="'more' | translate" [bg]="'#330d16'" routerLink="/AllCategories"></app-category-card>
+  <app-category-card [categoryName]="'hero.more' | translate" [bg]="'#330d16'" routerLink="/AllCategories"></app-category-card>
 </div>
-
